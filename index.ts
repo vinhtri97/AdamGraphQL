@@ -5,6 +5,7 @@ import { buildSchema, Resolver, Query } from "type-graphql";
 import * as mongoose from "mongoose";
 import * as path from "path";
 import { CreatePlayerResolver } from "./Player/resolvers/index";
+require('dotenv').config()
 
 @Resolver()
 class HelloResolver {
@@ -17,7 +18,7 @@ class HelloResolver {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const main = async () => {
     await mongoose.connect(
-        "mongodb+srv://Adam:YBL1IqHy2pahKlnm@cluster0-ktt9i.gcp.mongodb.net/test?retryWrites=true&w=majority",
+        `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0-ktt9i.gcp.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
