@@ -9,5 +9,5 @@ export default class CreatePlayerInput {
     email: string;
 
     @Field()
-    dob: string;
+    dob: number;
 }

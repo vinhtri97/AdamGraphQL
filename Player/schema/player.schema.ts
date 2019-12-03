@@ -7,6 +7,4 @@ const playerSchema = new Schema({
     dob: String,
 });
 
-const model = mongoose.model("Player", playerSchema);
-
-export default model;
+export default mongoose.model("Player", playerSchema);

@@ -5,7 +5,7 @@
 
 type Mutation {
   # This is somthing
-  createPlayer(name: String!, email: String!, dob: String!): String!
+  createPlayer(name: String!, email: String!, dob: Float!): String!
 }
 
 type Query {
