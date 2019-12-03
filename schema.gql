@@ -3,11 +3,105 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type AcceptedOrPending {
+  pending: [String!]!
+  accepted: [String!]!
+}
+
+type Address {
+  city: String!
+  state: String!
+  street: String!
+  zip: Float!
+}
+
+type Basketball {
+  quarter_court_sprint: StatsFields!
+  laying_agility_drill: StatsFields!
+  reactive_shuttle_run: StatsFields!
+  full_court_dribbling: StatsFields!
+  full_court_2_ball_dribbling: StatsFields!
+  freethrow: StatsFields!
+  three_pointer: StatsFields!
+  five_yard_dash: StatsFields!
+}
+
+# The javascript `Date` as string. Type represents date and time as the ISO Date string.
+scalar DateTime
+
 type Mutation {
   # This is somthing
-  createPlayer(name: String!, email: String!, dob: String!): String!
+  createPlayer(id: String!, name: String!, email: String!, dob: String!): String!
+}
+
+type Personal {
+  first_name: String!
+  last_name: String!
+  dob: String!
+  phone: String!
+  gender: String!
+}
+
+type PlayerDto {
+  id: String!
+  email: String!
+  thumbnail: String!
+  user_type: String!
+  power_score: [PowerScore!]!
+  spectators: AcceptedOrPending!
+  teams: AcceptedOrPending!
+  banner: String!
+  likes: [String!]!
+  personal: Personal!
+  sport_info: SportInfo!
+  favorites: [String!]!
+  school_info: SchoolInfo!
+  address: Address!
+  statistics: Statistics!
+}
+
+type PowerScore {
+  value: String!
+  Date: DateTime!
 }
 
 type Query {
+  getPlayers: [PlayerDto!]!
+  getPlayerByID(id: String!): PlayerDto!
   helloWorld: String!
+}
+
+type SchoolInfo {
+  grad_year: String!
+  school_district: String!
+  school: String!
+  school_type: String!
+}
+
+type SportInfo {
+  position: String!
+  secondary_position: String!
+  throwing: String!
+  batting: String!
+  sport: String!
+  committed: String!
+  committed_date: String!
+}
+
+type Statistics {
+  basketball_stats: [Basketball!]!
+  baseball_stats: String!
+  soccer_stats: String!
+  tennis_stats: String!
+  volleyball_stats: String!
+  academics: String!
+  physical: String!
+  agility: String!
+  power: String!
+}
+
+type StatsFields {
+  value: Float!
+  certified: Boolean!
+  certifying_entity: String!
 }

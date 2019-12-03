@@ -14,9 +14,11 @@ module.exports = {
         "ecmaVersion": 2018
     },
     "rules": {
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": ["error", { "properties": "never" }],
         "comma-dangle": ["error", {
             "arrays": "never",
-            "objects": "only-multiline",
+            "objects": "never",
             "imports": "never",
             "exports": "never",
             "functions": "never"
