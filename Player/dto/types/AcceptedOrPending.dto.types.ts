@@ -1,6 +1,7 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, InputType } from "type-graphql";
 
 @ObjectType()
+@InputType("AcceptedOrPendingInput")
 export class AcceptedOrPending {
     @Field(() => [String])
     pending: string[];

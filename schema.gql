@@ -21,6 +21,13 @@ type Address {
   zip: Float!
 }
 
+input AddressInput {
+  city: String!
+  state: String!
+  street: String!
+  zip: Float!
+}
+
 type Agility {
   jump_score: Float!
   agility_score: Float!
@@ -90,10 +97,19 @@ type Movement {
 
 type Mutation {
   # This is somthing
-  createPlayer(id: String!, name: String!, email: String!, dob: String!): String!
+  createPlayer(id: String!, email: String!, thumbnail: String, user_type: String!, banner: String, personal: PersonalInput!, sport_info: SportInfoInput!, school_info: SchoolInfoInput!, address: AddressInput!): String!
+  patchThumbnail(thumbnail: String!, id: String!): String!
 }
 
 type Personal {
+  first_name: String!
+  last_name: String!
+  dob: String!
+  phone: String!
+  gender: String!
+}
+
+input PersonalInput {
   first_name: String!
   last_name: String!
   dob: String!
@@ -149,6 +165,13 @@ type SchoolInfo {
   school_type: String!
 }
 
+input SchoolInfoInput {
+  grad_year: String!
+  school_district: String!
+  school: String!
+  school_type: String!
+}
+
 type Soccer {
   arrowhead_agility: StatsFields!
   yo_yo_recovery: StatsFields!
@@ -167,6 +190,16 @@ type Speed {
 }
 
 type SportInfo {
+  position: String!
+  secondary_position: String!
+  throwing: String!
+  batting: String!
+  sport: String!
+  committed: String!
+  committed_date: String!
+}
+
+input SportInfoInput {
   position: String!
   secondary_position: String!
   throwing: String!

@@ -13,9 +13,17 @@ export default class PlayerResolver {
 
     @Mutation(() => String, { description: "This is somthing" })
     async createPlayer(@Args() input: CreatePlayerInput): Promise<string> {
-        const { dob, name, email } = input;
-        await Player.create({ dob, name, email });
-        return name;
+        await Player.create(input);
+        return input.id;
+    }
+
+    @Mutation(() => String)
+    async patchThumbnail(
+        @Arg("id") id: string,
+        @Arg("thumbnail") thumbnail: string
+    ): Promise<string> {
+        await Player.findByIdAndUpdate(id, { $set: { thumbnail } });
+        return thumbnail;
     }
 
     @Query(() => [PlayerDto])

@@ -1,7 +1,8 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, InputType } from "type-graphql";
 import { IsIn } from "class-validator";
 
 @ObjectType()
+@InputType("PersonalInput")
 export class Personal {
     @Field()
     first_name: string;
