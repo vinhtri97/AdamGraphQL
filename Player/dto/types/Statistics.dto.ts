@@ -1,4 +1,14 @@
-import { Basketball } from "./Stats/index";
+import {
+    Basketball,
+    Baseball,
+    Tennis,
+    Volleyball,
+    Soccer,
+    Academics,
+    Physical,
+    Agility,
+    Power
+} from "./Stats/index";
 import { ObjectType, Field } from "type-graphql";
 
 @ObjectType()
@@ -6,27 +16,27 @@ export class Statistics {
     @Field(() => [Basketball])
     basketball_stats: Basketball[];
 
-    @Field()
-    baseball_stats: string;
+    @Field(() => [Baseball])
+    baseball_stats: Baseball[];
 
-    @Field()
-    soccer_stats: string;
+    @Field(() => [Soccer])
+    soccer_stats: Soccer[];
 
-    @Field()
-    tennis_stats: string;
+    @Field(() => [Tennis])
+    tennis_stats: Tennis[];
 
-    @Field()
-    volleyball_stats: string;
+    @Field(() => [Volleyball])
+    volleyball_stats: Volleyball[];
 
-    @Field()
-    academics: string;
+    @Field(() => [Academics])
+    academics: Academics[];
 
-    @Field()
-    physical: string;
+    @Field(() => [Physical])
+    physical: Physical[];
 
-    @Field()
-    agility: string;
+    @Field(() => [Agility])
+    agility: Agility[];
 
-    @Field()
-    power: string;
+    @Field(() => [Power])
+    power: Power[];
 }

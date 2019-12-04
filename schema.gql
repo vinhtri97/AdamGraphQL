@@ -3,6 +3,12 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Academics {
+  ACT_Score: Float!
+  SAT_Score: Float!
+  GPA: Float!
+}
+
 type AcceptedOrPending {
   pending: [String!]!
   accepted: [String!]!
@@ -13,6 +19,25 @@ type Address {
   state: String!
   street: String!
   zip: Float!
+}
+
+type Agility {
+  jump_score: Float!
+  agility_score: Float!
+  speed_score: Float!
+  core_score: Float!
+  movement: Movement!
+  speed: Speed!
+  jump: Jump!
+}
+
+type Baseball {
+  velocity: StatsFields!
+  exit_speed: StatsFields!
+  ball_fielding_100: StatsFields!
+  longtoss: StatsFields!
+  pop_time: StatsFields!
+  home_to_second: StatsFields!
 }
 
 type Basketball {
@@ -26,8 +51,42 @@ type Basketball {
   five_yard_dash: StatsFields!
 }
 
+type BMI {
+  height: String!
+  weight: String!
+}
+
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
+
+type Dominance {
+  hand_dominance: String!
+  eye_dominance: String!
+  leg_dominance: String!
+}
+
+type Extremity {
+  wing_span: Float!
+  hand_size: Float!
+  shoe_size: Float!
+}
+
+type Jump {
+  broad_jump: StatsFields!
+  triple_jump: StatsFields!
+  vertical_jump: StatsFields!
+  one_step_vertical_jump: StatsFields!
+}
+
+type Movement {
+  ten_yard_shuttle: StatsFields!
+  twenty_yard_shuttle: StatsFields!
+  three_cone_drill: StatsFields!
+  t_test: StatsFields!
+  compass_agility: StatsFields!
+  box_drill: StatsFields!
+  quadrant_jump: StatsFields!
+}
 
 type Mutation {
   # This is somthing
@@ -40,6 +99,12 @@ type Personal {
   dob: String!
   phone: String!
   gender: String!
+}
+
+type Physical {
+  bmi: BMI!
+  extremity: Extremity!
+  dominance: Dominance!
 }
 
 type PlayerDto {
@@ -60,6 +125,12 @@ type PlayerDto {
   statistics: Statistics!
 }
 
+type Power {
+  power_score: Float!
+  strength: Strength!
+  throw: Throw!
+}
+
 type PowerScore {
   value: String!
   Date: DateTime!
@@ -78,6 +149,23 @@ type SchoolInfo {
   school_type: String!
 }
 
+type Soccer {
+  arrowhead_agility: StatsFields!
+  yo_yo_recovery: StatsFields!
+  endurance_test_30_sec: StatsFields!
+  compass_drill: StatsFields!
+}
+
+type Speed {
+  ten_yard_dash: StatsFields!
+  twenty_yard_dash: StatsFields!
+  thirty_yard_dash: StatsFields!
+  forty_yard_dash: StatsFields!
+  fifty_yard_dash: StatsFields!
+  sixty_yard_dash: StatsFields!
+  ladder_drill: StatsFields!
+}
+
 type SportInfo {
   position: String!
   secondary_position: String!
@@ -90,18 +178,63 @@ type SportInfo {
 
 type Statistics {
   basketball_stats: [Basketball!]!
-  baseball_stats: String!
-  soccer_stats: String!
-  tennis_stats: String!
-  volleyball_stats: String!
-  academics: String!
-  physical: String!
-  agility: String!
-  power: String!
+  baseball_stats: [Baseball!]!
+  soccer_stats: [Soccer!]!
+  tennis_stats: [Tennis!]!
+  volleyball_stats: [Volleyball!]!
+  academics: [Academics!]!
+  physical: [Physical!]!
+  agility: [Agility!]!
+  power: [Power!]!
 }
 
 type StatsFields {
   value: Float!
   certified: Boolean!
   certifying_entity: String!
+}
+
+type Strength {
+  bench_press_80: StatsFields!
+  bench_press_weight: StatsFields!
+  bench_press_PR: StatsFields!
+  squat_80: StatsFields!
+  squat_weight: StatsFields!
+  squat_PR: StatsFields!
+  deadlift_80: StatsFields!
+  deadlift_weight: StatsFields!
+  deadlift_press_PR: StatsFields!
+  push_up: StatsFields!
+  chin_up: StatsFields!
+  sit_up: StatsFields!
+  plank: StatsFields!
+  grip: StatsFields!
+  sit_and_reach: StatsFields!
+  stork_balance: StatsFields!
+}
+
+type Tennis {
+  court_sprint_3quarters: StatsFields!
+  laying_agility_drill: StatsFields!
+  reactive_shuttle_run: StatsFields!
+  server_velocity: StatsFields!
+  five_yard_dash: StatsFields!
+  return_ball_velocity: StatsFields!
+}
+
+type Throw {
+  overhead_throw: StatsFields!
+  backwards_overhead_throw: StatsFields!
+  behind_the_head_throw: StatsFields!
+}
+
+type Volleyball {
+  court_sprint_3quarters: StatsFields!
+  laying_agility_drill: StatsFields!
+  reactive_shuttle_run: StatsFields!
+  serve_velocity: StatsFields!
+  five_yard_dash: StatsFields!
+  wall_velocity: StatsFields!
+  wall_spike: StatsFields!
+  forearm_pass_test: StatsFields!
 }

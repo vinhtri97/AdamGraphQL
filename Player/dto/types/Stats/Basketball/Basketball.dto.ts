@@ -1,4 +1,4 @@
-import { StatsFields } from "./StatsFields.dto.stats";
+import { StatsFields } from "../StatsFields.dto";
 import { ObjectType, Field } from "type-graphql";
 
 @ObjectType()
