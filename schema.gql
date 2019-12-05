@@ -63,6 +63,42 @@ type BMI {
   weight: String!
 }
 
+type CoachDto {
+  id: String!
+  email: String!
+  thumbnail: String!
+  user_type: String!
+  teams: [String!]!
+  banner: String!
+  personal: Personal!
+  sport_info: CoachSportInfo!
+  favorites: [String!]!
+  school_info: CoachSchoolInfo!
+  address: Address!
+}
+
+type CoachSchoolInfo {
+  school_district: String!
+  school: String!
+  school_type: String!
+}
+
+input CoachSchoolInfoInput {
+  school_district: String!
+  school: String!
+  school_type: String!
+}
+
+type CoachSportInfo {
+  sport: String!
+  coach_type: String!
+}
+
+input CoachSportInfoInput {
+  sport: String!
+  coach_type: String!
+}
+
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
@@ -98,7 +134,13 @@ type Movement {
 type Mutation {
   # This is somthing
   createPlayer(id: String!, email: String!, thumbnail: String, user_type: String!, banner: String, personal: PersonalInput!, sport_info: SportInfoInput!, school_info: SchoolInfoInput!, address: AddressInput!): String!
-  patchThumbnail(thumbnail: String!, id: String!): String!
+  patchThumbnail(user_type: String!, thumbnail: String!, id: String!): String!
+
+  # This is something
+  createCoach(id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, sport_info: CoachSportInfoInput!, school_info: CoachSchoolInfoInput!, address: AddressInput!): String!
+
+  # This is something
+  updateCoach(thumbnail: String!, id: String!): String!
 }
 
 type Personal {
@@ -155,6 +197,8 @@ type PowerScore {
 type Query {
   getPlayers: [PlayerDto!]!
   getPlayerByID(id: String!): PlayerDto!
+  getCoaches: [CoachDto!]!
+  getCoachByID(id: String!): CoachDto!
   helloWorld: String!
 }
 

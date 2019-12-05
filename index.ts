@@ -5,6 +5,10 @@ import { buildSchema, Resolver, Query } from "type-graphql";
 import * as mongoose from "mongoose";
 import * as path from "path";
 import { CreatePlayerResolver } from "./Player/resolvers/index";
+import {
+    CoachMutationResolver,
+    CoachQueryResolver
+} from "./Coach/resolvers/index";
 require("dotenv").config();
 
 @Resolver()
@@ -23,7 +27,12 @@ const main = async () => {
         useUnifiedTopology: true
     });
     const schema = await buildSchema({
-        resolvers: [HelloResolver, CreatePlayerResolver],
+        resolvers: [
+            HelloResolver,
+            CreatePlayerResolver,
+            CoachMutationResolver,
+            CoachQueryResolver
+        ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")
     });
