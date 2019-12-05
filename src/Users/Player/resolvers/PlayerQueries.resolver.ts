@@ -3,7 +3,7 @@ import { Resolver, Arg, Query } from "type-graphql";
 import Player from "../schema/player.schema";
 import PlayerDto from "../dto/player.dto";
 // import Coach from "../../Coach/schema/coach.schema";
-import { PlayerQueryService } from "./../service/PlayerQueries.service";
+import { PlayerQueryService } from "../service/PlayerQueries.service";
 
 @Resolver()
 export class PlayerQueryResolver {

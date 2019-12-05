@@ -7,11 +7,11 @@ import * as path from "path";
 import {
     PlayerMutationResolver,
     PlayerQueryResolver
-} from "./Player/resolvers/index";
+} from "./src/Users/Player/resolvers/index";
 import {
     CoachMutationResolver,
     CoachQueryResolver
-} from "./Coach/resolvers/index";
+} from "./src/Users/Coach/resolvers/index";
 require("dotenv").config();
 
 @Resolver()

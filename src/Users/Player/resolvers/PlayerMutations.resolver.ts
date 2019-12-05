@@ -3,7 +3,7 @@ import { Resolver, Mutation, Args, Arg } from "type-graphql";
 import CreatePlayerInput from "../inputs/createPlayer.input";
 import Player from "../schema/player.schema";
 import Coach from "../../Coach/schema/coach.schema";
-import { PlayerMutationService } from "./../service/PlayerMutations.service";
+import { PlayerMutationService } from "../service/PlayerMutations.service";
 @Resolver()
 export class PlayerMutationResolver {
     playerMutations: PlayerMutationService;
