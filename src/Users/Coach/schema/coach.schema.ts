@@ -19,8 +19,8 @@ const coachSchema = new Schema({
         last_name: { type: String },
         phone: { type: String }
     },
-    teams: { type: Array },
-    favorites: { type: Array },
+    teams: [{ type: mongoose.Types.ObjectId }],
+    favorites: [{ type: mongoose.Types.ObjectId }],
     address: {
         state: { type: String },
         zip: { type: Number }

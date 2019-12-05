@@ -4,11 +4,12 @@ import CreatePlayerInput from "../inputs/createPlayer.input";
 import Player from "../schema/player.schema";
 import Coach from "../../Coach/schema/coach.schema";
 import { PlayerMutationService } from "../service/PlayerMutations.service";
+
 @Resolver()
 export class PlayerMutationResolver {
-    playerMutations: PlayerMutationService;
+    playerMutationService: PlayerMutationService;
     constructor() {
-        this.playerMutations = new PlayerMutationService();
+        this.playerMutationService = new PlayerMutationService();
     }
 
     @Mutation(() => String, { description: "This is somthing" })

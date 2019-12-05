@@ -15,17 +15,17 @@ type AcceptedOrPending {
 }
 
 type Address {
-  city: String!
-  state: String!
-  street: String!
-  zip: Float!
+  city: String
+  state: String
+  street: String
+  zip: Float
 }
 
 input AddressInput {
-  city: String!
-  state: String!
-  street: String!
-  zip: Float!
+  city: String
+  state: String
+  street: String
+  zip: Float
 }
 
 type Agility {
@@ -68,13 +68,14 @@ type CoachDto {
   email: String!
   thumbnail: String!
   user_type: String!
-  teams: [String!]!
   banner: String!
+  tokens: [String!]!
   personal: Personal!
+  address: Address
+  teams: [String!]!
   sport_info: CoachSportInfo!
   favorites: [String!]!
   school_info: CoachSchoolInfo!
-  address: Address!
 }
 
 type CoachSchoolInfo {
@@ -133,30 +134,31 @@ type Movement {
 
 type Mutation {
   # This is somthing
-  createPlayer(id: String!, email: String!, thumbnail: String, user_type: String!, banner: String, personal: PersonalInput!, sport_info: SportInfoInput!, school_info: SchoolInfoInput!, address: AddressInput!): String!
+  createPlayer(id: String!, email: String!, thumbnail: String!, user_type: String, personal: PersonalInput!, address: AddressInput, sport_info: SportInfoInput!, school_info: SchoolInfoInput): String!
   patchThumbnail(user_type: String!, thumbnail: String!, id: String!): String!
 
   # This is something
-  createCoach(id: String!, email: String!, thumbnail: String, user_type: String, personal: PersonalInput!, sport_info: CoachSportInfoInput!, school_info: CoachSchoolInfoInput!, address: AddressInput!): String!
+  createCoach(id: String!, email: String!, thumbnail: String!, user_type: String!, personal: PersonalInput!, address: AddressInput, sport_info: CoachSportInfoInput!, school_info: CoachSchoolInfoInput!): String!
 
   # This is something
   updateCoach(thumbnail: String!, id: String!): String!
+  addFavorite(coachID: String!, playerID: String!): String!
 }
 
 type Personal {
   first_name: String!
   last_name: String!
-  dob: String!
-  phone: String!
-  gender: String!
+  dob: String
+  phone: String
+  gender: String
 }
 
 input PersonalInput {
   first_name: String!
   last_name: String!
-  dob: String!
-  phone: String!
-  gender: String!
+  dob: String
+  phone: String
+  gender: String
 }
 
 type Physical {
@@ -170,16 +172,17 @@ type PlayerDto {
   email: String!
   thumbnail: String!
   user_type: String!
+  banner: String!
+  tokens: [String!]!
+  personal: Personal!
+  address: Address
   power_score: [PowerScore!]!
   spectators: AcceptedOrPending!
   teams: AcceptedOrPending!
-  banner: String!
   likes: [String!]!
-  personal: Personal!
   sport_info: SportInfo!
   favorites: [String!]!
   school_info: SchoolInfo!
-  address: Address!
   statistics: Statistics!
 }
 
@@ -197,23 +200,24 @@ type PowerScore {
 type Query {
   getPlayers: [PlayerDto!]!
   getPlayerByID(id: String!): PlayerDto!
+  getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getCoaches: [CoachDto!]!
   getCoachByID(id: String!): CoachDto!
-  helloWorld: String!
+  getFavoritesForCoach(coachID: String!): [PlayerDto!]!
 }
 
 type SchoolInfo {
-  grad_year: String!
-  school_district: String!
-  school: String!
-  school_type: String!
+  grad_year: String
+  school_district: String
+  school: String
+  school_type: String
 }
 
 input SchoolInfoInput {
-  grad_year: String!
-  school_district: String!
-  school: String!
-  school_type: String!
+  grad_year: String
+  school_district: String
+  school: String
+  school_type: String
 }
 
 type Soccer {
@@ -235,22 +239,22 @@ type Speed {
 
 type SportInfo {
   position: String!
-  secondary_position: String!
-  throwing: String!
-  batting: String!
+  secondary_position: String
+  throwing: String
+  batting: String
   sport: String!
-  committed: String!
-  committed_date: String!
+  committed: String
+  committed_date: String
 }
 
 input SportInfoInput {
   position: String!
-  secondary_position: String!
-  throwing: String!
-  batting: String!
+  secondary_position: String
+  throwing: String
+  batting: String
   sport: String!
-  committed: String!
-  committed_date: String!
+  committed: String
+  committed_date: String
 }
 
 type Statistics {
@@ -303,6 +307,17 @@ type Throw {
   overhead_throw: StatsFields!
   backwards_overhead_throw: StatsFields!
   behind_the_head_throw: StatsFields!
+}
+
+type UserDto {
+  id: String!
+  email: String!
+  thumbnail: String!
+  user_type: String!
+  banner: String!
+  tokens: [String!]!
+  personal: Personal!
+  address: Address
 }
 
 type Volleyball {

@@ -1,24 +1,34 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Resolver, Arg, Query } from "type-graphql";
-import Player from "../schema/player.schema";
+// import * as mongoose from "mongoose";
+import { Arg, Query, Resolver } from "type-graphql";
+import CoachDto from "../../Coach/dto/coach.dto";
 import PlayerDto from "../dto/player.dto";
-// import Coach from "../../Coach/schema/coach.schema";
+import Player from "../schema/player.schema";
 import { PlayerQueryService } from "../service/PlayerQueries.service";
+// import { getObjects } from "./../../../Functions";
 
+// const ObjectId = mongoose.Types.ObjectId;
 @Resolver()
 export class PlayerQueryResolver {
-    playerQueries: PlayerQueryService;
+    playerQueryService: PlayerQueryService;
     constructor() {
-        this.playerQueries = new PlayerQueryService();
+        this.playerQueryService = new PlayerQueryService();
     }
 
     @Query(() => [PlayerDto])
     async getPlayers(): Promise<Array<PlayerDto>> {
-        return await this.playerQueries.getPlayers();
+        return await this.playerQueryService.getPlayers();
     }
 
     @Query(() => PlayerDto)
     async getPlayerByID(@Arg("id") id: string): Promise<PlayerDto> {
         return await Player.findById(id).lean();
+    }
+
+    @Query(() => [CoachDto])
+    async getFavoritesForPlayer(
+        @Arg("playerID") playerID: string
+    ): Promise<Array<CoachDto>> {
+        return await this.playerQueryService.getFavorites(playerID);
     }
 }

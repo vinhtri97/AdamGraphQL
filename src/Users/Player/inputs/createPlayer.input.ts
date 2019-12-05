@@ -1,40 +1,16 @@
-import {
-    Personal,
-    // PowerScore,
-    // AcceptedOrPending,
-    SportInfo,
-    SchoolInfo,
-    Address
-    // Statistics
-} from "../dto/types/index";
+import { SportInfo, SchoolInfo } from "../dto/types/index";
 import { ArgsType, Field } from "type-graphql";
-
+import CreateUserInput from "../../User/inputs/createUser.input";
+import { IsIn } from "class-validator";
 @ArgsType()
-export default class CreatePlayerInput {
-    @Field()
-    id: string;
-
-    @Field()
-    email: string;
-
+export default class CreatePlayerInput extends CreateUserInput {
     @Field({ nullable: true })
-    thumbnail: string;
-
-    @Field()
+    @IsIn(["Player"])
     user_type: string;
-
-    @Field({ nullable: true })
-    banner: string;
-
-    @Field(() => Personal)
-    personal: Personal;
 
     @Field(() => SportInfo)
     sport_info: SportInfo;
 
-    @Field(() => SchoolInfo)
+    @Field(() => SchoolInfo, { nullable: true })
     school_info: SchoolInfo;
-
-    @Field(() => Address)
-    address: Address;
 }

@@ -1,26 +1,18 @@
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import * as Express from "express";
-import { buildSchema, Resolver, Query } from "type-graphql";
+import { buildSchema } from "type-graphql";
 import * as mongoose from "mongoose";
 import * as path from "path";
 import {
-    PlayerMutationResolver,
-    PlayerQueryResolver
+    PlayerQueryResolver,
+    PlayerMutationResolver
 } from "./src/Users/Player/resolvers/index";
 import {
     CoachMutationResolver,
     CoachQueryResolver
 } from "./src/Users/Coach/resolvers/index";
 require("dotenv").config();
-
-@Resolver()
-class HelloResolver {
-    @Query(() => String)
-    async helloWorld(): Promise<string> {
-        return "Hello World!";
-    }
-}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const main = async () => {
@@ -31,7 +23,6 @@ const main = async () => {
     });
     const schema = await buildSchema({
         resolvers: [
-            HelloResolver,
             PlayerQueryResolver,
             PlayerMutationResolver,
             CoachMutationResolver,

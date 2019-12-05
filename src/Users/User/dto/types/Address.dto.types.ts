@@ -3,15 +3,15 @@ import { ObjectType, Field, InputType } from "type-graphql";
 @ObjectType()
 @InputType("AddressInput")
 export class Address {
-    @Field()
+    @Field({ nullable: true })
     city: string;
 
-    @Field()
+    @Field({ nullable: true })
     state: string;
 
-    @Field()
+    @Field({ nullable: true })
     street: string;
 
-    @Field()
+    @Field({ nullable: true })
     zip: number;
 }

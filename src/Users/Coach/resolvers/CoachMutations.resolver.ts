@@ -4,14 +4,14 @@ import CreateCoachInput from "../inputs/createCoach.input";
 
 @Resolver()
 export class CoachMutationResolver {
-    coachMutation: CoachMutationService;
+    coachMutationService: CoachMutationService;
     constructor() {
-        this.coachMutation = new CoachMutationService();
+        this.coachMutationService = new CoachMutationService();
     }
 
     @Mutation(() => String, { description: "This is something" })
     async createCoach(@Args() input: CreateCoachInput): Promise<string> {
-        return await this.coachMutation.createCoach(input);
+        return await this.coachMutationService.createCoach(input);
     }
 
     @Mutation(() => String, { description: "This is something" })
@@ -19,6 +19,15 @@ export class CoachMutationResolver {
         @Arg("id") id: string,
         @Arg("thumbnail") thumbnail: string
     ): Promise<string> {
-        return await this.coachMutation.updateCoach(id, thumbnail);
+        return await this.coachMutationService.updateCoach(id, thumbnail);
+    }
+
+    @Mutation(() => String)
+    async addFavorite(
+        @Arg("playerID") playerID: string,
+        @Arg("coachID") coachID: string
+    ): Promise<string> {
+        await this.coachMutationService.addFavorite(coachID, playerID);
+        return playerID;
     }
 }

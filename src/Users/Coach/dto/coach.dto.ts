@@ -1,33 +1,12 @@
-import {
-    Personal,
-    CoachSportInfo,
-    CoachSchoolInfo,
-    Address
-} from "./types/index";
-import { ObjectType, Field } from "type-graphql";
+import { CoachSportInfo, CoachSchoolInfo } from "./types/index";
+import { ObjectType, Field, ArgsType } from "type-graphql";
+import UserDto from "../../User/dto/User.dto";
 
 @ObjectType()
-export default class CoachDto {
-    @Field()
-    id: string;
-
-    @Field()
-    email: string;
-
-    @Field()
-    thumbnail: string;
-
-    @Field()
-    user_type: string;
-
+@ArgsType()
+export default class CoachDto extends UserDto {
     @Field(() => [String])
     teams: string[];
-
-    @Field()
-    banner: string;
-
-    @Field(() => Personal)
-    personal: Personal;
 
     @Field(() => CoachSportInfo)
     sport_info: CoachSportInfo;
@@ -37,7 +16,4 @@ export default class CoachDto {
 
     @Field(() => CoachSchoolInfo)
     school_info: CoachSchoolInfo;
-
-    @Field(() => Address)
-    address: Address;
 }

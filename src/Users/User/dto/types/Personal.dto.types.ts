@@ -10,13 +10,13 @@ export class Personal {
     @Field()
     last_name: string;
 
-    @Field()
+    @Field({ nullable: true })
     dob: string;
 
-    @Field()
+    @Field({ nullable: true })
     phone: string;
 
-    @Field()
-    @IsIn(["male", "female", "other"])
+    @Field({ nullable: true })
+    @IsIn(["male", "female", "other"], { message: "Error" })
     gender: string;
 }

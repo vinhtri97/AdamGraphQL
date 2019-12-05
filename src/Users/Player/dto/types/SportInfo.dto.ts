@@ -6,21 +6,21 @@ export class SportInfo {
     @Field()
     position: string;
 
-    @Field()
+    @Field({ nullable: true })
     secondary_position: string;
 
-    @Field()
+    @Field({ nullable: true })
     throwing: string;
 
-    @Field()
+    @Field({ nullable: true })
     batting: string;
 
     @Field()
     sport: string;
 
-    @Field()
+    @Field({ nullable: true })
     committed: string;
 
-    @Field()
+    @Field({ nullable: true })
     committed_date: string;
 }

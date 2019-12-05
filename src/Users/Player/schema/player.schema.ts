@@ -49,7 +49,7 @@ const playerSchema = new Schema({
         committed: { type: String },
         committed_date: { type: String }
     },
-    favorites: { type: Array },
+    favorites: [{ type: mongoose.Types.ObjectId }],
     school_info: {
         grad_year: { type: String },
         school_district: { type: String },
