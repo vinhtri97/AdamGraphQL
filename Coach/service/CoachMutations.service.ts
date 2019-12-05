@@ -1,7 +1,7 @@
 import Coach from "../schema/coach.schema";
 import CreateCoachInput from "../inputs/createCoach.input";
 
-export default class CoachMutations {
+export class CoachMutationService {
     async createCoach(input: CreateCoachInput): Promise<string> {
         await Coach.create(input);
         return input.id;

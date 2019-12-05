@@ -19,7 +19,7 @@ export default class CreateCoachInput {
     @Field({ nullable: true })
     thumbnail: string;
 
-    @Field()
+    @Field({ nullable: true })
     user_type: string;
 
     @Field(() => Personal)

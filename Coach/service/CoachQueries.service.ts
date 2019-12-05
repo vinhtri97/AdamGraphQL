@@ -1,7 +1,7 @@
 import Coach from "../schema/coach.schema";
 import CoachDto from "../dto/coach.dto";
 
-export default class CoachQueries {
+export class CoachQueryService {
     async getCoaches(): Promise<Array<CoachDto>> {
         return await Coach.find({}).lean();
     }

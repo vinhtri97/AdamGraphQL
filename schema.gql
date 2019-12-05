@@ -137,7 +137,7 @@ type Mutation {
   patchThumbnail(user_type: String!, thumbnail: String!, id: String!): String!
 
   # This is something
-  createCoach(id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, sport_info: CoachSportInfoInput!, school_info: CoachSchoolInfoInput!, address: AddressInput!): String!
+  createCoach(id: String!, email: String!, thumbnail: String, user_type: String, personal: PersonalInput!, sport_info: CoachSportInfoInput!, school_info: CoachSchoolInfoInput!, address: AddressInput!): String!
 
   # This is something
   updateCoach(thumbnail: String!, id: String!): String!

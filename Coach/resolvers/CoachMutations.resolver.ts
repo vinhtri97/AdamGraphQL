@@ -1,12 +1,12 @@
 import { Resolver, Mutation, Args, Arg } from "type-graphql";
-import CoachMutations from "../service/CoachMutations.service";
+import { CoachMutationService } from "../service/index";
 import CreateCoachInput from "../inputs/createCoach.input";
 
 @Resolver()
 export class CoachMutationResolver {
-    coachMutation: CoachMutations;
+    coachMutation: CoachMutationService;
     constructor() {
-        this.coachMutation = new CoachMutations();
+        this.coachMutation = new CoachMutationService();
     }
 
     @Mutation(() => String, { description: "This is something" })

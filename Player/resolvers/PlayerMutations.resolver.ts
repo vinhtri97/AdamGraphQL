@@ -1,14 +1,14 @@
-import { Resolver, Mutation, Args, Arg, Query } from "type-graphql";
+/* eslint-disable @typescript-eslint/camelcase */
+import { Resolver, Mutation, Args, Arg } from "type-graphql";
 import CreatePlayerInput from "../inputs/createPlayer.input";
 import Player from "../schema/player.schema";
-import PlayerDto from "../dto/player.dto";
 import Coach from "../../Coach/schema/coach.schema";
-import PlayerService from "../service/Player.service";
+import { PlayerMutationService } from "./../service/PlayerMutations.service";
 @Resolver()
-export default class PlayerResolver {
-    playerService: PlayerService;
+export class PlayerMutationResolver {
+    playerMutations: PlayerMutationService;
     constructor() {
-        this.playerService = new PlayerService();
+        this.playerMutations = new PlayerMutationService();
     }
 
     @Mutation(() => String, { description: "This is somthing" })
@@ -28,15 +28,5 @@ export default class PlayerResolver {
         if (user_type == "Coach")
             await Coach.findByIdAndUpdate(id, { $set: { thumbnail } });
         return thumbnail;
-    }
-
-    @Query(() => [PlayerDto])
-    async getPlayers(): Promise<Array<PlayerDto>> {
-        return await this.playerService.getPlayers();
-    }
-
-    @Query(() => PlayerDto)
-    async getPlayerByID(@Arg("id") id: string): Promise<PlayerDto> {
-        return await Player.findById(id).lean();
     }
 }

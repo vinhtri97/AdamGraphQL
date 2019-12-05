@@ -1,3 +1,2 @@
-import CreatePlayerResolver from "./createPlayer.resolver";
-
-export { CreatePlayerResolver };
+export { PlayerMutationResolver } from "./PlayerMutations.resolver";
+export { PlayerQueryResolver } from "./PlayerQueries.resolver";

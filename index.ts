@@ -4,7 +4,10 @@ import * as Express from "express";
 import { buildSchema, Resolver, Query } from "type-graphql";
 import * as mongoose from "mongoose";
 import * as path from "path";
-import { CreatePlayerResolver } from "./Player/resolvers/index";
+import {
+    PlayerMutationResolver,
+    PlayerQueryResolver
+} from "./Player/resolvers/index";
 import {
     CoachMutationResolver,
     CoachQueryResolver
@@ -29,7 +32,8 @@ const main = async () => {
     const schema = await buildSchema({
         resolvers: [
             HelloResolver,
-            CreatePlayerResolver,
+            PlayerQueryResolver,
+            PlayerMutationResolver,
             CoachMutationResolver,
             CoachQueryResolver
         ],

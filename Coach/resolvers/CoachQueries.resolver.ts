@@ -1,12 +1,12 @@
 import { Resolver, Arg, Query } from "type-graphql";
-import CoachQueries from "../service/CoachQueries.service";
+import { CoachQueryService } from "../service/index";
 import CoachDto from "../dto/coach.dto";
 
 @Resolver()
 export class CoachQueryResolver {
-    coachQuery: CoachQueries;
+    coachQuery: CoachQueryService;
     constructor() {
-        this.coachQuery = new CoachQueries();
+        this.coachQuery = new CoachQueryService();
     }
 
     @Query(() => [CoachDto])
