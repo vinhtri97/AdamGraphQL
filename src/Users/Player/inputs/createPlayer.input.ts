@@ -1,13 +1,9 @@
 import { SportInfo, SchoolInfo } from "../dto/types/index";
 import { ArgsType, Field } from "type-graphql";
 import CreateUserInput from "../../User/inputs/createUser.input";
-import { IsIn } from "class-validator";
-@ArgsType()
-export default class CreatePlayerInput extends CreateUserInput {
-    @Field({ nullable: true })
-    @IsIn(["Player"])
-    user_type: string;
 
+@ArgsType()
+export class CreatePlayerInput extends CreateUserInput {
     @Field(() => SportInfo)
     sport_info: SportInfo;
 

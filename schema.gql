@@ -64,11 +64,11 @@ type BMI {
 }
 
 type CoachDto {
-  id: String!
+  firebase_id: String!
   email: String!
   thumbnail: String!
   user_type: String!
-  banner: String!
+  banner: String
   tokens: [String!]!
   personal: Personal!
   address: Address
@@ -84,18 +84,7 @@ type CoachSchoolInfo {
   school_type: String!
 }
 
-input CoachSchoolInfoInput {
-  school_district: String!
-  school: String!
-  school_type: String!
-}
-
 type CoachSportInfo {
-  sport: String!
-  coach_type: String!
-}
-
-input CoachSportInfoInput {
   sport: String!
   coach_type: String!
 }
@@ -134,15 +123,35 @@ type Movement {
 
 type Mutation {
   # This is somthing
-  createPlayer(id: String!, email: String!, thumbnail: String!, user_type: String, personal: PersonalInput!, address: AddressInput, sport_info: SportInfoInput!, school_info: SchoolInfoInput): String!
-  patchThumbnail(user_type: String!, thumbnail: String!, id: String!): String!
+  createPlayer(firebase_id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, address: AddressInput, sport_info: SportInfoInput!, school_info: SchoolInfoInput): String!
+  patchPlayer(id: String!, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, user_type: String, sport_info: PatchSportInfoInput, school_info: SchoolInfoInput): Boolean
 
   # This is something
-  createCoach(id: String!, email: String!, thumbnail: String!, user_type: String!, personal: PersonalInput!, address: AddressInput, sport_info: CoachSportInfoInput!, school_info: CoachSchoolInfoInput!): String!
+  createCoach(firebase_id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, address: AddressInput, sport: String!, coach_type: String!, school_district: String, school: String, school_type: String): String!
 
   # This is something
   updateCoach(thumbnail: String!, id: String!): String!
   addFavorite(coachID: String!, playerID: String!): String!
+}
+
+type PatchSportInfo {
+  position: String
+  secondary_position: String
+  throwing: String
+  batting: String
+  sport: String
+  committed: String
+  committed_date: String
+}
+
+input PatchSportInfoInput {
+  position: String
+  secondary_position: String
+  throwing: String
+  batting: String
+  sport: String
+  committed: String
+  committed_date: String
 }
 
 type Personal {
@@ -168,11 +177,11 @@ type Physical {
 }
 
 type PlayerDto {
-  id: String!
+  firebase_id: String!
   email: String!
   thumbnail: String!
   user_type: String!
-  banner: String!
+  banner: String
   tokens: [String!]!
   personal: Personal!
   address: Address
@@ -310,11 +319,11 @@ type Throw {
 }
 
 type UserDto {
-  id: String!
+  firebase_id: String!
   email: String!
   thumbnail: String!
   user_type: String!
-  banner: String!
+  banner: String
   tokens: [String!]!
   personal: Personal!
   address: Address

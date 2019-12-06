@@ -1,7 +1,8 @@
-import { Resolver, Mutation, Args, Arg } from "type-graphql";
+import { Resolver, Mutation, Arg, Args } from "type-graphql";
 import { CoachMutationService } from "../service/index";
-import CreateCoachInput from "../inputs/createCoach.input";
-
+// import CreateCoachInput from "../inputs/CreateCoach.input";
+import Coach from "../schema/coach.schema";
+import CreateCoachInput from "./../inputs/CreateCoach.input";
 @Resolver()
 export class CoachMutationResolver {
     coachMutationService: CoachMutationService;
@@ -9,9 +10,15 @@ export class CoachMutationResolver {
         this.coachMutationService = new CoachMutationService();
     }
 
+    // @Mutation(() => String, { description: "This is something" })
+    // async createCoach(@Args() input: CreateCoachInput): Promise<string> {
+    //     return await this.coachMutationService.createCoach(input);
+    // }
+
     @Mutation(() => String, { description: "This is something" })
     async createCoach(@Args() input: CreateCoachInput): Promise<string> {
-        return await this.coachMutationService.createCoach(input);
+        const coach = await Coach.create(input);
+        return coach._id;
     }
 
     @Mutation(() => String, { description: "This is something" })

@@ -18,9 +18,6 @@ export default class PlayerDto extends UserDto {
     @Field(() => AcceptedOrPending)
     teams: AcceptedOrPending;
 
-    @Field()
-    banner: string;
-
     @Field(() => [String])
     likes: string[];
 

@@ -4,12 +4,12 @@ import { IsIn } from "class-validator";
 @ArgsType()
 export default class CreateUserInput {
     @Field()
-    id: string;
+    firebase_id: string;
 
     @Field()
     email: string;
 
-    @Field()
+    @Field({ nullable: true })
     thumbnail: string;
 
     @Field()

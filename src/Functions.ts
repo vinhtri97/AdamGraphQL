@@ -3,6 +3,18 @@
 // const User = require("./models/user/user");
 
 import * as mongoose from "mongoose";
+
+export const extendSchema = (
+    Schema: mongoose.Schema,
+    definition: any,
+    options?: any
+): mongoose.Schema => {
+    return new mongoose.Schema(
+        Object.assign({}, Schema.obj, definition),
+        options
+    );
+};
+
 const {
     Types: { ObjectId }
 } = mongoose;
@@ -59,12 +71,38 @@ export const addBasicLink = async (
     });
 };
 
-// async addLinkBasicString(collection, findID, linkID, array) {
-//     return await collection
-//         .findOneAndUpdate(
-//             { _id: findID },
-//             { $addToSet: { [`${array}`]: linkID } },
-//             { useFindAndModify: false, new: true }
-//         )
-//         .exec();
-// }
+/**
+ * @description This function will accept an invitation
+ * @param collection
+ * @param findID
+ * @param linkID
+ * @param arrayName
+ */
+export const acceptInvitation = async (
+    collection: mongoose.Model<any>,
+    findID: string,
+    linkID: string,
+    arrayName: string
+): Promise<boolean> => {
+    const foundCollection = await collection
+        .findByIdAndUpdate(
+            { findID, [`${arrayName}.id`]: linkID },
+            { $set: { [`${arrayName}.$.accepted`]: true } }
+        )
+        .limit(1);
+    return foundCollection ? true : false;
+};
+
+export const sendInvitation = async (
+    collection: mongoose.Model<any>,
+    findID: string,
+    linkID: string,
+    arrayName: string
+): Promise<boolean> => {
+    const foundCollection = await collection
+        .findByIdAndUpdate(findID, {
+            $addToSet: { [`${arrayName}`]: { id: linkID, accepted: false } }
+        })
+        .limit(1);
+    return foundCollection ? true : false;
+};

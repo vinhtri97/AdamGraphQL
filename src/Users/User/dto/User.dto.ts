@@ -4,7 +4,7 @@ import { Address, Personal } from "./types/index";
 @ObjectType()
 export default class UserDto {
     @Field()
-    id: string;
+    firebase_id: string;
 
     @Field()
     email: string;
@@ -15,7 +15,7 @@ export default class UserDto {
     @Field()
     user_type: string;
 
-    @Field()
+    @Field({ nullable: true })
     banner: string;
 
     @Field(() => [String])

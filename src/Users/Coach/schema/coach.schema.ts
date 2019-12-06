@@ -1,35 +1,17 @@
 import * as mongoose from "mongoose";
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
+// import { extendSchema } from "../../../Functions";
+import userSchema from "../../User/schema/User.schema";
 
-const coachSchema = new Schema({
-    id: { type: String },
-    email: { type: String },
-    thumbnail: {
-        type: String,
-        default: "https://playerwatchtest.s3.amazonaws.com/PlayerWatch/user.png"
-    },
-    sport_info: {
-        sport: { type: String },
-        coach_type: { type: String }
-    },
-    user_type: { type: String, default: "Coach" },
-    banner: { type: String },
-    personal: {
-        first_name: { type: String },
-        last_name: { type: String },
-        phone: { type: String }
-    },
+const coachSchema = new mongoose.Schema({
+    ...userSchema,
     teams: [{ type: mongoose.Types.ObjectId }],
     favorites: [{ type: mongoose.Types.ObjectId }],
-    address: {
-        state: { type: String },
-        zip: { type: Number }
-    },
-    school_info: {
-        school_district: { type: String },
-        school: { type: String },
-        school_type: { type: String }
-    }
+    sport: { type: String },
+    coach_type: { type: String },
+    school_district: { type: String },
+    school: { type: String },
+    school_type: { type: String }
 });
 
 export default mongoose.model("Coach", coachSchema);

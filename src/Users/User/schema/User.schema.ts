@@ -1,8 +1,5 @@
-import * as mongoose from "mongoose";
-
-//User Schema
-const userSchema = new mongoose.Schema({
-    id: { type: String },
+export default {
+    firebase_id: { type: String },
     thumbnail: { type: String },
     user_type: {
         type: String,
@@ -24,5 +21,4 @@ const userSchema = new mongoose.Schema({
     email: { type: String },
     tokens: [{ type: String }],
     stripeTokenCustomerId: String
-});
-export default mongoose.model("User", userSchema);
+};
