@@ -124,7 +124,7 @@ type Movement {
 type Mutation {
   # This is somthing
   createPlayer(firebase_id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, address: AddressInput, sport_info: SportInfoInput!, school_info: SchoolInfoInput): String!
-  patchPlayer(id: String!, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, user_type: String, sport_info: PatchSportInfoInput, school_info: SchoolInfoInput): Boolean
+  updatePlayer(id: String!, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, user_type: String, sport_info: PatchSportInfoInput, school_info: SchoolInfoInput): Boolean
 
   # This is something
   createCoach(firebase_id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, address: AddressInput, sport: String!, coach_type: String!, school_district: String, school: String, school_type: String): String!

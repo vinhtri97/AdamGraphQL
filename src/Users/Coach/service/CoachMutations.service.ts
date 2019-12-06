@@ -4,8 +4,8 @@ import CreateCoachInput from "../inputs/CreateCoach.input";
 import { addBasicLink } from "../../../Functions";
 export class CoachMutationService {
     async createCoach(input: CreateCoachInput): Promise<string> {
-        await Coach.create(input);
-        return input.id;
+        const coach = await Coach.create(input);
+        return coach._id;
     }
     // async createCoach()
 

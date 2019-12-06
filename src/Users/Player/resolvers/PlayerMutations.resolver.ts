@@ -19,9 +19,9 @@ export class PlayerMutationResolver {
     }
 
     @Mutation(() => Boolean, { nullable: true })
-    async patchPlayer(
+    async updatePlayer(
         @Args() input: PatchPlayerInput
     ): Promise<boolean | Error> {
-        return await this.playerMutationService.patchPlayer(input);
+        return await this.playerMutationService.updatePlayer(input);
     }
 }

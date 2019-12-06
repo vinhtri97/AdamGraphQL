@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // const Player = require("./models/player/players");
 // const User = require("./models/user/user");
+import { PatchPlayerInput } from "./Users/Player/inputs/index";
 
 import * as mongoose from "mongoose";
 
@@ -60,6 +61,41 @@ export const getObjects = async (
         ]);
 */
 
+export const patchDocument = async (
+    collection: mongoose.Model<any>,
+    args: PatchPlayerInput
+): Promise<boolean | Error> => {
+    const inputWithoutID = { ...args };
+    delete inputWithoutID.id;
+    try {
+        // await Player.findByIdAndUpdate(input.id, { $set: inputWithoutID });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const foundDoc: any = await collection.findById(args.id).limit(1);
+        // For each entry...
+        // thumbnail, email, personal...
+        if (foundDoc) {
+            Object.entries(inputWithoutID).forEach(entry => {
+                const value = entry[1];
+                const key = entry[0];
+                // This means that there is nesting! Example: (personal { first_name })
+                if (typeof value === "object" && value !== null) {
+                    Object.entries(value).forEach(subEntry => {
+                        const subValue = subEntry[1];
+                        const subKey = subEntry[0];
+                        foundDoc[key][subKey] = subValue;
+                    });
+                } else {
+                    foundDoc[key] = value;
+                }
+            });
+            foundDoc.save();
+            return true;
+        } else return new Error("Player not found.");
+    } catch (err) {
+        if (err.kind === "ObjectId") return new Error("Invalid ObjectID.");
+        else return err;
+    }
+};
 export const addBasicLink = async (
     collection: mongoose.Model<any>,
     findID: string,
