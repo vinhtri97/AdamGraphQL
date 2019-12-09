@@ -1,11 +1,12 @@
 import * as mongoose from "mongoose";
 // const Schema = mongoose.Schema;
 // import { extendSchema } from "../../../Functions";
-import userSchema from "../../User/schema/User.schema";
+import UserSchema from "../../Generics/schema/User.schema";
 
 const coachSchema = new mongoose.Schema({
-    ...userSchema,
+    ...UserSchema,
     teams: [{ type: mongoose.Types.ObjectId }],
+    user_type: { type: String, default: "Coach" },
     favorites: [{ type: mongoose.Types.ObjectId }],
     sport: { type: String },
     coach_type: { type: String },

@@ -1,27 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// const Player = require("./models/player/players");
-// const User = require("./models/user/user");
-import { PatchPlayerInput } from "./Users/Player/inputs/index";
-
 import * as mongoose from "mongoose";
-
-export const extendSchema = (
-    Schema: mongoose.Schema,
-    definition: any,
-    options?: any
-): mongoose.Schema => {
-    return new mongoose.Schema(
-        Object.assign({}, Schema.obj, definition),
-        options
-    );
-};
-
-const {
-    Types: { ObjectId }
-} = mongoose;
-
-// import PlayerDto from "./Users/Player/dto/player.dto";
-// import CoachDto from "./Users/Coach/dto/coach.dto";
 
 export const getObjects = async (
     collection: mongoose.Model<any>,
@@ -30,7 +8,7 @@ export const getObjects = async (
     arrayName: string
 ): Promise<Array<any>> => {
     const array = await collection.aggregate([
-        { $match: { _id: ObjectId(userID) } },
+        { $match: { _id: mongoose.Types.ObjectId(userID) } },
         { $limit: 1 },
         {
             $lookup: {
@@ -63,7 +41,7 @@ export const getObjects = async (
 
 export const patchDocument = async (
     collection: mongoose.Model<any>,
-    args: PatchPlayerInput
+    args: any
 ): Promise<boolean | Error> => {
     const inputWithoutID = { ...args };
     delete inputWithoutID.id;
@@ -96,7 +74,7 @@ export const patchDocument = async (
         else return err;
     }
 };
-export const addBasicLink = async (
+export const addLink = async (
     collection: mongoose.Model<any>,
     findID: string,
     linkID: string,
@@ -107,38 +85,38 @@ export const addBasicLink = async (
     });
 };
 
-/**
- * @description This function will accept an invitation
- * @param collection
- * @param findID
- * @param linkID
- * @param arrayName
- */
-export const acceptInvitation = async (
-    collection: mongoose.Model<any>,
-    findID: string,
-    linkID: string,
-    arrayName: string
-): Promise<boolean> => {
-    const foundCollection = await collection
-        .findByIdAndUpdate(
-            { findID, [`${arrayName}.id`]: linkID },
-            { $set: { [`${arrayName}.$.accepted`]: true } }
-        )
-        .limit(1);
-    return foundCollection ? true : false;
-};
+// /**
+//  * @description This function will accept an invitation
+//  * @param collection
+//  * @param findID
+//  * @param linkID
+//  * @param arrayName
+//  */
+// export const acceptInvitation = async (
+//     collection: mongoose.Model<any>,
+//     findID: string,
+//     linkID: string,
+//     arrayName: string
+// ): Promise<boolean> => {
+//     const foundCollection = await collection
+//         .findByIdAndUpdate(
+//             { findID, [`${arrayName}.id`]: linkID },
+//             { $set: { [`${arrayName}.$.accepted`]: true } }
+//         )
+//         .limit(1);
+//     return foundCollection ? true : false;
+// };
 
-export const sendInvitation = async (
-    collection: mongoose.Model<any>,
-    findID: string,
-    linkID: string,
-    arrayName: string
-): Promise<boolean> => {
-    const foundCollection = await collection
-        .findByIdAndUpdate(findID, {
-            $addToSet: { [`${arrayName}`]: { id: linkID, accepted: false } }
-        })
-        .limit(1);
-    return foundCollection ? true : false;
-};
+// export const sendInvitation = async (
+//     collection: mongoose.Model<any>,
+//     findID: string,
+//     linkID: string,
+//     arrayName: string
+// ): Promise<boolean> => {
+//     const foundCollection = await collection
+//         .findByIdAndUpdate(findID, {
+//             $addToSet: { [`${arrayName}`]: { id: linkID, accepted: false } }
+//         })
+//         .limit(1);
+//     return foundCollection ? true : false;
+// };

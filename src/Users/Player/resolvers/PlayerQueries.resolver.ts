@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 // import * as mongoose from "mongoose";
 import { Arg, Query, Resolver } from "type-graphql";
-import CoachDto from "../../Coach/dto/coach.dto";
-import PlayerDto from "../dto/player.dto";
-import Player from "../schema/player.schema";
-import { PlayerQueryService } from "../service/PlayerQueries.service";
+import CoachDto from "../../Coach/dto/Coach.dto";
+import PlayerDto from "../dto/Player.dto";
+import Player from "../schema/Player.schema";
+import { PlayerQueryService } from "../service/index";
 // import { getObjects } from "./../../../Functions";
 
 // const ObjectId = mongoose.Types.ObjectId;
@@ -29,6 +29,6 @@ export class PlayerQueryResolver {
     async getFavoritesForPlayer(
         @Arg("playerID") playerID: string
     ): Promise<Array<CoachDto>> {
-        return await this.playerQueryService.getFavorites(playerID);
+        return await this.playerQueryService.getFavoritesForPlayer(playerID);
     }
 }

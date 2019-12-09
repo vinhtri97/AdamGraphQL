@@ -1,6 +1,6 @@
 import Coach from "../schema/coach.schema";
-import CoachDto from "../dto/coach.dto";
-import PlayerDto from "../../Player/dto/player.dto";
+import CoachDto from "../dto/Coach.dto";
+import PlayerDto from "../../Player/dto/Player.dto";
 import { getObjects } from "../../../Functions";
 export class CoachQueryService {
     async getCoaches(): Promise<Array<CoachDto>> {

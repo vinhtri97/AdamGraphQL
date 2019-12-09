@@ -1,7 +1,7 @@
 import Coach from "../schema/coach.schema";
-import Player from "../../Player/schema/player.schema";
-import CreateCoachInput from "../inputs/CreateCoach.input";
-import { addBasicLink } from "../../../Functions";
+import Player from "../../Player/schema/Player.schema";
+import { CreateCoachInput, UpdateCoachInput } from "../dto/classes/index";
+import { addLink, patchDocument } from "../../../Functions";
 export class CoachMutationService {
     async createCoach(input: CreateCoachInput): Promise<string> {
         const coach = await Coach.create(input);
@@ -9,17 +9,14 @@ export class CoachMutationService {
     }
     // async createCoach()
 
-    async updateCoach(id: string, thumbnail: string): Promise<string> {
-        const coach = await Coach.findByIdAndUpdate(id, {
-            $set: { thumbnail }
-        });
-        console.log(coach);
-        return id;
+    async updateCoach(input: UpdateCoachInput): Promise<string> {
+        await patchDocument(Coach, input);
+        return "Test";
     }
 
     async addFavorite(coachID: string, playerID: string): Promise<string> {
-        await addBasicLink(Player, playerID, coachID, "favorites");
-        await addBasicLink(Coach, coachID, playerID, "favorites");
+        await addLink(Player, playerID, coachID, "favorites");
+        await addLink(Coach, coachID, playerID, "favorites");
         return "ok";
     }
 }

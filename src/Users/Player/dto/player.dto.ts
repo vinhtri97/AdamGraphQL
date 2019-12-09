@@ -1,34 +1,39 @@
 import {
     PowerScore,
-    AcceptedOrPending,
-    SportInfo,
-    SchoolInfo,
+    PlayerSportInfo,
+    PlayerSchoolInfo,
     Statistics
-} from "./types/index";
+} from "./classes/types/index";
 import { ObjectType, Field } from "type-graphql";
-import UserDto from "../../User/dto/User.dto";
+import UserDto from "../../Generics/dto/User.dto";
 @ObjectType()
 export default class PlayerDto extends UserDto {
     @Field(() => [PowerScore])
     power_score: PowerScore[];
 
-    @Field(() => AcceptedOrPending)
-    spectators: AcceptedOrPending;
+    @Field(() => [String])
+    pending_spectators: string[];
 
-    @Field(() => AcceptedOrPending)
-    teams: AcceptedOrPending;
+    @Field(() => [String])
+    accepted_spectators: string[];
+
+    @Field(() => [String])
+    accepted_teams: string[];
+
+    @Field(() => [String])
+    pending_teams: string[];
 
     @Field(() => [String])
     likes: string[];
 
-    @Field(() => SportInfo)
-    sport_info: SportInfo;
+    @Field(() => PlayerSportInfo)
+    sport_info: PlayerSportInfo;
 
     @Field(() => [String])
     favorites: string[];
 
-    @Field(() => SchoolInfo)
-    school_info: SchoolInfo;
+    @Field(() => PlayerSchoolInfo)
+    school_info: PlayerSchoolInfo;
 
     @Field(() => Statistics)
     statistics: Statistics;

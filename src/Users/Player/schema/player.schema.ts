@@ -1,9 +1,10 @@
 import * as mongoose from "mongoose";
 const Schema = mongoose.Schema;
-import userSchema from "../../User/schema/User.schema";
+import UserSchema from "../../Generics/schema/User.schema";
 
 const playerSchema = new Schema({
-    ...userSchema,
+    ...UserSchema,
+    user_type: { type: String, default: "Coach" },
     school_info: {
         grad_year: { type: String },
         school_district: { type: String },

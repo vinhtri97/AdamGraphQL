@@ -9,11 +9,6 @@ type Academics {
   GPA: Float!
 }
 
-type AcceptedOrPending {
-  pending: [String!]!
-  accepted: [String!]!
-}
-
 type Address {
   city: String
   state: String
@@ -73,7 +68,6 @@ type CoachDto {
   personal: Personal!
   address: Address
   teams: [String!]!
-  sport_info: CoachSportInfo!
   favorites: [String!]!
   school_info: CoachSchoolInfo!
 }
@@ -89,6 +83,38 @@ type CoachSportInfo {
   coach_type: String!
 }
 
+input CreateAddressInput {
+  city: String
+  state: String
+  street: String
+  zip: Float
+}
+
+input CreatePersonalInput {
+  first_name: String!
+  last_name: String!
+  dob: String
+  phone: String
+  gender: String
+}
+
+input CreatePlayerSchoolInfo {
+  grad_year: String
+  school_district: String
+  school: String
+  school_type: String
+}
+
+input CreateSportInfo {
+  position: String!
+  secondary_position: String
+  throwing: String
+  batting: String
+  sport: String!
+  committed: String
+  committed_date: String
+}
+
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
@@ -98,10 +124,20 @@ type Dominance {
   leg_dominance: String!
 }
 
+type EntityDto {
+  name: String!
+  description: String!
+}
+
 type Extremity {
   wing_span: Float!
   hand_size: Float!
   shoe_size: Float!
+}
+
+type GetCoachesDto {
+  accepted: [CoachDto!]!
+  pending: [CoachDto!]!
 }
 
 type Jump {
@@ -122,36 +158,17 @@ type Movement {
 }
 
 type Mutation {
-  # This is somthing
-  createPlayer(firebase_id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, address: AddressInput, sport_info: SportInfoInput!, school_info: SchoolInfoInput): String!
-  updatePlayer(id: String!, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, user_type: String, sport_info: PatchSportInfoInput, school_info: SchoolInfoInput): Boolean
+  # This is something
+  createPlayer(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateSportInfo!, school_info: CreatePlayerSchoolInfo): String!
+  updatePlayer(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, sport_info: SportInfoInput, school_info: PlayerSchoolInfoInput): Boolean
 
   # This is something
-  createCoach(firebase_id: String!, email: String!, thumbnail: String, user_type: String!, personal: PersonalInput!, address: AddressInput, sport: String!, coach_type: String!, school_district: String, school: String, school_type: String): String!
+  createCoach(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport: String!, coach_type: String!, school_district: String, school: String, school_type: String): String!
 
   # This is something
-  updateCoach(thumbnail: String!, id: String!): String!
+  updateCoach(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, sport: String, coach_type: String, school_district: String, school: String, school_type: String): String!
   addFavorite(coachID: String!, playerID: String!): String!
-}
-
-type PatchSportInfo {
-  position: String
-  secondary_position: String
-  throwing: String
-  batting: String
-  sport: String
-  committed: String
-  committed_date: String
-}
-
-input PatchSportInfoInput {
-  position: String
-  secondary_position: String
-  throwing: String
-  batting: String
-  sport: String
-  committed: String
-  committed_date: String
+  createTeam(name: String!, description: String): Boolean!
 }
 
 type Personal {
@@ -163,8 +180,8 @@ type Personal {
 }
 
 input PersonalInput {
-  first_name: String!
-  last_name: String!
+  first_name: String
+  last_name: String
   dob: String
   phone: String
   gender: String
@@ -186,13 +203,39 @@ type PlayerDto {
   personal: Personal!
   address: Address
   power_score: [PowerScore!]!
-  spectators: AcceptedOrPending!
-  teams: AcceptedOrPending!
+  pending_spectators: [String!]!
+  accepted_spectators: [String!]!
+  accepted_teams: [String!]!
+  pending_teams: [String!]!
   likes: [String!]!
-  sport_info: SportInfo!
+  sport_info: PlayerSportInfo!
   favorites: [String!]!
-  school_info: SchoolInfo!
+  school_info: PlayerSchoolInfo!
   statistics: Statistics!
+}
+
+type PlayerSchoolInfo {
+  grad_year: String
+  school_district: String
+  school: String
+  school_type: String
+}
+
+input PlayerSchoolInfoInput {
+  grad_year: String
+  school_district: String
+  school: String
+  school_type: String
+}
+
+type PlayerSportInfo {
+  position: String!
+  secondary_position: String
+  throwing: String
+  batting: String
+  sport: String!
+  committed: String
+  committed_date: String
 }
 
 type Power {
@@ -213,20 +256,8 @@ type Query {
   getCoaches: [CoachDto!]!
   getCoachByID(id: String!): CoachDto!
   getFavoritesForCoach(coachID: String!): [PlayerDto!]!
-}
-
-type SchoolInfo {
-  grad_year: String
-  school_district: String
-  school: String
-  school_type: String
-}
-
-input SchoolInfoInput {
-  grad_year: String
-  school_district: String
-  school: String
-  school_type: String
+  getTeams: [TeamDto!]!
+  getTeamByID(id: String!): TeamDto!
 }
 
 type Soccer {
@@ -246,22 +277,12 @@ type Speed {
   ladder_drill: StatsFields!
 }
 
-type SportInfo {
-  position: String!
-  secondary_position: String
-  throwing: String
-  batting: String
-  sport: String!
-  committed: String
-  committed_date: String
-}
-
 input SportInfoInput {
-  position: String!
+  position: String
   secondary_position: String
   throwing: String
   batting: String
-  sport: String!
+  sport: String
   committed: String
   committed_date: String
 }
@@ -301,6 +322,18 @@ type Strength {
   grip: StatsFields!
   sit_and_reach: StatsFields!
   stork_balance: StatsFields!
+}
+
+type TeamDto {
+  name: String!
+  description: String!
+  coaches: [String!]!
+  chats: String!
+  fullPlayerChat: String!
+  fullPlayerAndParentChat: String!
+  tournaments: [String!]!
+  accepted_players: [String!]!
+  pending_players: [String!]!
 }
 
 type Tennis {

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
 import { Resolver, Mutation, Args } from "type-graphql";
-import { CreatePlayerInput, PatchPlayerInput } from "../inputs/index";
-import Player from "../schema/player.schema";
-import { PlayerMutationService } from "../service/PlayerMutations.service";
+import { CreatePlayerInput, UpdatePlayerInput } from "../dto/classes/index";
+import Player from "../schema/Player.schema";
+import { PlayerMutationService } from "../service/index";
 
 @Resolver()
 export class PlayerMutationResolver {
@@ -12,7 +12,7 @@ export class PlayerMutationResolver {
         this.playerMutationService = new PlayerMutationService();
     }
 
-    @Mutation(() => String, { description: "This is somthing" })
+    @Mutation(() => String, { description: "This is something" })
     async createPlayer(@Args() input: CreatePlayerInput): Promise<string> {
         const player = await Player.create(input);
         return player.id;
@@ -20,7 +20,7 @@ export class PlayerMutationResolver {
 
     @Mutation(() => Boolean, { nullable: true })
     async updatePlayer(
-        @Args() input: PatchPlayerInput
+        @Args() input: UpdatePlayerInput
     ): Promise<boolean | Error> {
         return await this.playerMutationService.updatePlayer(input);
     }

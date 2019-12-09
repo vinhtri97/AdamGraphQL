@@ -1,9 +1,9 @@
-import Player from "../schema/player.schema";
+import Player from "../schema/Player.schema";
 // import PlayerDto from "../dto/player.dto";
 import { patchDocument } from "../../../Functions";
-import { PatchPlayerInput } from "../inputs/index";
+import { UpdatePlayerInput } from "../dto/classes/UpdatePlayerInput";
 export class PlayerMutationService {
-    async updatePlayer(input: PatchPlayerInput): Promise<boolean | Error> {
+    async updatePlayer(input: UpdatePlayerInput): Promise<boolean | Error> {
         return await patchDocument(Player, input);
     }
 }
