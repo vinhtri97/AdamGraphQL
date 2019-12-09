@@ -39,7 +39,7 @@ export const getObjects = async (
         ]);
 */
 
-export const patchDocument = async (
+export const updateDocument = async (
     collection: mongoose.Model<any>,
     args: any
 ): Promise<boolean | Error> => {

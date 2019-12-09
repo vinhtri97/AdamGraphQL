@@ -16,6 +16,10 @@ import {
     TeamQueryResolver,
     TeamMutationResolver
 } from "./src/Non-Users/Teams/resolvers/index";
+import {
+    TournamentQueryResolver,
+    TournamentMutationResolver
+} from "./src/Non-Users/Tournaments/resolvers/index";
 require("dotenv").config();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -32,7 +36,9 @@ const main = async () => {
             CoachMutationResolver,
             CoachQueryResolver,
             TeamQueryResolver,
-            TeamMutationResolver
+            TeamMutationResolver,
+            TournamentQueryResolver,
+            TournamentMutationResolver
         ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")

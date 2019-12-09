@@ -1,10 +1,10 @@
 import { ArgsType, Field } from "type-graphql";
-import { CreateEntityInput } from "./../../../Generics/dto/classes/index";
+import { UpdateEntityInput } from "./../../../Generics/dto/classes/index";
 
 @ArgsType()
-export class CreateTeamInput extends CreateEntityInput {
-    @Field(() => String)
-    coaches: string[];
+export class UpdateTeamInput extends UpdateEntityInput {
+    @Field(() => String, { nullable: true })
+    coaches?: string[];
 
     @Field(() => String, { nullable: true })
     chats?: string;
