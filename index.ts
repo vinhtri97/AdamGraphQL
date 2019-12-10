@@ -29,6 +29,11 @@ import {
     VideoQueryResolver,
     VideoMutationResolver
 } from "./src/Non-Users/Videos/resolvers/index";
+
+import {
+    BugQueryResolver,
+    BugMutationResolver
+} from "./src/Non-Users/Bugs/resolvers/index";
 require("dotenv").config();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -51,7 +56,9 @@ const main = async () => {
             ChatMutationResolver,
             ChatQueryResolver,
             VideoQueryResolver,
-            VideoMutationResolver
+            VideoMutationResolver,
+            BugQueryResolver,
+            BugMutationResolver
         ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")

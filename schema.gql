@@ -58,6 +58,17 @@ type BMI {
   weight: String!
 }
 
+type BugDto {
+  name: String!
+  description: String!
+  message: String!
+  date: String!
+  category: String!
+  email: String!
+  first_name: String!
+  last_name: String!
+}
+
 type ChatDto {
   name: String!
   description: String!
@@ -209,6 +220,8 @@ type Mutation {
   updateChat(id: String!, name: String, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
   createVideo(name: String!, description: String, url: String!, type: String!, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String!, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: CreateUploadedByInput!): Boolean!
   updateVideo(id: String!, name: String, description: String, url: String, type: String, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: UploadedByInput): Boolean!
+  createBug(name: String!, description: String, message: String!, date: String!, category: String!, email: String!, first_name: String!, last_name: String!): Boolean!
+  updateBug(id: String!, name: String, description: String, message: String, date: String, category: String, email: String, first_name: String, last_name: String): Boolean!
 }
 
 type Personal {
@@ -304,6 +317,8 @@ type Query {
   getChatByID(id: String!): ChatDto!
   getVideos: [VideoDto!]!
   getVideoByID(id: String!): VideoDto!
+  getBugs: [BugDto!]!
+  getBugByID(id: String!): BugDto!
 }
 
 type Soccer {
