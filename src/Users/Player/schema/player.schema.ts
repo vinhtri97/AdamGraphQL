@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 const Schema = mongoose.Schema;
-import UserSchema from "../../Generics/schema/User.schema";
+import UserSchema from "../../Generic/schema/User.schema";
 
 const playerSchema = new Schema({
     ...UserSchema,

@@ -1,6 +1,6 @@
 import { PlayerSportInfo, PlayerSchoolInfo } from "./types/index";
 import { ArgsType, Field } from "type-graphql";
-import { CreateUserInput } from "../../../Generics/dto/classes/index";
+import { CreateUserInput } from "../../../Generic/dto/classes/index";
 
 @ArgsType()
 export class CreatePlayerInput extends CreateUserInput {

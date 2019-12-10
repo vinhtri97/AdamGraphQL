@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 // const Schema = mongoose.Schema;
 // import { extendSchema } from "../../../Functions";
-import UserSchema from "../../Generics/schema/User.schema";
+import UserSchema from "../../Generic/schema/User.schema";
 
 const coachSchema = new mongoose.Schema({
     ...UserSchema,

@@ -59,9 +59,9 @@ type BMI {
 }
 
 type BugDto {
-<<<<<<< Updated upstream
-  name: String!
-  description: String!
+  _id: String!
+  name: String
+  description: String
   message: String!
   date: String!
   category: String!
@@ -71,20 +71,9 @@ type BugDto {
 }
 
 type ChatDto {
-  name: String!
-  description: String!
-=======
   _id: String!
   name: String
   description: String
-  message: String
-}
-
-type ChatDto {
-  _id: String!
-  name: String
-  description: String
->>>>>>> Stashed changes
   isPremade: Boolean!
   players: [ChatUser!]
   coaches: [ChatUser!]
@@ -160,7 +149,12 @@ input CreateAddressInput {
 }
 
 input CreateBugInput {
-  message: String
+  message: String!
+  date: String!
+  category: String!
+  email: String!
+  first_name: String!
+  last_name: String!
 }
 
 input CreateChatInput {
@@ -248,7 +242,6 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type DirectorDto {
-  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!
@@ -268,14 +261,9 @@ type Dominance {
 }
 
 type EntityDto {
-<<<<<<< Updated upstream
-  name: String!
-  description: String!
-=======
   _id: String!
   name: String
   description: String
->>>>>>> Stashed changes
 }
 
 type Extremity {
@@ -465,7 +453,6 @@ input SpectacleObjInput {
 }
 
 type SpectatorDto {
-  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!
@@ -537,14 +524,9 @@ type Strength {
 }
 
 type TeamDto {
-<<<<<<< Updated upstream
-  name: String!
-  description: String!
-=======
   _id: String!
   name: String
   description: String
->>>>>>> Stashed changes
   coaches: [String!]!
   chats: String!
   fullPlayerChat: String!
@@ -570,14 +552,9 @@ type Throw {
 }
 
 type TournamentDto {
-<<<<<<< Updated upstream
-  name: String!
-  description: String!
-=======
   _id: String!
   name: String
   description: String
->>>>>>> Stashed changes
   start_date: String!
   end_date: String!
   age_groups: String!
@@ -649,14 +626,9 @@ type UserDto {
 }
 
 type VideoDto {
-<<<<<<< Updated upstream
-  name: String!
-  description: String!
-=======
   _id: String!
   name: String
   description: String
->>>>>>> Stashed changes
   url: String!
   type: String!
   jersey_color: String

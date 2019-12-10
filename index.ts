@@ -23,25 +23,25 @@ import {
 import {
     TeamQueryResolver,
     TeamMutationResolver
-} from "./src/Non-Users/Teams/resolvers/index";
+} from "./src/Non-Users/Team/resolvers/index";
 import {
     TournamentQueryResolver,
     TournamentMutationResolver
-} from "./src/Non-Users/Tournaments/resolvers/index";
+} from "./src/Non-Users/Tournament/resolvers/index";
 import {
     ChatQueryResolver,
     ChatMutationResolver
-} from "./src/Non-Users/Chats/resolvers/index";
+} from "./src/Non-Users/Chat/resolvers/index";
 
 import {
     VideoQueryResolver,
     VideoMutationResolver
-} from "./src/Non-Users/Videos/resolvers/index";
+} from "./src/Non-Users/Video/resolvers/index";
 
 import {
     BugQueryResolver,
     BugMutationResolver
-} from "./src/Non-Users/Bugs/resolvers/index";
+} from "./src/Non-Users/Bug/resolvers/index";
 require("dotenv").config();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

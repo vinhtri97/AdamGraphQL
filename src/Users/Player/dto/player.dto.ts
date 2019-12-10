@@ -5,7 +5,7 @@ import {
     Statistics
 } from "./classes/types/index";
 import { ObjectType, Field } from "type-graphql";
-import UserDto from "../../Generics/dto/User.dto";
+import UserDto from "../../Generic/dto/User.dto";
 @ObjectType()
 export default class PlayerDto extends UserDto {
     @Field(() => [PowerScore])

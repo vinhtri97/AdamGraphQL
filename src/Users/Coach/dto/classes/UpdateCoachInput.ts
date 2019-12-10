@@ -1,6 +1,6 @@
 import { CoachSportInfoInput, CoachSchoolInfoInput } from "./types/index";
 import { ArgsType, Field } from "type-graphql";
-import { UpdateUserInput } from "../../../Generics/dto/classes/index";
+import { UpdateUserInput } from "../../../Generic/dto/classes/index";
 @ArgsType()
 export class UpdateCoachInput extends UpdateUserInput {
     @Field(() => [String], { nullable: true })
