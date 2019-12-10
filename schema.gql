@@ -58,6 +58,29 @@ type BMI {
   weight: String!
 }
 
+type ChatDto {
+  name: String!
+  description: String!
+  isPremade: Boolean!
+  players: [ChatUser!]
+  coaches: [ChatUser!]
+  spectators: [ChatUser!]
+  directors: [ChatUser!]
+  team_id: String
+}
+
+type ChatUser {
+  id: String!
+  muted: Boolean!
+  muted_type: String
+}
+
+input ChatUserInput {
+  id: String!
+  muted: Boolean!
+  muted_type: String
+}
+
 type CoachDto {
   firebase_id: String!
   email: String!
@@ -113,6 +136,16 @@ input CreateSportInfo {
   sport: String!
   committed: String
   committed_date: String
+}
+
+type CreateUploadedBy {
+  id: String!
+  name: String!
+}
+
+input CreateUploadedByInput {
+  id: String!
+  name: String!
 }
 
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
@@ -172,6 +205,10 @@ type Mutation {
   updateTeam(id: String!, name: String, description: String, coaches: [String!], chats: String, tournaments: [String!], accepted_players: [String!], pending_players: [String!]): Boolean!
   createTournament(name: String!, description: String, start_date: String!, end_date: String!, age_groups: String!, flyer: String, max_teams: Float, pay_at_the_plate: Boolean!, hotels: String, allowed_assistants: Float): Boolean!
   updateTournament(id: String!, name: String, description: String, start_date: String, end_date: String, age_groups: String, flyer: String, max_teams: Float, pay_at_the_plate: Boolean, hotels: String, allowed_assistants: Float): Boolean!
+  createChat(name: String!, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
+  updateChat(id: String!, name: String, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
+  createVideo(name: String!, description: String, url: String!, type: String!, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String!, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: CreateUploadedByInput!): Boolean!
+  updateVideo(id: String!, name: String, description: String, url: String, type: String, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: UploadedByInput): Boolean!
 }
 
 type Personal {
@@ -263,6 +300,10 @@ type Query {
   getTeamByID(id: String!): TeamDto!
   getTournaments: [TournamentDto!]!
   getTournamentByID(id: String!): TournamentDto!
+  getChats: [ChatDto!]!
+  getChatByID(id: String!): ChatDto!
+  getVideos: [VideoDto!]!
+  getVideoByID(id: String!): VideoDto!
 }
 
 type Soccer {
@@ -370,6 +411,11 @@ type TournamentDto {
   parks: [String!]!
 }
 
+input UploadedByInput {
+  id: String!
+  name: String!
+}
+
 type UserDto {
   firebase_id: String!
   email: String!
@@ -379,6 +425,22 @@ type UserDto {
   tokens: [String!]!
   personal: Personal!
   address: Address
+}
+
+type VideoDto {
+  name: String!
+  description: String!
+  url: String!
+  type: String!
+  jersey_color: String
+  jersey_number: String
+  specific_type: String
+  facility: String
+  date: String!
+  teams: [String!]
+  likes: [String!]
+  accepted: Boolean
+  uploaded_by: CreateUploadedBy!
 }
 
 type Volleyball {

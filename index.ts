@@ -20,6 +20,15 @@ import {
     TournamentQueryResolver,
     TournamentMutationResolver
 } from "./src/Non-Users/Tournaments/resolvers/index";
+import {
+    ChatQueryResolver,
+    ChatMutationResolver
+} from "./src/Non-Users/Chats/resolvers/index";
+
+import {
+    VideoQueryResolver,
+    VideoMutationResolver
+} from "./src/Non-Users/Videos/resolvers/index";
 require("dotenv").config();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -38,7 +47,11 @@ const main = async () => {
             TeamQueryResolver,
             TeamMutationResolver,
             TournamentQueryResolver,
-            TournamentMutationResolver
+            TournamentMutationResolver,
+            ChatMutationResolver,
+            ChatQueryResolver,
+            VideoQueryResolver,
+            VideoMutationResolver
         ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")
