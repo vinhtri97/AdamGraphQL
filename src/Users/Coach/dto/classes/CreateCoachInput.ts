@@ -1,20 +1,17 @@
-// import { CoachSportInfo, CoachSchoolInfo } from "../dto/types/index";
+import { CoachSportInfo, CoachSchoolInfo } from "./types/index";
 import { ArgsType, Field } from "type-graphql";
 import { CreateUserInput } from "../../../Generics/dto/classes/index";
 @ArgsType()
 export class CreateCoachInput extends CreateUserInput {
-    @Field()
-    sport: string;
+    @Field(() => [String])
+    teams: string[];
 
-    @Field()
-    coach_type: string;
+    @Field(() => CoachSportInfo)
+    sport_info: CoachSportInfo;
 
-    @Field({ nullable: true })
-    school_district?: string;
+    @Field(() => [String])
+    favorites: string[];
 
-    @Field({ nullable: true })
-    school?: string;
-
-    @Field({ nullable: true })
-    school_type?: string;
+    @Field(() => CoachSchoolInfo)
+    school_info: CoachSchoolInfo;
 }

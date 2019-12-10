@@ -1,4 +1,4 @@
-import { CoachSchoolInfo } from "./classes/types/index";
+import { CoachSchoolInfo, CoachSportInfo } from "./classes/types/index";
 import { ObjectType, Field, ArgsType } from "type-graphql";
 import UserDto from "../../Generics/dto/User.dto";
 
@@ -8,8 +8,8 @@ export default class CoachDto extends UserDto {
     @Field(() => [String])
     teams: string[];
 
-    // @Field(() => CoachSportInfo)
-    // sport_info: CoachSportInfo;
+    @Field(() => CoachSportInfo)
+    sport_info: CoachSportInfo;
 
     @Field(() => [String])
     favorites: string[];

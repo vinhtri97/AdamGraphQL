@@ -9,10 +9,10 @@ import {
     Agility,
     Power
 } from "./Stats/index";
-import { ObjectType, Field, InputType } from "type-graphql";
+import { ObjectType, Field } from "type-graphql";
 
 @ObjectType()
-@InputType("StatisticsInput")
+// @InputType("StatisticsInput")
 export class Statistics {
     @Field(() => [Basketball])
     basketball_stats: Basketball[];

@@ -1,4 +1,4 @@
-import Coach from "../schema/coach.schema";
+import Coach from "../schema/Coach.schema";
 import Player from "../../Player/schema/Player.schema";
 import { CreateCoachInput, UpdateCoachInput } from "../dto/classes/index";
 import { addLink, patchDocument } from "../../../Functions";

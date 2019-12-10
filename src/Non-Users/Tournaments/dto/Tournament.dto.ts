@@ -1,5 +1,9 @@
 import { ObjectType, Field } from "type-graphql";
+<<<<<<< Updated upstream:src/Non-Users/Tournaments/dto/Tournament.dto.ts
 import EntityDto from "../../Generics/dto/Entity.dto";
+=======
+import EntityDto from "../../Generic/dto/Entity.dto";
+>>>>>>> Stashed changes:src/Non-Users/Tournament/dto/Tournament.dto.ts
 
 @ObjectType()
 export default class TournamentDto extends EntityDto {

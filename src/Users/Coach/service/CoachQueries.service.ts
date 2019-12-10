@@ -1,4 +1,4 @@
-import Coach from "../schema/coach.schema";
+import Coach from "../schema/Coach.schema";
 import CoachDto from "../dto/Coach.dto";
 import PlayerDto from "../../Player/dto/Player.dto";
 import { getObjects } from "../../../Functions";

@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Arg, Args } from "type-graphql";
 import { CoachMutationService } from "../service/index";
 // import CreateCoachInput from "../inputs/CreateCoach.input";
-import Coach from "../schema/coach.schema";
+import Coach from "../schema/Coach.schema";
 import { CreateCoachInput, UpdateCoachInput } from "../dto/classes/index";
 @Resolver()
 export class CoachMutationResolver {

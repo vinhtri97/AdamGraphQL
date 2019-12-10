@@ -13,6 +13,14 @@ import {
     CoachQueryResolver
 } from "./src/Users/Coach/resolvers/index";
 import {
+    DirectorMutationResolver,
+    DirectorQueryResolver
+} from "./src/Users/Director/resolvers/index";
+import {
+    SpectatorMutationResolver,
+    SpectatorQueryResolver
+} from "./src/Users/Spectator/resolvers/index";
+import {
     TeamQueryResolver,
     TeamMutationResolver
 } from "./src/Non-Users/Teams/resolvers/index";
@@ -49,6 +57,8 @@ const main = async () => {
             PlayerMutationResolver,
             CoachMutationResolver,
             CoachQueryResolver,
+            DirectorMutationResolver,
+            DirectorQueryResolver,
             TeamQueryResolver,
             TeamMutationResolver,
             TournamentQueryResolver,
@@ -58,7 +68,9 @@ const main = async () => {
             VideoQueryResolver,
             VideoMutationResolver,
             BugQueryResolver,
-            BugMutationResolver
+            BugMutationResolver,
+            SpectatorMutationResolver,
+            SpectatorQueryResolver
         ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")
