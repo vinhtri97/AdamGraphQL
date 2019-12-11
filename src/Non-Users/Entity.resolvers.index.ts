@@ -4,6 +4,10 @@ export {
     ChatQueryResolver
 } from "./Chat/resolvers/index";
 export {
+    FieldMutationResolver,
+    FieldQueryResolver
+} from "./Field/resolvers/index";
+export {
     ParkMutationResolver,
     ParkQueryResolver
 } from "./Park/resolvers/index";

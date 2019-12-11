@@ -21,6 +21,8 @@ import {
     TournamentMutationResolver,
     ChatQueryResolver,
     ChatMutationResolver,
+    FieldMutationResolver,
+    FieldQueryResolver,
     BugQueryResolver,
     BugMutationResolver,
     VideoMutationResolver,
@@ -59,7 +61,9 @@ const main = async () => {
             ParkQueryResolver,
             ParkMutationResolver,
             VideoMutationResolver,
-            VideoQueryResolver
+            VideoQueryResolver,
+            FieldMutationResolver,
+            FieldQueryResolver
         ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")
