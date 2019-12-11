@@ -176,6 +176,13 @@ input CreateCoachSportInfoInput {
   coach_type: String!
 }
 
+input CreateParkInput {
+  fields: [String!]!
+  open_time: String!
+  close_time: String!
+  address: CreateAddressInput!
+}
+
 input CreatePersonalInput {
   first_name: String!
   last_name: String!
@@ -296,10 +303,6 @@ type Movement {
 
 type Mutation {
   """This is something"""
-  createPlayer(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateSportInfo!, school_info: CreatePlayerSchoolInfo): String!
-  updatePlayer(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, sport_info: SportInfoInput, school_info: PlayerSchoolInfoInput): Boolean
-
-  """This is something"""
   createCoach(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, teams: [String!]!, sport_info: CreateCoachSportInfoInput!, favorites: [String!]!, school_info: CreateCoachSchoolInfoInput!): String!
 
   """This is something"""
@@ -313,20 +316,36 @@ type Mutation {
   updateDirector(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, tournaments: [String!], association: String): String!
 
   """This is something"""
+  createPlayer(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateSportInfo!, school_info: CreatePlayerSchoolInfo): String!
+  updatePlayer(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, sport_info: SportInfoInput, school_info: PlayerSchoolInfoInput): Boolean
+
+  """This is something"""
   createSpectator(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput): String!
 
   """This is something"""
   updateSpectator(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput): String!
+  createBug(name: String!, description: String, message: String!, date: String!, category: String!, email: String!, first_name: String!, last_name: String!): Boolean!
+  updateBug(id: String!, name: String, description: String, message: String, date: String, category: String, email: String, first_name: String, last_name: String): Boolean!
+  createChat(name: String!, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
+  updateChat(id: String!, name: String, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
+  createPark(name: String!, description: String, fields: [String!]!, open_time: String!, close_time: String!, address: CreateAddressInput!): Boolean!
+  updatePark(id: String!, name: String, description: String, open_time: String, close_time: String, address: CreateAddressInput): Boolean!
   createTeam(name: String!, description: String, coaches: [String!]!, chats: String, tournaments: [String!], accepted_players: [String!], pending_players: [String!]): Boolean!
   updateTeam(id: String!, name: String, description: String, coaches: [String!], chats: String, tournaments: [String!], accepted_players: [String!], pending_players: [String!]): Boolean!
   createTournament(name: String!, description: String, start_date: String!, end_date: String!, age_groups: String!, flyer: String, max_teams: Float, pay_at_the_plate: Boolean!, hotels: String, allowed_assistants: Float): Boolean!
   updateTournament(id: String!, name: String, description: String, start_date: String, end_date: String, age_groups: String, flyer: String, max_teams: Float, pay_at_the_plate: Boolean, hotels: String, allowed_assistants: Float): Boolean!
-  createChat(name: String!, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
-  updateChat(id: String!, name: String, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
   createVideo(name: String!, description: String, url: String!, type: String!, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String!, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: CreateUploadedByInput!): Boolean!
   updateVideo(id: String!, name: String, description: String, url: String, type: String, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: UploadedByInput): Boolean!
-  createBug(name: String!, description: String, message: String!, date: String!, category: String!, email: String!, first_name: String!, last_name: String!): Boolean!
-  updateBug(id: String!, name: String, description: String, message: String, date: String, category: String, email: String, first_name: String, last_name: String): Boolean!
+}
+
+type ParkDto {
+  _id: String!
+  name: String
+  description: String
+  fields: [String!]!
+  open_time: String!
+  close_time: String!
+  address: Address!
 }
 
 type Personal {
@@ -413,26 +432,28 @@ input PowerScoreInput {
 }
 
 type Query {
-  getPlayers: [PlayerDto!]!
-  getPlayerByID(id: String!): PlayerDto!
-  getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getCoaches: [CoachDto!]!
   getCoachByID(id: String!): CoachDto!
   getFavoritesForCoach(coachID: String!): [PlayerDto!]!
   getDirectors: [DirectorDto!]!
   getDirectorByID(id: String!): DirectorDto!
+  getPlayers: [PlayerDto!]!
+  getPlayerByID(id: String!): PlayerDto!
+  getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getSpectators: [SpectatorDto!]!
   getSpectatorByID(id: String!): SpectatorDto!
+  getBugs: [BugDto!]!
+  getBugByID(id: String!): BugDto!
+  getChats: [ChatDto!]!
+  getChatByID(id: String!): ChatDto!
+  getParks: [ParkDto!]!
+  getParkByID(id: String!): ParkDto!
   getTeams: [TeamDto!]!
   getTeamByID(id: String!): TeamDto!
   getTournaments: [TournamentDto!]!
   getTournamentByID(id: String!): TournamentDto!
-  getChats: [ChatDto!]!
-  getChatByID(id: String!): ChatDto!
   getVideos: [VideoDto!]!
   getVideoByID(id: String!): VideoDto!
-  getBugs: [BugDto!]!
-  getBugByID(id: String!): BugDto!
 }
 
 type Soccer {
@@ -582,6 +603,12 @@ input UpdateChatInput {
   spectators: [ChatUserInput!]
   directors: [ChatUserInput!]
   team_id: String
+}
+
+input UpdateParkInput {
+  open_time: String
+  close_time: String
+  address: CreateAddressInput
 }
 
 input UpdateTournamentInput {

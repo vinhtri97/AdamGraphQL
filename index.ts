@@ -6,42 +6,29 @@ import * as mongoose from "mongoose";
 import * as path from "path";
 import {
     PlayerQueryResolver,
-    PlayerMutationResolver
-} from "./src/Users/Player/resolvers/index";
-import {
+    PlayerMutationResolver,
     CoachMutationResolver,
-    CoachQueryResolver
-} from "./src/Users/Coach/resolvers/index";
-import {
+    CoachQueryResolver,
     DirectorMutationResolver,
-    DirectorQueryResolver
-} from "./src/Users/Director/resolvers/index";
-import {
+    DirectorQueryResolver,
     SpectatorMutationResolver,
     SpectatorQueryResolver
-} from "./src/Users/Spectator/resolvers/index";
+} from "./src/Users/Users.resolvers.index";
 import {
     TeamQueryResolver,
-    TeamMutationResolver
-} from "./src/Non-Users/Team/resolvers/index";
-import {
+    TeamMutationResolver,
     TournamentQueryResolver,
-    TournamentMutationResolver
-} from "./src/Non-Users/Tournament/resolvers/index";
-import {
+    TournamentMutationResolver,
     ChatQueryResolver,
-    ChatMutationResolver
-} from "./src/Non-Users/Chat/resolvers/index";
-
-import {
-    VideoQueryResolver,
-    VideoMutationResolver
-} from "./src/Non-Users/Video/resolvers/index";
-
-import {
+    ChatMutationResolver,
     BugQueryResolver,
-    BugMutationResolver
-} from "./src/Non-Users/Bug/resolvers/index";
+    BugMutationResolver,
+    VideoMutationResolver,
+    VideoQueryResolver,
+    ParkQueryResolver,
+    ParkMutationResolver
+} from "./src/Non-Users/Entity.resolvers.index";
+
 require("dotenv").config();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -65,12 +52,14 @@ const main = async () => {
             TournamentMutationResolver,
             ChatMutationResolver,
             ChatQueryResolver,
-            VideoQueryResolver,
-            VideoMutationResolver,
             BugQueryResolver,
             BugMutationResolver,
             SpectatorMutationResolver,
-            SpectatorQueryResolver
+            SpectatorQueryResolver,
+            ParkQueryResolver,
+            ParkMutationResolver,
+            VideoMutationResolver,
+            VideoQueryResolver
         ],
         // eslint-disable-next-line no-undef
         emitSchemaFile: path.resolve(__dirname, "schema.gql")
