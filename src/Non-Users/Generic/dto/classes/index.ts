@@ -1,2 +1,2 @@
-export { CreateEntityInput } from "./CreateEntityInput";
-export { UpdateEntityInput } from "./UpdateEntityInput";
+export { CreateEntityInput } from "./Entity.CreateInput";
+export { UpdateEntityInput } from "./Entity.UpdateInput";

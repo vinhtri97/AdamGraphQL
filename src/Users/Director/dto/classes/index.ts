@@ -1,2 +1,2 @@
-export { CreateDirectorInput } from "./CreateDirectorInput";
-export { UpdateDirectorInput } from "./UpdateDirectorInput";
+export { CreateDirectorInput } from "./Director.CreateInput";
+export { UpdateDirectorInput } from "./Director.UpdateInput";

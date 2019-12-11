@@ -1,2 +1,2 @@
-export { CreateBugInput } from "./CreateBugInput";
-export { UpdateBugInput } from "./UpdateBugInput";
+export { CreateBugInput } from "./Bug.CreateInput";
+export { UpdateBugInput } from "./Bug.UpdateInput";

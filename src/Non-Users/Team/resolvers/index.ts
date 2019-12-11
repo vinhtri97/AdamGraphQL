@@ -1,2 +1,2 @@
-export { TeamQueryResolver } from "./TeamQueries.resolver";
-export { TeamMutationResolver } from "./TeamMutations.resolver";
+export { TeamQueryResolver } from "./Team.Queries.resolver";
+export { TeamMutationResolver } from "./Team.Mutations.resolver";

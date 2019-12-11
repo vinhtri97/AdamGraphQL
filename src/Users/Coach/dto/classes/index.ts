@@ -1,2 +1,2 @@
-export { CreateCoachInput } from "./CreateCoachInput";
-export { UpdateCoachInput } from "./UpdateCoachInput";
+export { CreateCoachInput } from "./Coach.CreateInput";
+export { UpdateCoachInput } from "./Coach.UpdateInput";

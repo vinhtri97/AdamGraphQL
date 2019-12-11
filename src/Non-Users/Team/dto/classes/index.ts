@@ -1,2 +1,2 @@
-export { CreateTeamInput } from "./CreateTeamInput";
-export { UpdateTeamInput } from "./UpdateTeamInput";
+export { CreateTeamInput } from "./Team.CreateInput";
+export { UpdateTeamInput } from "./Team.UpdateInput";

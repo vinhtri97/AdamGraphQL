@@ -1,2 +1,2 @@
-export { CoachQueryResolver } from "./CoachQueries.resolver";
-export { CoachMutationResolver } from "./CoachMutations.resolver";
+export { CoachQueryResolver } from "./Coach.Queries.resolver";
+export { CoachMutationResolver } from "./Coach.Mutations.resolver";

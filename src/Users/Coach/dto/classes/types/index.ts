@@ -1,2 +1,2 @@
-export { CoachSchoolInfo, CoachSchoolInfoInput } from "./SchoolInfo.dto";
-export { CoachSportInfo, CoachSportInfoInput } from "./SportInfo.dto";
+export { CoachSchoolInfo, CoachSchoolInfoInput } from "./Coach.SchoolInfo.dto";
+export { CoachSportInfo, CoachSportInfoInput } from "./Coach.SportInfo.dto";

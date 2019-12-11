@@ -1,2 +1,2 @@
-export { ChatQueryResolver } from "./ChatQueries.resolver";
-export { ChatMutationResolver } from "./ChatMutations.resolver";
+export { ChatQueryResolver } from "./Chat.Queries.resolver";
+export { ChatMutationResolver } from "./Chat.Mutations.resolver";

@@ -1,2 +1,2 @@
-export { VideoQueryResolver } from "./VideoQueries.resolver";
-export { VideoMutationResolver } from "./VideoMutations.resolver";
+export { VideoQueryResolver } from "./Video.Queries.resolver";
+export { VideoMutationResolver } from "./Video.Mutations.resolver";

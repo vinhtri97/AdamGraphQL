@@ -1,2 +1,2 @@
-export { CreateChatInput } from "./CreateChatInput";
-export { UpdateChatInput } from "./UpdateChatInput";
+export { CreateChatInput } from "./Chat.CreateInput";
+export { UpdateChatInput } from "./Chat.UpdateInput";

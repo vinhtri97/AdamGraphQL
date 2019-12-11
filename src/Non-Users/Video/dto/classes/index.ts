@@ -1,2 +1,2 @@
-export { CreateVideoInput } from "./CreateVideoInput";
-export { UpdateVideoInput } from "./UpdateVideoInput";
+export { CreateVideoInput } from "./Video.CreateInput";
+export { UpdateVideoInput } from "./Video.UpdateInput";

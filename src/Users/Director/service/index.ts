@@ -1,2 +1,2 @@
-export { DirectorMutationService } from "./DirectorMutations.service";
-export { DirectorQueryService } from "./DirectorQueries.service";
+export { DirectorMutationService } from "./Director.Mutations.service";
+export { DirectorQueryService } from "./Director.Queries.service";

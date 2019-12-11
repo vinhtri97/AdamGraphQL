@@ -1,2 +1,2 @@
-export { BugQueryResolver } from "./BugQueries.resolver";
-export { BugMutationResolver } from "./BugMutations.resolver";
+export { BugQueryResolver } from "./Bug.Queries.resolver";
+export { BugMutationResolver } from "./Bug.Mutations.resolver";

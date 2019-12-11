@@ -1,2 +1,2 @@
-export { BugQueryService } from "./BugQueries.service";
-export { BugMutationService } from "./BugMutations.service";
+export { BugQueryService } from "./Bug.Queries.service";
+export { BugMutationService } from "./Bug.Mutations.service";

@@ -1,2 +1,2 @@
-export { SpectatorMutationService } from "./SpectatorMutations.service";
-export { SpectatorQueryService } from "./SpectatorQueries.service";
+export { SpectatorMutationService } from "./Spectator.Mutations.service";
+export { SpectatorQueryService } from "./Spectator.Queries.service";

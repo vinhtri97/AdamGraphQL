@@ -1,2 +1,2 @@
-export { SpectatorQueryResolver } from "./SpectatorQueries.resolver";
-export { SpectatorMutationResolver } from "./SpectatorMutations.resolver";
+export { SpectatorQueryResolver } from "./Spectator.Queries.resolver";
+export { SpectatorMutationResolver } from "./Spectator.Mutations.resolver";

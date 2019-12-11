@@ -1,3 +1,3 @@
-export { CreatePlayerInput } from "./CreatePlayerInput";
-export { UpdatePlayerInput } from "./UpdatePlayerInput";
-export { GetCoachesDto } from "./GetCoachesDto";
+export { CreatePlayerInput } from "./Player.CreateInput";
+export { UpdatePlayerInput } from "./Player.UpdateInput";
+export { GetCoachesDto } from "./Player.GetCoachesDto";

@@ -1,2 +1,2 @@
-export { CreateUserInput } from "./CreateUserInput";
-export { UpdateUserInput } from "./UpdateUserInput";
+export { CreateUserInput } from "./User.CreateInput";
+export { UpdateUserInput } from "./User.UpdateInput";

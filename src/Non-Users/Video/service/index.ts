@@ -1,2 +1,2 @@
-export { VideoQueryService } from "./VideoQueries.service";
-export { VideoMutationService } from "./VideoMutations.service";
+export { VideoQueryService } from "./Video.Queries.service";
+export { VideoMutationService } from "./Video.Mutations.service";

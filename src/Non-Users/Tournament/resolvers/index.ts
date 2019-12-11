@@ -1,2 +1,2 @@
-export { TournamentQueryResolver } from "./TournamentQueries.resolver";
-export { TournamentMutationResolver } from "./TournamentMutations.resolver";
+export { TournamentQueryResolver } from "./Tournament.Queries.resolver";
+export { TournamentMutationResolver } from "./Tournament.Mutations.resolver";

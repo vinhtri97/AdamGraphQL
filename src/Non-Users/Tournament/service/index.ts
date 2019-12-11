@@ -1,2 +1,2 @@
-export { TournamentQueryService } from "./TournamentQueries.service";
-export { TournamentMutationService } from "./TournamentMutations.service";
+export { TournamentQueryService } from "./Tournament.Queries.service";
+export { TournamentMutationService } from "./Tournament.Mutations.service";

@@ -1,2 +1,2 @@
-export { CreateTournamentInput } from "./CreateTournamentInput";
-export { UpdateTournamentInput } from "./UpdateTournamentInput";
+export { CreateTournamentInput } from "./Tournament.CreateInput";
+export { UpdateTournamentInput } from "./Tournament.UpdateInput";

@@ -1,2 +1,2 @@
-export { TeamQueryService } from "./TeamQueries.service";
-export { TeamMutationService } from "./TeamMutations.service";
+export { TeamQueryService } from "./Team.Queries.service";
+export { TeamMutationService } from "./Team.Mutations.service";

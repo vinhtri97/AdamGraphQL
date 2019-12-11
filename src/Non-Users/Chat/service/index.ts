@@ -1,2 +1,2 @@
-export { ChatQueryService } from "./ChatQueries.service";
-export { ChatMutationService } from "./ChatMutations.service";
+export { ChatQueryService } from "./Chat.Queries.service";
+export { ChatMutationService } from "./Chat.Mutations.service";

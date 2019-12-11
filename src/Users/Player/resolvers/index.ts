@@ -1,2 +1,2 @@
-export { PlayerMutationResolver } from "./PlayerMutations.resolver";
-export { PlayerQueryResolver } from "./PlayerQueries.resolver";
+export { PlayerMutationResolver } from "./Player.Mutations.resolver";
+export { PlayerQueryResolver } from "./Player.Queries.resolver";

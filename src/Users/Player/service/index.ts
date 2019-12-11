@@ -1,2 +1,2 @@
-export { PlayerMutationService } from "./PlayerMutations.service";
-export { PlayerQueryService } from "./PlayerQueries.service";
+export { PlayerMutationService } from "./Player.Mutations.service";
+export { PlayerQueryService } from "./Player.Queries.service";

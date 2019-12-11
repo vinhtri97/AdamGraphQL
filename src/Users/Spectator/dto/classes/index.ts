@@ -1,2 +1,2 @@
-export { CreateSpectatorInput } from "./CreateSpectatorInput";
-export { UpdateSpectatorInput } from "./UpdateSpectatorInput";
+export { CreateSpectatorInput } from "./Spectator.CreateInput";
+export { UpdateSpectatorInput } from "./Spectator.UpdateInput";
