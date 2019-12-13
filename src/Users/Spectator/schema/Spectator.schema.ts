@@ -22,7 +22,7 @@ const SpectatorSchema = new mongoose.Schema({
     ...UserSchema,
     // TODO Will chats always be connected through a team?
     chats: [{ ...ChatObj }],
-    pending_spectacles: [{ ...SpectacleObj }],
+    pending_spectacles: [{ type: mongoose.Types.ObjectId }],
     accepted_spectacles: [{ ...SpectacleObj }]
 });
 

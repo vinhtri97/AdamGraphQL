@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Spectator from "../schema/Spectator.schema";
+import Player from "../../Player/schema/Player.schema";
 import {
     CreateSpectatorInput,
     UpdateSpectatorInput
 } from "../dto/classes/index";
+import {
+    addToStringArray,
+    removeFromStringArray
+} from "../../../MongooseFunctions";
 import { updateDocument } from "../../../Functions";
+// import * as mongoose from "mongoose";
 
 export class SpectatorMutationService {
     async createSpectator(input: CreateSpectatorInput): Promise<string> {
@@ -15,5 +22,35 @@ export class SpectatorMutationService {
     async updateSpectator(input: UpdateSpectatorInput): Promise<string> {
         await updateDocument(Spectator, input);
         return "Test";
+    }
+
+    async addSpectacle(
+        spectatorID: string,
+        playerID: string
+    ): Promise<boolean | Error> {
+        return await addToStringArray(
+            Player,
+            "pending_spectators",
+            playerID,
+            Spectator,
+            "pending_spectacles",
+            spectatorID
+        );
+    }
+
+    async removeSpectacle(
+        spectatorID: string,
+        playerID: string,
+        isAccepted = false
+    ): Promise<boolean | Error> {
+        console.log(isAccepted);
+        return await removeFromStringArray(
+            Player,
+            isAccepted ? "accepted_spectators" : "pending_spectators",
+            playerID,
+            Spectator,
+            isAccepted ? "accepted_spectacles" : "pending_spectacles",
+            spectatorID
+        );
     }
 }

@@ -31,7 +31,13 @@ const playerSchema = new Schema({
         ]
     },
     pending_spectators: [{ type: mongoose.Types.ObjectId }],
-    accepted_spectators: [{ type: mongoose.Types.ObjectId }],
+    accepted_spectators: [
+        {
+            _id: false,
+            type: { type: String },
+            id: { type: mongoose.Types.ObjectId }
+        }
+    ],
     pending_teams: [{ type: mongoose.Types.ObjectId }],
     accepted_teams: [{ type: mongoose.Types.ObjectId }],
     video_likes: [{ type: mongoose.Types.ObjectId }],

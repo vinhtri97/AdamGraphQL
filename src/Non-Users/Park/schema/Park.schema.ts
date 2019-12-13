@@ -6,6 +6,11 @@ const ParkSchema = new mongoose.Schema({
     fields: [{ type: mongoose.Types.ObjectId }],
     open_time: { type: String },
     close_time: { type: String },
+    // website
+    // park owner
+    // pictures
+    // sports
+    // concessions : { paymentType }
     address: {
         city: { type: String },
         state: { type: String },
