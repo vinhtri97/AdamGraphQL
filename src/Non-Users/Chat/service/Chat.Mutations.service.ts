@@ -8,12 +8,25 @@ import Player from "../../../Users/Player/schema/Player.schema";
 import Coach from "../../../Users/Coach/schema/Coach.schema";
 import Spectator from "../../../Users/Spectator/schema/Spectator.schema";
 import Director from "../../../Users/Director/schema/Director.schema";
+import Team from "../../../Non-Users/Team/schema/Team.schema";
 const {
     Types: { ObjectId }
 } = mongoose;
 export class ChatMutationService {
     async createChat(input: CreateChatInput): Promise<boolean | Error> {
         // const { players, coaches, spectators, directors } = input;
+        if ("team_id" in input) {
+            if (!mongoose.Types.ObjectId.isValid(input.team_id))
+                return new Error(`Invalid Team ID: ${input.team_id}`);
+            const team: any = await Team.findById(input.team_id);
+            if (!team) return new Error(`Invalid Team ID: ${input.team_id}`);
+            const chat = await Chat.create(input);
+            if (!team.chats.includes(chat._id)) {
+                team.chats.push(ObjectId(chat._id));
+                team.save();
+            }
+            return true;
+        }
         await Chat.create(input);
         // await Promise.all(spectators.map(({id:spectID}: ChatUser) => await ))
         return true;
