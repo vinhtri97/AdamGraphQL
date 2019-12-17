@@ -3,13 +3,13 @@ import { ObjectType, Field, InputType } from "type-graphql";
 @ObjectType()
 @InputType("CreateCoachSchoolInfoInput")
 export class CoachSchoolInfo {
-    @Field()
+    @Field({ nullable: true })
     school_district: string;
 
-    @Field()
+    @Field({ nullable: true })
     school: string;
 
-    @Field()
+    @Field({ nullable: true })
     school_type: string;
 }
 

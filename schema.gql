@@ -120,9 +120,9 @@ type CoachDto {
 }
 
 type CoachSchoolInfo {
-  school_district: String!
-  school: String!
-  school_type: String!
+  school_district: String
+  school: String
+  school_type: String
 }
 
 input CoachSchoolInfoInput {
@@ -164,9 +164,9 @@ input CreateChatInput {
 }
 
 input CreateCoachSchoolInfoInput {
-  school_district: String!
-  school: String!
-  school_type: String!
+  school_district: String
+  school: String
+  school_type: String
 }
 
 input CreateCoachSportInfoInput {
@@ -322,7 +322,7 @@ type Movement {
 
 type Mutation {
   """This is something"""
-  createCoach(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, teams: [String!]!, sport_info: CreateCoachSportInfoInput!, favorites: [String!]!, school_info: CreateCoachSchoolInfoInput!): String!
+  createCoach(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateCoachSportInfoInput!, school_info: CreateCoachSchoolInfoInput): String!
 
   """This is something"""
   updateCoach(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, teams: [String!], sport_info: CoachSportInfoInput, favorites: [String!], school_info: CoachSchoolInfoInput): String!
@@ -375,8 +375,12 @@ type Mutation {
   updateField(id: String!, name: String, description: String, park: String, highschool_compatible: Boolean): Boolean!
   createPark(name: String!, description: String, fields: [String!]!, open_time: String!, close_time: String!, address: CreateAddressInput!): Boolean!
   updatePark(id: String!, name: String, description: String, open_time: String, close_time: String, address: CreateAddressInput): Boolean!
-  createTeam(name: String!, description: String, coaches: [String!]!, chats: String, tournaments: [String!], accepted_players: [String!], pending_players: [String!]): Boolean!
-  updateTeam(id: String!, name: String, description: String, coaches: [String!], chats: String, tournaments: [String!], accepted_players: [String!], pending_players: [String!]): Boolean!
+  createTeam(name: String!, description: String, coaches: [String!]!): Boolean!
+  updateTeam(id: String!, name: String, description: String): Boolean!
+  addPlayerToTeam(playerID: String!, teamID: String!): Boolean!
+  addCoachToTeam(coachID: String!, teamID: String!): Boolean!
+  removePlayerFromTeam(playerID: String!, teamID: String!): Boolean!
+  removeCoachFromTeam(coachID: String!, teamID: String!): Boolean!
   createTournament(name: String!, description: String, start_date: String!, end_date: String!, age_groups: String!, flyer: String, max_teams: Float, pay_at_the_plate: Boolean!, hotels: String, allowed_assistants: Float): Boolean!
   updateTournament(id: String!, name: String, description: String, start_date: String, end_date: String, age_groups: String, flyer: String, max_teams: Float, pay_at_the_plate: Boolean, hotels: String, allowed_assistants: Float): Boolean!
   createVideo(name: String!, description: String, url: String!, type: String!, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String!, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: CreateUploadedByInput!): Boolean!
