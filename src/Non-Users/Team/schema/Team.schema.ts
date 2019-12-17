@@ -8,7 +8,12 @@ const teamSchema = new mongoose.Schema({
     fullPlayerChat: { type: mongoose.Types.ObjectId },
     fullPlayerAndParentChat: { type: mongoose.Types.ObjectId },
     tournaments: [{ type: mongoose.Types.ObjectId }],
-    accepted_players: [{ type: mongoose.Types.ObjectId }],
-    pending_players: [{ type: mongoose.Types.ObjectId }]
+    players: [
+        {
+            _id: false,
+            id: { type: mongoose.Types.ObjectId },
+            accepted: { type: Boolean }
+        }
+    ]
 });
 export default mongoose.model("Team", teamSchema);

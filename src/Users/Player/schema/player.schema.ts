@@ -38,8 +38,13 @@ const playerSchema = new Schema({
             accepted: { type: Boolean, default: false }
         }
     ],
-    pending_teams: [{ type: mongoose.Types.ObjectId }],
-    accepted_teams: [{ type: mongoose.Types.ObjectId }],
+    teams: [
+        {
+            _id: false,
+            id: { type: mongoose.Types.ObjectId },
+            accepted: { type: Boolean, default: false }
+        }
+    ],
     video_likes: [{ type: mongoose.Types.ObjectId }],
     pending_videos: [{ type: mongoose.Types.ObjectId }],
     accepted_videos: [{ type: mongoose.Types.ObjectId }],
