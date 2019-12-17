@@ -2,7 +2,7 @@ import Field from "../schema/Field.schema";
 // import FieldDto from "../dto/Field.dto";
 import { CreateFieldInput, UpdateFieldInput } from "../dto/classes/index";
 // import { FieldUser } from "../dto/classes/types/index";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 // import Spectator from "";
 
 export class FieldMutationService {

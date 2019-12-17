@@ -30,12 +30,12 @@ const playerSchema = new Schema({
             }
         ]
     },
-    pending_spectators: [{ type: mongoose.Types.ObjectId }],
-    accepted_spectators: [
+    spectators: [
         {
             _id: false,
             type: { type: String },
-            id: { type: mongoose.Types.ObjectId }
+            id: { type: mongoose.Types.ObjectId },
+            accepted: { type: Boolean, default: false }
         }
     ],
     pending_teams: [{ type: mongoose.Types.ObjectId }],

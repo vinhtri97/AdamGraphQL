@@ -12,7 +12,7 @@ export class SpectatorMutationResolver {
         this.SpectatorMutationService = new SpectatorMutationService();
     }
 
-    @Mutation(() => String, { description: "This is something" })
+    @Mutation(() => Boolean, { description: "Create a new Spectator" })
     async createSpectator(
         @Args() input: CreateSpectatorInput
     ): Promise<string> {
@@ -20,7 +20,10 @@ export class SpectatorMutationResolver {
         return spectator._id;
     }
 
-    @Mutation(() => String, { description: "This is something" })
+    @Mutation(() => Boolean, {
+        description:
+            "Used to update basic spectator information (likely used in EditInfo"
+    })
     async updateSpectator(
         @Args() input: UpdateSpectatorInput
     ): Promise<string> {
@@ -28,7 +31,7 @@ export class SpectatorMutationResolver {
     }
 
     @Mutation(() => Boolean, {
-        description: "Add a spectacle to a specific spectator"
+        description: "Add a spectacle (Player obj) to a specific spectator"
     })
     async addSpectacle(
         @Arg("spectatorID") spectatorID: string,
@@ -40,25 +43,42 @@ export class SpectatorMutationResolver {
         );
     }
 
-    @Mutation(() => Boolean, { description: "This is something" })
+    @Mutation(() => Boolean, {
+        description:
+            "This is the same as removing a Spectator from a player (removes from both)"
+    })
     async removeSpectacle(
         @Arg("spectatorID") spectatorID: string,
-        @Arg("playerID") playerID: string,
-        @Arg("accepted", { nullable: true }) accepted: boolean
+        @Arg("playerID") playerID: string
     ): Promise<boolean | Error> {
         return await this.SpectatorMutationService.removeSpectacle(
             spectatorID,
-            playerID,
-            // true
-            accepted
+            playerID
         );
     }
 
-    // @Mutation(() => String, { description: "This is something" })
-    // async clear(
-    //     @Arg("spectatorID") spectatorID: string,
-    //     @Arg("playerID") playerID: string
-    // ): Promise<string | Error> {
-    //     return await this.SpectatorMutationService.clear(spectatorID, playerID);
-    // }
+    @Mutation(() => Boolean, {
+        description:
+            "This is to change the spectator's type in both the Player and Spectator Object"
+    })
+    async changeSpectatorType(
+        @Arg("spectatorID") spectatorID: string,
+        @Arg("playerID") playerID: string,
+        @Arg("type") type: string
+    ): Promise<boolean | Error> {
+        if (
+            type != "Mom" &&
+            type != "Dad" &&
+            type != "Spectator" &&
+            type != "Guardian"
+        )
+            return new Error(
+                `Invalid type (${type})! Must be a type within [Mom, Dad, Guardian, Spectator]`
+            );
+        return await this.SpectatorMutationService.changeType(
+            spectatorID,
+            playerID,
+            type
+        );
+    }
 }

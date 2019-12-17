@@ -2,7 +2,7 @@ import Park from "../schema/Park.schema";
 // import ParkDto from "../dto/Park.dto";
 import { CreateParkInput, UpdateParkInput } from "../dto/classes/index";
 // import { ParkUser } from "../dto/classes/types/index";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 // import Spectator from "";
 
 export class ParkMutationService {

@@ -1,6 +1,6 @@
 import Director from "../schema/Director.schema";
 import { CreateDirectorInput, UpdateDirectorInput } from "../dto/classes/index";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 
 export class DirectorMutationService {
     async createDirector(input: CreateDirectorInput): Promise<string> {

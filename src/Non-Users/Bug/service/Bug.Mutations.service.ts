@@ -2,7 +2,7 @@ import Bug from "../schema/Bug.schema";
 // import BugDto from "../dto/Bug.dto";
 import { CreateBugInput, UpdateBugInput } from "../dto/classes/index";
 // import { BugUser } from "../dto/classes/types/index";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 // import Spectator from "";
 
 export class BugMutationService {

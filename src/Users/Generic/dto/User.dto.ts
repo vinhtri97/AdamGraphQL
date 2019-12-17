@@ -4,6 +4,9 @@ import { Address, Personal } from "./classes/types/index";
 @ObjectType()
 export default class UserDto {
     @Field()
+    _id: string;
+
+    @Field()
     firebase_id: string;
 
     @Field()

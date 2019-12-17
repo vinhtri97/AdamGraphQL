@@ -9,8 +9,5 @@ export default class SpectatorDto extends UserDto {
     chats: ChatObj[];
 
     @Field(() => [SpectacleObj])
-    pending_spectacles: SpectacleObj[];
-
-    @Field(() => [SpectacleObj])
-    accepted_spectacles: SpectacleObj[];
+    spectacles: SpectacleObj[];
 }

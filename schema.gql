@@ -9,7 +9,6 @@ type Academics {
   GPA: Float!
 }
 
-
 type Address {
   city: String
   state: String
@@ -76,10 +75,7 @@ type ChatDto {
   name: String
   description: String
   isPremade: Boolean!
-  players: [ChatUser!]
-  coaches: [ChatUser!]
-  spectators: [ChatUser!]
-  directors: [ChatUser!]
+  users: [ChatUser!]
   team_id: String
 }
 
@@ -95,17 +91,20 @@ input ChatObjInput {
 
 type ChatUser {
   id: String!
+  type: String!
   muted: Boolean!
   muted_type: String
 }
 
 input ChatUserInput {
   id: String!
+  type: String!
   muted: Boolean!
   muted_type: String
 }
 
 type CoachDto {
+  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!
@@ -159,10 +158,8 @@ input CreateBugInput {
 }
 
 input CreateChatInput {
-  players: [ChatUserInput!]
-  coaches: [ChatUserInput!]
-  spectators: [ChatUserInput!]
-  directors: [ChatUserInput!]
+  name: String
+  users: [ChatUserInput!]
   team_id: String
 }
 
@@ -255,6 +252,7 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type DirectorDto {
+  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!
@@ -298,6 +296,13 @@ type GetCoachesDto {
   pending: [CoachDto!]!
 }
 
+type GetUsersDto {
+  coaches: [CoachDto!]!
+  players: [PlayerDto!]!
+  spectators: [SpectatorDto!]!
+  directors: [DirectorDto!]!
+}
+
 type Jump {
   broad_jump: StatsFields!
   triple_jump: StatsFields!
@@ -330,24 +335,41 @@ type Mutation {
   updateDirector(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, tournaments: [String!], association: String): String!
 
   """This is something"""
-  createPlayer(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateSportInfo!, school_info: CreatePlayerSchoolInfo): String!
+  createPlayer(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateSportInfo!, school_info: CreatePlayerSchoolInfo): Boolean!
   updatePlayer(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, sport_info: SportInfoInput, school_info: PlayerSchoolInfoInput): Boolean
 
   """This is something"""
-  createSpectator(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput): String!
+  acceptSpectator(type: String!, spectatorID: String!, playerID: String!): Boolean!
 
-  """This is something"""
-  updateSpectator(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput): String!
+  """
+  This is the same as removing a Player from a Spectator (removes from both)
+  """
+  removeSpectator(spectatorID: String!, playerID: String!): Boolean!
 
-  """Add a spectacle to a specific spectator"""
+  """Create a new Spectator"""
+  createSpectator(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput): Boolean!
+
+  """Used to update basic spectator information (likely used in EditInfo"""
+  updateSpectator(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput): Boolean!
+
+  """Add a spectacle (Player obj) to a specific spectator"""
   addSpectacle(playerID: String!, spectatorID: String!): Boolean!
 
-  """This is something"""
-  removeSpectacle(accepted: Boolean, playerID: String!, spectatorID: String!): Boolean!
+  """
+  This is the same as removing a Spectator from a player (removes from both)
+  """
+  removeSpectacle(playerID: String!, spectatorID: String!): Boolean!
+
+  """
+  This is to change the spectator's type in both the Player and Spectator Object
+  """
+  changeSpectatorType(type: String!, playerID: String!, spectatorID: String!): Boolean!
   createBug(name: String!, description: String, message: String!, date: String!, category: String!, email: String!, first_name: String!, last_name: String!): Boolean!
   updateBug(id: String!, name: String, description: String, message: String, date: String, category: String, email: String, first_name: String, last_name: String): Boolean!
-  createChat(name: String!, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
-  updateChat(id: String!, name: String, description: String, players: [ChatUserInput!], coaches: [ChatUserInput!], spectators: [ChatUserInput!], directors: [ChatUserInput!], team_id: String): Boolean!
+  createChat(name: String, description: String, users: [ChatUserInput!], team_id: String): Boolean!
+  updateChat(id: String!, name: String, description: String, users: [ChatUserInput!], team_id: String): Boolean!
+  addUserToChat(userID: String!, user_type: String!, chatID: String!): Boolean!
+  removeUserFromChat(userID: String!, user_type: String!, chatID: String!): Boolean!
   createField(name: String!, description: String, park: String!, highschool_compatible: Boolean!): Boolean!
   updateField(id: String!, name: String, description: String, park: String, highschool_compatible: Boolean): Boolean!
   createPark(name: String!, description: String, fields: [String!]!, open_time: String!, close_time: String!, address: CreateAddressInput!): Boolean!
@@ -393,6 +415,7 @@ type Physical {
 }
 
 type PlayerDto {
+  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!
@@ -402,8 +425,7 @@ type PlayerDto {
   personal: Personal!
   address: Address
   power_score: [PowerScore!]!
-  pending_spectators: [String!]!
-  accepted_spectators: [String!]!
+  spectators: [PlayerSpectatorDto!]!
   accepted_teams: [String!]!
   pending_teams: [String!]!
   likes: [String!]!
@@ -425,6 +447,18 @@ input PlayerSchoolInfoInput {
   school_district: String
   school: String
   school_type: String
+}
+
+type PlayerSpectatorDto {
+  type: String!
+  id: String!
+  accepted: Boolean!
+}
+
+input PlayerSpectatorDtoInput {
+  type: String!
+  id: String!
+  accepted: Boolean!
 }
 
 type PlayerSportInfo {
@@ -464,11 +498,13 @@ type Query {
   getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getSpectators: [SpectatorDto!]!
   getSpectatorByID(id: String!): SpectatorDto!
-  getSpectaclesForSpectator(id: String!): [PlayerDto!]!
+  getSpectatorsKids(id: String!): [PlayerDto!]!
+  getChatsForSpectator(id: String!): [ChatDto!]!
   getBugs: [BugDto!]!
   getBugByID(id: String!): BugDto!
   getChats: [ChatDto!]!
   getChatByID(id: String!): ChatDto!
+  getChatUsers(id: String!): GetUsersDto!
   getFields: [FieldDto!]!
   getFieldByID(id: String!): FieldDto!
   getParks: [ParkDto!]!
@@ -491,14 +527,17 @@ type Soccer {
 type SpectacleObj {
   type: String!
   id: String!
+  accepted: Boolean!
 }
 
 input SpectacleObjInput {
   type: String!
   id: String!
+  accepted: Boolean!
 }
 
 type SpectatorDto {
+  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!
@@ -508,8 +547,7 @@ type SpectatorDto {
   personal: Personal!
   address: Address
   chats: [ChatObj!]!
-  pending_spectacles: [SpectacleObj!]!
-  accepted_spectacles: [SpectacleObj!]!
+  spectacles: [SpectacleObj!]!
 }
 
 type Speed {
@@ -623,10 +661,7 @@ input UpdateBugInput {
 
 input UpdateChatInput {
   name: String
-  players: [ChatUserInput!]
-  coaches: [ChatUserInput!]
-  spectators: [ChatUserInput!]
-  directors: [ChatUserInput!]
+  users: [ChatUserInput!]
   team_id: String
 }
 
@@ -672,6 +707,7 @@ input UploadedByInput {
 }
 
 type UserDto {
+  _id: String!
   firebase_id: String!
   email: String!
   thumbnail: String!

@@ -7,6 +7,9 @@ export class ChatUser {
     id: string;
 
     @Field()
+    type: string;
+
+    @Field()
     muted: boolean;
 
     @Field({ nullable: true })

@@ -2,7 +2,7 @@ import Video from "../schema/Video.schema";
 // import VideoDto from "../dto/Video.dto";
 import { CreateVideoInput, UpdateVideoInput } from "../dto/classes/index";
 // import { VideoUser } from "../dto/classes/types/index";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 // import Spectator from "";
 
 export class VideoMutationService {

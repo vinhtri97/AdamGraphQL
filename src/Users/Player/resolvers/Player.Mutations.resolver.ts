@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
-import { Resolver, Mutation, Args } from "type-graphql";
+import { Resolver, Mutation, Args, Arg } from "type-graphql";
 import { CreatePlayerInput, UpdatePlayerInput } from "../dto/classes/index";
 import Player from "../schema/Player.schema";
 import { PlayerMutationService } from "../service/index";
@@ -12,7 +12,7 @@ export class PlayerMutationResolver {
         this.playerMutationService = new PlayerMutationService();
     }
 
-    @Mutation(() => String, { description: "This is something" })
+    @Mutation(() => Boolean, { description: "This is something" })
     async createPlayer(@Args() input: CreatePlayerInput): Promise<string> {
         const player = await Player.create(input);
         return player.id;
@@ -23,5 +23,32 @@ export class PlayerMutationResolver {
         @Args() input: UpdatePlayerInput
     ): Promise<boolean | Error> {
         return await this.playerMutationService.updatePlayer(input);
+    }
+
+    @Mutation(() => Boolean, { description: "This is something" })
+    async acceptSpectator(
+        @Arg("playerID") playerID: string,
+        @Arg("spectatorID") spectatorID: string,
+        @Arg("type") type: string
+    ): Promise<boolean | Error> {
+        return await this.playerMutationService.acceptSpectator(
+            playerID,
+            spectatorID,
+            type
+        );
+    }
+
+    @Mutation(() => Boolean, {
+        description:
+            "This is the same as removing a Player from a Spectator (removes from both)"
+    })
+    async removeSpectator(
+        @Arg("playerID") playerID: string,
+        @Arg("spectatorID") spectatorID: string
+    ): Promise<boolean | Error> {
+        return await this.playerMutationService.removeSpectator(
+            playerID,
+            spectatorID
+        );
     }
 }

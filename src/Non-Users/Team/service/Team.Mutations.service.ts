@@ -1,6 +1,6 @@
 import Team from "../schema/Team.schema";
 // import TeamDto from "../dto/Team.dto";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 import { CreateTeamInput, UpdateTeamInput } from "../dto/classes/index";
 export class TeamMutationService {
     async createTeam(input: CreateTeamInput): Promise<boolean | Error> {

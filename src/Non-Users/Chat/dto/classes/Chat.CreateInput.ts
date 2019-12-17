@@ -5,17 +5,11 @@ import { ChatUser } from "./types/index";
 @ArgsType()
 @InputType("CreateChatInput")
 export class CreateChatInput extends CreateEntityInput {
-    @Field(() => [ChatUser], { nullable: true })
-    players: ChatUser[];
+    @Field({ nullable: true })
+    name: string;
 
     @Field(() => [ChatUser], { nullable: true })
-    coaches: ChatUser[];
-
-    @Field(() => [ChatUser], { nullable: true })
-    spectators: ChatUser[];
-
-    @Field(() => [ChatUser], { nullable: true })
-    directors: ChatUser[];
+    users: ChatUser[];
 
     @Field({ nullable: true })
     team_id: string;

@@ -9,6 +9,7 @@ const TournamentSchema = new mongoose.Schema({
     flyer: { type: String },
     max_teams: { type: Number },
     pay_at_the_plate: { type: Boolean },
+    fee_description: { type: String },
     hotels: { type: String },
     allowed_assistants: { type: Number },
     parks: [{ type: mongoose.Types.ObjectId }]

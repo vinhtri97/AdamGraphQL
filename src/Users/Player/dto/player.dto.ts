@@ -6,16 +6,15 @@ import {
 } from "./classes/types/index";
 import { ObjectType, Field } from "type-graphql";
 import UserDto from "../../Generic/dto/User.dto";
+import { PlayerSpectatorDto } from "./classes/index";
+
 @ObjectType()
 export default class PlayerDto extends UserDto {
     @Field(() => [PowerScore])
     power_score: PowerScore[];
 
-    @Field(() => [String])
-    pending_spectators: string[];
-
-    @Field(() => [String])
-    accepted_spectators: string[];
+    @Field(() => [PlayerSpectatorDto])
+    spectators: PlayerSpectatorDto[];
 
     @Field(() => [String])
     accepted_teams: string[];

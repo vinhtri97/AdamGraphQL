@@ -5,7 +5,7 @@ import {
     UpdateTournamentInput
 } from "../dto/classes/index";
 
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 
 export class TournamentMutationService {
     async createTournament(

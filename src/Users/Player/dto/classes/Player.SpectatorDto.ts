@@ -1,8 +1,8 @@
 import { ObjectType, Field, InputType } from "type-graphql";
 
 @ObjectType()
-@InputType("SpectacleObjInput")
-export class SpectacleObj {
+@InputType("PlayerSpectatorDtoInput")
+export class PlayerSpectatorDto {
     @Field()
     type: string;
 

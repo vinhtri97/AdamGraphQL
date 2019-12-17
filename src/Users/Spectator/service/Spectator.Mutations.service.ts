@@ -6,10 +6,11 @@ import {
     UpdateSpectatorInput
 } from "../dto/classes/index";
 import {
-    addToStringArray,
-    removeFromStringArray
+    addToObjArray,
+    removeFromObjArray,
+    changeInObjArray
 } from "../../../MongooseFunctions";
-import { updateDocument } from "../../../Functions";
+import { updateDocument } from "../../../MongooseFunctions";
 // import * as mongoose from "mongoose";
 
 export class SpectatorMutationService {
@@ -28,29 +29,46 @@ export class SpectatorMutationService {
         spectatorID: string,
         playerID: string
     ): Promise<boolean | Error> {
-        return await addToStringArray(
+        return await addToObjArray(
             Player,
-            "pending_spectators",
+            "spectators",
             playerID,
+            { accepted: false, type: "Spectator" },
             Spectator,
-            "pending_spectacles",
-            spectatorID
+            "spectacles",
+            spectatorID,
+            { accepted: false, type: "Spectator" }
         );
     }
 
     async removeSpectacle(
         spectatorID: string,
-        playerID: string,
-        isAccepted = false
+        playerID: string
     ): Promise<boolean | Error> {
-        console.log(isAccepted);
-        return await removeFromStringArray(
+        return await removeFromObjArray(
             Player,
-            isAccepted ? "accepted_spectators" : "pending_spectators",
+            "spectators",
             playerID,
             Spectator,
-            isAccepted ? "accepted_spectacles" : "pending_spectacles",
+            "spectacles",
             spectatorID
+        );
+    }
+
+    async changeType(
+        spectatorID: string,
+        playerID: string,
+        type: string
+    ): Promise<boolean | Error> {
+        return await changeInObjArray(
+            Player,
+            "spectators",
+            playerID,
+            { type },
+            Spectator,
+            "spectacles",
+            spectatorID,
+            { type }
         );
     }
 }
