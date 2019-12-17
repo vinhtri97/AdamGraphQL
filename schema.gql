@@ -496,9 +496,9 @@ type Query {
   getPlayers: [PlayerDto!]!
   getPlayerByID(id: String!): PlayerDto!
   getFavoritesForPlayer(playerID: String!): [CoachDto!]!
-  getSpectators: [SpectatorDto!]!
+  getAllSpectators: [SpectatorDto!]!
   getSpectatorByID(id: String!): SpectatorDto!
-  getSpectatorsKids(id: String!): [PlayerDto!]!
+  getKidsForSpectator(id: String!): [PlayerDto!]!
   getChatsForSpectator(id: String!): [ChatDto!]!
   getBugs: [BugDto!]!
   getBugByID(id: String!): BugDto!
