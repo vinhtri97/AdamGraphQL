@@ -99,4 +99,24 @@ export class ChatMutationService {
             return true;
         } else return new Error("Cannot find a collection with that ID.");
     }
+
+    async changeMutedStatus(
+        chatID: string,
+        muted: boolean,
+        muted_type: string,
+        userID: string
+    ): Promise<boolean | Error> {
+        const foundChat: any = await Chat.findById(chatID).limit(1);
+        if (foundChat) {
+            const foundIndex = foundChat.users.findIndex(
+                ({ id }: { [key: string]: any }) => id.toString() == userID
+            );
+            if (foundIndex > -1) {
+                foundChat.users[foundIndex].muted = muted;
+                foundChat.users[foundIndex].muted_type = muted_type;
+                foundChat.save();
+            }
+            return true;
+        } else return new Error("Cannot find a collection with that ID.");
+    }
 }

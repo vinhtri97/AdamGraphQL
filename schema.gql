@@ -370,6 +370,7 @@ type Mutation {
   updateChat(id: String!, name: String, description: String, users: [ChatUserInput!], team_id: String): Boolean!
   addUserToChat(userID: String!, user_type: String!, chatID: String!): Boolean!
   removeUserFromChat(userID: String!, user_type: String!, chatID: String!): Boolean!
+  changeMutedStatusInChat(userID: String!, muted_type: String!, muted: Boolean!, chatID: String!): Boolean!
   createField(name: String!, description: String, park: String!, highschool_compatible: Boolean!): Boolean!
   updateField(id: String!, name: String, description: String, park: String, highschool_compatible: Boolean): Boolean!
   createPark(name: String!, description: String, fields: [String!]!, open_time: String!, close_time: String!, address: CreateAddressInput!): Boolean!

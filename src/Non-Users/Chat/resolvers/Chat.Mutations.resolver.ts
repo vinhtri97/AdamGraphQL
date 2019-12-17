@@ -47,4 +47,20 @@ export class ChatMutationResolver {
             userID
         );
     }
+
+    @Mutation(() => Boolean)
+    async changeMutedStatusInChat(
+        @Arg("chatID") chatID: string,
+        @Arg("muted") muted: boolean,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        @Arg("muted_type") muted_type: string,
+        @Arg("userID") userID: string
+    ): Promise<boolean | Error> {
+        return await this.ChatMutationService.changeMutedStatus(
+            chatID,
+            muted,
+            muted_type,
+            userID
+        );
+    }
 }
