@@ -13,9 +13,13 @@ export class PlayerMutationResolver {
     }
 
     @Mutation(() => Boolean, { description: "This is something" })
-    async createPlayer(@Args() input: CreatePlayerInput): Promise<string> {
+    async createPlayer(
+        @Args() input: CreatePlayerInput
+    ): Promise<boolean | Error> {
         const player = await Player.create(input);
-        return player.id;
+        if (player) {
+            return true;
+        } else return new Error("Cannot create player");
     }
 
     @Mutation(() => Boolean, { nullable: true })

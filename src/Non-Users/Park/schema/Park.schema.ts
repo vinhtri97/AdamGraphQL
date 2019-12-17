@@ -10,7 +10,7 @@ const ParkSchema = new mongoose.Schema({
     // park owner
     // pictures
     // sports
-    // concessions : { paymentType }
+    // concessions boolean?
     address: {
         city: { type: String },
         state: { type: String },
