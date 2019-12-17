@@ -205,11 +205,11 @@ export const addToObjArray = async (
                     return true;
                     // If either collection's array already has the item, tell them.
                     // TODO maybe return true
-                } else
-                    return new Error(
-                        // eslint-disable-next-line prettier/prettier
-                        `'${foundOne[`${arrayOneName}`].toString()}' includes '${idTwo}' or '${foundTwo[`${arrayTwoName}`].toString()}' includes '${idOne}'.`
-                    );
+                } else return true;
+                // return new Error(
+                //     // eslint-disable-next-line prettier/prettier
+                //     `'${foundOne[`${arrayOneName}`].toString()}' includes '${idTwo}' or '${foundTwo[`${arrayTwoName}`].toString()}' includes '${idOne}'.`
+                // );
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
                 return new Error(
