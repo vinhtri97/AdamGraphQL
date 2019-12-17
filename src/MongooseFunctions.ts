@@ -134,10 +134,10 @@ export const removeFromStringArray = async (
             ) {
                 foundOne[`${arrayOneName}`] = foundOne[
                     `${arrayOneName}`
-                ].filter((id: string) => ObjectId(idTwo) == ObjectId(id));
+                ].filter((id: any) => idTwo.toString() != id);
                 foundTwo[`${arrayTwoName}`] = foundTwo[
                     `${arrayTwoName}`
-                ].filter((id: string) => ObjectId(idOne) == ObjectId(id));
+                ].filter((id: any) => idOne.toString() != id);
                 foundOne.save();
                 foundTwo.save();
                 return true;
@@ -250,12 +250,10 @@ export const removeFromObjArray = async (
         if (foundOne && foundTwo) {
             // If both arrays exist in the both documents
             foundOne[`${arrayOneName}`] = foundOne[`${arrayOneName}`].filter(
-                ({ id }: { [key: string]: string }) =>
-                    ObjectId(idTwo) == ObjectId(id)
-            );
+                ({ id }: { [key: string]: string }) => idTwo != id.toString()
+            );            
             foundTwo[`${arrayTwoName}`] = foundTwo[`${arrayTwoName}`].filter(
-                ({ id }: { [key: string]: string }) =>
-                    ObjectId(idOne) == ObjectId(id)
+                ({ id }: { [key: string]: string }) => idOne != id.toString()
             );
             foundOne.save();
             foundTwo.save();

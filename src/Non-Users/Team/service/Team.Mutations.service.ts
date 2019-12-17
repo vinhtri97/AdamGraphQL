@@ -63,7 +63,7 @@ export class TeamMutationService {
     ): Promise<boolean | Error> {
         return await removeFromObjArray(
             Team,
-            "coaches",
+            "players",
             teamID,
             Player,
             "teams",

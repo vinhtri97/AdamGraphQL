@@ -1,8 +1,9 @@
 import { Resolver, Arg, Query } from "type-graphql";
 import { SpectatorQueryService } from "../service/index";
 import SpectatorDto from "../dto/Spectator.dto";
-import PlayerDto from "./../../Player/dto/Player.dto";
+// import PlayerDto from "./../../Player/dto/Player.dto";
 import ChatDto from "../../../Non-Users/Chat/dto/Chat.dto";
+import { GetSpectaclesDto } from "../dto/classes/index";
 @Resolver()
 export class SpectatorQueryResolver {
     SpectatorQueryService: SpectatorQueryService;
@@ -16,13 +17,17 @@ export class SpectatorQueryResolver {
     }
 
     @Query(() => SpectatorDto)
-    async getSpectatorByID(@Arg("id") id: string): Promise<SpectatorDto> {
-        return await this.SpectatorQueryService.getSpectatorByID(id);
+    async getSpectatorByID(
+        @Arg("spectatorID") spectatorID: string
+    ): Promise<SpectatorDto> {
+        return await this.SpectatorQueryService.getSpectatorByID(spectatorID);
     }
 
-    @Query(() => [PlayerDto])
-    async getKidsForSpectator(@Arg("id") id: string): Promise<PlayerDto[]> {
-        return await this.SpectatorQueryService.getSpectacles(id);
+    @Query(() => GetSpectaclesDto)
+    async getKidsForSpectator(
+        @Arg("spectatorID") spectatorID: string
+    ): Promise<GetSpectaclesDto> {
+        return await this.SpectatorQueryService.getSpectacles(spectatorID);
     }
 
     @Query(() => [ChatDto])

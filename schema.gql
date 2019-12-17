@@ -296,6 +296,23 @@ type GetCoachesDto {
   pending: [CoachDto!]!
 }
 
+type GetPlayersDto {
+  pending: [PlayerDto!]!
+  accepted: [PlayerDto!]!
+}
+
+type GetSpectacles {
+  Mom: [PlayerDto!]!
+  Dad: [PlayerDto!]!
+  Guardian: [PlayerDto!]!
+  Spectator: [PlayerDto!]!
+}
+
+type GetSpectaclesDto {
+  pending: [PlayerDto!]!
+  accepted: GetSpectacles!
+}
+
 type GetUsersDto {
   coaches: [CoachDto!]!
   players: [PlayerDto!]!
@@ -345,6 +362,9 @@ type Mutation {
   This is the same as removing a Player from a Spectator (removes from both)
   """
   removeSpectator(spectatorID: String!, playerID: String!): Boolean!
+
+  """This is something"""
+  acceptTeamForPlayer(teamID: String!, playerID: String!): Boolean!
 
   """Create a new Spectator"""
   createSpectator(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput): Boolean!
@@ -502,8 +522,8 @@ type Query {
   getPlayerByID(id: String!): PlayerDto!
   getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getAllSpectators: [SpectatorDto!]!
-  getSpectatorByID(id: String!): SpectatorDto!
-  getKidsForSpectator(id: String!): [PlayerDto!]!
+  getSpectatorByID(spectatorID: String!): SpectatorDto!
+  getKidsForSpectator(spectatorID: String!): GetSpectaclesDto!
   getChatsForSpectator(id: String!): [ChatDto!]!
   getBugs: [BugDto!]!
   getBugByID(id: String!): BugDto!
@@ -515,7 +535,9 @@ type Query {
   getParks: [ParkDto!]!
   getParkByID(id: String!): ParkDto!
   getTeams: [TeamDto!]!
-  getTeamByID(id: String!): TeamDto!
+  getTeamByID(teamID: String!): TeamDto!
+  getPlayersForTeam(teamID: String!): GetPlayersDto!
+  getCoachesForTeam(teamID: String!): [CoachDto!]!
   getTournaments: [TournamentDto!]!
   getTournamentByID(id: String!): TournamentDto!
   getVideos: [VideoDto!]!

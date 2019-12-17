@@ -1,6 +1,7 @@
 import Player from "../schema/Player.schema";
 // import PlayerDto from "../dto/player.dto";
 import Spectator from "../../Spectator/schema/Spectator.schema";
+import Team from "../../../Non-Users/Team/schema/Team.schema";
 import {
     updateDocument,
     changeInObjArray,
@@ -57,6 +58,22 @@ export class PlayerMutationService {
             "spectacles",
             spectatorID,
             { type }
+        );
+    }
+
+    async acceptTeam(
+        playerID: string,
+        teamID: string
+    ): Promise<boolean | Error> {
+        return await changeInObjArray(
+            Player,
+            "teams",
+            playerID,
+            { accepted: true },
+            Team,
+            "players",
+            teamID,
+            { accepted: true }
         );
     }
 }

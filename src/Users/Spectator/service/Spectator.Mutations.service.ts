@@ -64,11 +64,11 @@ export class SpectatorMutationService {
             Player,
             "spectators",
             playerID,
-            { type },
+            { type, accepted: true },
             Spectator,
             "spectacles",
             spectatorID,
-            { type }
+            { type, accepted: true }
         );
     }
 }

@@ -55,4 +55,12 @@ export class PlayerMutationResolver {
             spectatorID
         );
     }
+
+    @Mutation(() => Boolean, { description: "This is something" })
+    async acceptTeamForPlayer(
+        @Arg("playerID") playerID: string,
+        @Arg("teamID") teamID: string
+    ): Promise<boolean | Error> {
+        return await this.playerMutationService.acceptTeam(playerID, teamID);
+    }
 }
