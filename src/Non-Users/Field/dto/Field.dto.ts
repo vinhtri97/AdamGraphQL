@@ -8,5 +8,26 @@ export default class FieldDto extends EntityDto {
     park: string;
 
     @Field()
+    has_seating: boolean;
+
+    @Field()
+    is_turf: boolean;
+
+    @Field(() => [String])
+    pictures: string[];
+
+    @Field()
+    electricity: boolean;
+
+    @Field(() => [String])
+    sports: string[];
+
+    @Field()
+    is_indoor: boolean;
+
+    @Field()
+    size: boolean;
+
+    @Field()
     highschool_compatible: boolean;
 }

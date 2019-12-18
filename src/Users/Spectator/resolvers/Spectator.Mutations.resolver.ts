@@ -15,9 +15,9 @@ export class SpectatorMutationResolver {
     @Mutation(() => Boolean, { description: "Create a new Spectator" })
     async createSpectator(
         @Args() input: CreateSpectatorInput
-    ): Promise<string> {
-        const spectator = await Spectator.create(input);
-        return spectator._id;
+    ): Promise<boolean | Error> {
+        await Spectator.create(input);
+        return true;
     }
 
     @Mutation(() => Boolean, {
@@ -26,7 +26,7 @@ export class SpectatorMutationResolver {
     })
     async updateSpectator(
         @Args() input: UpdateSpectatorInput
-    ): Promise<string> {
+    ): Promise<boolean | Error> {
         return await this.SpectatorMutationService.updateSpectator(input);
     }
 
@@ -43,6 +43,7 @@ export class SpectatorMutationResolver {
         );
     }
 
+    // TODO Change
     @Mutation(() => Boolean, {
         description:
             "This is the same as removing a Spectator from a player (removes from both)"
@@ -72,7 +73,7 @@ export class SpectatorMutationResolver {
             type != "Spectator" &&
             type != "Guardian"
         )
-            return new Error(
+            throw new Error(
                 `Invalid type (${type})! Must be a type within [Mom, Dad, Guardian, Spectator]`
             );
         return await this.SpectatorMutationService.changeType(
@@ -81,4 +82,5 @@ export class SpectatorMutationResolver {
             type
         );
     }
+
 }

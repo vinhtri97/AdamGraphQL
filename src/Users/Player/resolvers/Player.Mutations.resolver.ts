@@ -19,7 +19,7 @@ export class PlayerMutationResolver {
         const player = await Player.create(input);
         if (player) {
             return true;
-        } else return new Error("Cannot create player");
+        } else throw new Error("Cannot create player");
     }
 
     @Mutation(() => Boolean, { nullable: true })
@@ -62,5 +62,15 @@ export class PlayerMutationResolver {
         @Arg("teamID") teamID: string
     ): Promise<boolean | Error> {
         return await this.playerMutationService.acceptTeam(playerID, teamID);
+    }
+
+    @Mutation(() => Boolean, {
+        description: "This is for a player to leave a team"
+    })
+    async leaveTeam(
+        @Arg("teamID") teamID: string,
+        @Arg("playerID") playerID: string
+    ): Promise<boolean | Error> {
+        return await this.playerMutationService.leaveTeam(playerID, teamID);
     }
 }

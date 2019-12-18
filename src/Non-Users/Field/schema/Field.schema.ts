@@ -6,9 +6,11 @@ const FieldSchema = new mongoose.Schema({
     park: { type: mongoose.Types.ObjectId },
     has_seating: { type: Boolean },
     is_turf: { type: Boolean },
-    // type enum by sport
-    // indoor / outdoor
-    // dimensions/size
+    pictures: { type: Array },
+    electricity: { type: Boolean },
+    sports: { type: Array },
+    is_indoor: { type: Boolean },
+    size: { type: Boolean },
     highschool_compatible: { type: Boolean }
 });
 

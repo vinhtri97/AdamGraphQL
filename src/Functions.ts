@@ -1,4 +1,10 @@
+/* eslint-disable require-atomic-updates */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Spectator from "./Users/Spectator/schema/Spectator.schema";
+import Player from "./Users/Player/schema/Player.schema";
+import Chat from "./Non-Users/Chat/schema/Chat.schema";
+import Team from "./Non-Users/Team/schema/Team.schema";
+import { getCollection } from "./MongooseFunctions";
 import * as mongoose from "mongoose";
 const {
     Types: { ObjectId }
@@ -231,4 +237,235 @@ export const getNestedSpectatorObjects = async (
             Guardian: [],
             Spectator: []
         };
+};
+
+export const handleTeamChatsForParents = async (
+    teamID: string,
+    playerID: string,
+    add = true
+): Promise<boolean> => {
+    function handleArray(myArray: any, userID: string, pushObj: any): any[] {
+        if (add) {
+            const myReturn = [...myArray];
+            const isAlreadyIn = myArray.some(
+                ({ id }: { [key: string]: string }) => id.toString() == userID
+            );
+            if (!isAlreadyIn) {
+                myReturn.push(pushObj);
+            }
+            return myReturn;
+        } else {
+            return myArray.filter((item: any) => item.id.toString() != userID);
+        }
+    }
+    function setAccepted(myArray: any, userID: string, pushObj: any): any[] {
+        if (add) {
+            const myReturn = [...myArray];
+            const foundIndex = myArray.findIndex(
+                ({ id }: { [key: string]: string }) => id.toString() == userID
+            );
+            if (foundIndex > -1) {
+                myReturn[foundIndex] = pushObj;
+            }
+            return myReturn;
+        } else {
+            return myArray.filter((item: any) => item.id.toString() != userID);
+        }
+    }
+    async function parentsToAdd(
+        spectatorArray: any[],
+        fullChatUserArray: any[]
+    ): Promise<any[]> {
+        //Get accepted parent objects
+        const acceptedParents = spectatorArray.filter(
+            ({ accepted, type }: { accepted: boolean; type: string }) =>
+                accepted && type != "Spectator"
+        );
+
+        // Get parents not already in the chat
+        const filteredAcceptedParentsIDs = acceptedParents.filter(
+            (smallSpect: any) =>
+                !fullChatUserArray.some(
+                    ({ id: chatUserID }: { id: string }) =>
+                        smallSpect.id.toString() == chatUserID.toString()
+                )
+        );
+        // Find the objects to make sure they exist
+        const foundSpectators = await Spectator.find({
+            _id: {
+                $in: filteredAcceptedParentsIDs.map((smallObj: any) =>
+                    ObjectId(smallObj.id)
+                )
+            }
+        });
+        // Format the objects to be put into the full chat
+        return foundSpectators.map(({ _id }: { _id: string }) => ({
+            id: ObjectId(_id),
+            type: "Spectator",
+            muted: false
+        }));
+    }
+    async function parentsToRemove(
+        spectatorArray: any[],
+        fullChatUserArray: any[]
+    ): Promise<any[]> {
+        const foundSpectators = await Spectator.find({
+            _id: {
+                $in: spectatorArray.map((smallObj: any) =>
+                    ObjectId(smallObj.id)
+                )
+            }
+        });
+        return foundSpectators.filter((spectatorObj: any) => {
+            return spectatorObj.spectacles.some((spectacle: any) => {
+                return fullChatUserArray.some((userObj: any) => {
+                    return spectacle.id.toString() != userObj.id.toString();
+                });
+            });
+        });
+    }
+    const foundTeam: any = await Team.findById(teamID).limit(1);
+
+    const foundPlayer: any = await Player.findById(playerID).limit(1);
+    const foundPlayerChat: any = await Chat.findById(
+        ObjectId(foundTeam.fullPlayerChat)
+    ).limit(1);
+    const foundFullChat: any = await Chat.findById(
+        ObjectId(foundTeam.fullPlayerAndParentChat)
+    ).limit(1);
+
+    foundPlayerChat.users = handleArray(foundPlayerChat.users, playerID, {
+        id: ObjectId(playerID),
+        type: "Player",
+        muted: false
+    });
+    foundPlayerChat.save();
+
+    foundPlayer.teams = setAccepted(foundPlayer.teams, foundTeam._id, {
+        id: ObjectId(foundTeam._id),
+        accepted: true
+    });
+    foundPlayer.save();
+
+    foundTeam.players = setAccepted(foundTeam.players, playerID, {
+        id: ObjectId(playerID),
+        accepted: true
+    });
+    foundTeam.save();
+
+    foundFullChat.users = handleArray(foundFullChat.users, playerID, {
+        id: ObjectId(playerID),
+        type: "Player",
+        muted: false
+    });
+
+    if (add) {
+        const formattedParents = await parentsToAdd(
+            foundPlayer.spectators,
+            foundFullChat.users
+        );
+        // Put the parents into the full chat
+        foundFullChat.users = foundFullChat.users.concat(formattedParents);
+    } else {
+        // For every parent of the player leaving:
+        // -> For each of that parents' children
+        // -> -> check if the child is in the chat
+        // -> -> -> yes: don't remove the parent (do nothing)
+        // -> -> -> no: remove the parent
+        const parentsToRemoveArray = await parentsToRemove(
+            foundPlayer.spectators,
+            foundFullChat.users
+        );
+        const parentsToRemoveIDs = parentsToRemoveArray.map(
+            (item: any) => item.id
+        );
+        foundFullChat.users = foundFullChat.users.filter(
+            (userObj: any) =>
+                !parentsToRemoveIDs.includes(userObj.id.toString())
+        );
+    }
+    foundFullChat.save();
+
+    return true;
+};
+
+export const handleSpectatorRemoved = async (
+    playerID: string,
+    spectatorID: string
+): Promise<boolean | Error> => {
+    const foundPlayer: any = await getCollection(Player, playerID);
+    const foundSpectator: any = await getCollection(Spectator, spectatorID);
+
+    const spectatorIndex = foundPlayer.spectators.findIndex(
+        (spectatorObj: any) => spectatorObj.id.toString() == spectatorID
+    );
+    //console.log("spectatorIndex", spectatorIndex);
+    if (spectatorIndex > -1) {
+        // remove the spectator from the Player's 'spectators'
+        foundPlayer.spectators.splice(spectatorIndex, 1);
+        const playerIndex = foundSpectator.spectacles.findIndex(
+            (playerObj: any) => playerObj.id.toString() == playerID
+        );
+        //console.log("playerIndex", playerIndex);
+        const isParent =
+            foundSpectator.spectacles[playerIndex].type != "Spectator";
+        //console.log("isParent", isParent);
+        if (playerIndex > -1) {
+            // remove the player from the Spectator's 'spectacles'
+            foundSpectator.spectacles.splice(playerIndex, 1);
+        }
+        //console.log("foundSpectator.spectacles", foundSpectator.spectacles);
+        if (isParent) {
+            const acceptedPlayerTeams = foundPlayer.teams.filter(
+                (teamObj: any) => teamObj.accepted
+            );
+            //console.log("acceptedPlayerTeams", acceptedPlayerTeams);
+            const acceptedTeamIDs = acceptedPlayerTeams.map((teamObj: any) =>
+                teamObj.id.toString()
+            );
+            //console.log("acceptedTeamIDs", acceptedTeamIDs);
+            if (acceptedTeamIDs.length > 0) {
+                const playerTeams: any = await Team.find({
+                    _id: { $in: acceptedTeamIDs }
+                });
+                //console.log("playerTeams", playerTeams);
+                const spectaclesIDs = foundSpectator.spectacles
+                    .filter((spectacleObj: any) => spectacleObj.accepted)
+                    .map((spectacleObj: any) => {
+                        return spectacleObj.id.toString();
+                    });
+                //console.log("spectaclesIDs", spectaclesIDs);
+                await Promise.all(
+                    playerTeams.map(async (team: any) => {
+                        const hasChildren = team.players.some((player: any) =>
+                            spectaclesIDs.includes(player.id.toString())
+                        );
+                        //console.log("hasChildren", hasChildren);
+                        if (!hasChildren) {
+                            const foundChat: any = await Chat.findById(
+                                team.fullPlayerAndParentChat
+                            );
+                            //console.log("foundChat.users", foundChat.users);
+                            foundChat.users = foundChat.users.filter(
+                                (user: any) => {
+                                    return (
+                                        user.id.toString() !=
+                                        foundSpectator._id.toString()
+                                    );
+                                }
+                            );
+                            //console.log("foundChat.users", foundChat.users);
+                            foundChat.save();
+                        }
+                    })
+                );
+            }
+        }
+    }
+    //console.log("foundPlayer.spectators", foundPlayer.spectators);
+    //console.log("foundSpectator.spectacles", foundSpectator.spectacles);
+
+    foundPlayer.save();
+    foundSpectator.save();
+    return true;
 };

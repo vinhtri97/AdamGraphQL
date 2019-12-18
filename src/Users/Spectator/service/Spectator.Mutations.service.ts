@@ -5,24 +5,24 @@ import {
     CreateSpectatorInput,
     UpdateSpectatorInput
 } from "../dto/classes/index";
-import {
-    addToObjArray,
-    removeFromObjArray,
-    changeInObjArray
-} from "../../../MongooseFunctions";
+import { addToObjArray, changeInObjArray } from "../../../MongooseFunctions";
+import { handleSpectatorRemoved } from "../../../Functions";
 import { updateDocument } from "../../../MongooseFunctions";
 // import * as mongoose from "mongoose";
 
 export class SpectatorMutationService {
-    async createSpectator(input: CreateSpectatorInput): Promise<string> {
-        const spectator = await Spectator.create(input);
-        return spectator._id;
+    async createSpectator(
+        input: CreateSpectatorInput
+    ): Promise<boolean | Error> {
+        await Spectator.create(input);
+        return true;
     }
     // async createSpectator()
 
-    async updateSpectator(input: UpdateSpectatorInput): Promise<string> {
-        await updateDocument(Spectator, input);
-        return "Test";
+    async updateSpectator(
+        input: UpdateSpectatorInput
+    ): Promise<boolean | Error> {
+        return await updateDocument(Spectator, input);
     }
 
     async addSpectacle(
@@ -45,14 +45,7 @@ export class SpectatorMutationService {
         spectatorID: string,
         playerID: string
     ): Promise<boolean | Error> {
-        return await removeFromObjArray(
-            Player,
-            "spectators",
-            playerID,
-            Spectator,
-            "spectacles",
-            spectatorID
-        );
+        return await handleSpectatorRemoved(playerID, spectatorID);
     }
 
     async changeType(
@@ -60,6 +53,7 @@ export class SpectatorMutationService {
         playerID: string,
         type: string
     ): Promise<boolean | Error> {
+        // TODO remove spectator from full chat
         return await changeInObjArray(
             Player,
             "spectators",

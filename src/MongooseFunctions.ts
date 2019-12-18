@@ -37,9 +37,9 @@ export const updateDocument = async (
             });
             foundDoc.save();
             return true;
-        } else return new Error("Cannot find collection with that ID.");
+        } else throw new Error("Cannot find collection with that ID.");
     } catch (err) {
-        if (err.kind === "ObjectId") return new Error("Invalid ObjectID.");
+        if (err.kind === "ObjectId") throw new Error("Invalid ObjectID.");
         else return err;
     }
 };
@@ -52,8 +52,8 @@ export const addToStringArray = async (
     arrayTwoName: string,
     idTwo: string
 ): Promise<boolean | Error> => {
-    if (isIDInvalid(idOne)) return new Error(`Invalid ID: '${idOne}'`);
-    if (isIDInvalid(idTwo)) return new Error(`Invalid ID: '${idTwo}'`);
+    if (isIDInvalid(idOne)) throw new Error(`Invalid ID: '${idOne}'`);
+    if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
         const foundOne = await collectionOne.findById(
@@ -85,19 +85,19 @@ export const addToStringArray = async (
                     // If either collection's array already has the item, tell them.
                     // TODO maybe return true
                 } else
-                    return new Error(
+                    throw new Error(
                         // eslint-disable-next-line prettier/prettier
                         `'${foundOne[`${arrayOneName}`].toString()}' includes '${idTwo}' or '${foundTwo[`${arrayTwoName}`].toString()}' includes '${idOne}'.`
                     );
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
-                return new Error(
+                throw new Error(
                     // eslint-disable-next-line prettier/prettier
                     `'${arrayOneName in foundOne ? arrayTwoName : arrayOneName}' is an invalid array name. This means Adam made a mistake spelling something in the backend.`
                 );
             // If both collections don't exist, tell them the invalid ID
         } else {
-            return new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
+            throw new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
         }
     } catch (err) {
         return err;
@@ -112,8 +112,8 @@ export const removeFromStringArray = async (
     arrayTwoName: string,
     idTwo: string
 ): Promise<boolean | Error> => {
-    if (isIDInvalid(idOne)) return new Error(`Invalid ID: '${idOne}'`);
-    if (isIDInvalid(idTwo)) return new Error(`Invalid ID: '${idTwo}'`);
+    if (isIDInvalid(idOne)) throw new Error(`Invalid ID: '${idOne}'`);
+    if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
         const foundOne = await collectionOne.findById(
@@ -145,13 +145,13 @@ export const removeFromStringArray = async (
                 // TODO maybe return true
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
-                return new Error(
+                throw new Error(
                     // eslint-disable-next-line prettier/prettier
                     `'${arrayOneName in foundOne ? arrayTwoName : arrayOneName}' is an invalid array name. This means Adam made a mistake spelling something in the backend.`
                 );
             // If both collections don't exist, tell them the invalid ID
         } else {
-            return new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
+            throw new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
         }
     } catch (err) {
         return err;
@@ -168,8 +168,8 @@ export const addToObjArray = async (
     idTwo: string,
     objTwoInfo: any
 ): Promise<boolean | Error> => {
-    if (isIDInvalid(idOne)) return new Error(`Invalid ID: '${idOne}'`);
-    if (isIDInvalid(idTwo)) return new Error(`Invalid ID: '${idTwo}'`);
+    if (isIDInvalid(idOne)) throw new Error(`Invalid ID: '${idOne}'`);
+    if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
         const foundOne = await collectionOne.findById(
@@ -206,19 +206,19 @@ export const addToObjArray = async (
                     // If either collection's array already has the item, tell them.
                     // TODO maybe return true
                 } else return true;
-                // return new Error(
+                // throw new Error(
                 //     // eslint-disable-next-line prettier/prettier
                 //     `'${foundOne[`${arrayOneName}`].toString()}' includes '${idTwo}' or '${foundTwo[`${arrayTwoName}`].toString()}' includes '${idOne}'.`
                 // );
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
-                return new Error(
+                throw new Error(
                     // eslint-disable-next-line prettier/prettier
                     `'${arrayOneName in foundOne ? arrayTwoName : arrayOneName}' is an invalid array name. This means Adam made a mistake spelling something in the backend.`
                 );
             // If both collections don't exist, tell them the invalid ID
         } else {
-            return new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
+            throw new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
         }
     } catch (err) {
         return err;
@@ -233,8 +233,8 @@ export const removeFromObjArray = async (
     arrayTwoName: string,
     idTwo: string
 ): Promise<boolean | Error> => {
-    if (isIDInvalid(idOne)) return new Error(`Invalid ID: '${idOne}'`);
-    if (isIDInvalid(idTwo)) return new Error(`Invalid ID: '${idTwo}'`);
+    if (isIDInvalid(idOne)) throw new Error(`Invalid ID: '${idOne}'`);
+    if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
         const foundOne = await collectionOne.findById(
@@ -251,7 +251,7 @@ export const removeFromObjArray = async (
             // If both arrays exist in the both documents
             foundOne[`${arrayOneName}`] = foundOne[`${arrayOneName}`].filter(
                 ({ id }: { [key: string]: string }) => idTwo != id.toString()
-            );            
+            );
             foundTwo[`${arrayTwoName}`] = foundTwo[`${arrayTwoName}`].filter(
                 ({ id }: { [key: string]: string }) => idOne != id.toString()
             );
@@ -262,7 +262,7 @@ export const removeFromObjArray = async (
             // TODO maybe return true
             // If either collection has an invalid array name, tell them it's wrong in the backend.
         } else {
-            return new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
+            throw new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
         }
     } catch (err) {
         return err;
@@ -279,8 +279,8 @@ export const changeInObjArray = async (
     idTwo: string,
     objTwoInfo: any
 ): Promise<boolean | Error> => {
-    if (isIDInvalid(idOne)) return new Error(`Invalid ID: '${idOne}'`);
-    if (isIDInvalid(idTwo)) return new Error(`Invalid ID: '${idTwo}'`);
+    if (isIDInvalid(idOne)) throw new Error(`Invalid ID: '${idOne}'`);
+    if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
         const foundOne = await collectionOne.findById(
@@ -321,15 +321,26 @@ export const changeInObjArray = async (
                 // TODO maybe return true
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
-                return new Error(
+                throw new Error(
                     // eslint-disable-next-line prettier/prettier
                     `'${arrayOneName in foundOne ? arrayTwoName : arrayOneName}' is an invalid array name. This means Adam made a mistake spelling something in the backend.`
                 );
             // If both collections don't exist, tell them the invalid ID
         } else {
-            return new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
+            throw new Error(`Invalid ID: '${foundOne ? idTwo : idOne}'.`);
         }
     } catch (err) {
         return err;
     }
+};
+
+export const getCollection = async (
+    collectionName: mongoose.Model<any>,
+    id: string
+): Promise<mongoose.Model<any>> => {
+    if (isIDInvalid(id)) throw new Error(`Invalid ID: '${id}'`);
+    const foundCollection = await collectionName.findById(id);
+    if (!foundCollection)
+        throw new Error(`No ${foundCollection} found with '${id}'.`);
+    return foundCollection;
 };

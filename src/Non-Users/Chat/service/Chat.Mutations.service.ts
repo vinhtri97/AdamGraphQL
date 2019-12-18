@@ -17,9 +17,9 @@ export class ChatMutationService {
         // const { players, coaches, spectators, directors } = input;
         if ("team_id" in input) {
             if (!mongoose.Types.ObjectId.isValid(input.team_id))
-                return new Error(`Invalid Team ID: ${input.team_id}`);
+                throw new Error(`Invalid Team ID: ${input.team_id}`);
             const team: any = await Team.findById(input.team_id);
-            if (!team) return new Error(`Invalid Team ID: ${input.team_id}`);
+            if (!team) throw new Error(`Invalid Team ID: ${input.team_id}`);
             const chat = await Chat.create(input);
             if (!team.chats.includes(chat._id)) {
                 team.chats.push(ObjectId(chat._id));
@@ -52,7 +52,7 @@ export class ChatMutationService {
         } else if (userType == "Director") {
             foundUser = await Director.findById(userID).limit(1);
         } else
-            return new Error(
+            throw new Error(
                 "The user's type must be 'Player' or 'Coach' or 'Spectator' or 'Director'."
             );
         if (foundChat && foundUser) {
@@ -77,7 +77,7 @@ export class ChatMutationService {
                 foundUser.save();
             }
             return true;
-        } else return new Error("Cannot find a collection with that ID.");
+        } else throw new Error("Cannot find a collection with that ID.");
     }
 
     async removeUser(
@@ -96,7 +96,7 @@ export class ChatMutationService {
         } else if (userType == "Director") {
             foundUser = await Director.findById(userID).limit(1);
         } else
-            return new Error(
+            throw new Error(
                 "The user's type must be 'Player' or 'Coach' or 'Spectator' or 'Director'."
             );
         if (foundChat && foundUser) {
@@ -110,7 +110,7 @@ export class ChatMutationService {
             foundChat.save();
             foundUser.save();
             return true;
-        } else return new Error("Cannot find a collection with that ID.");
+        } else throw new Error("Cannot find a collection with that ID.");
     }
 
     async changeMutedStatus(
@@ -130,6 +130,6 @@ export class ChatMutationService {
                 foundChat.save();
             }
             return true;
-        } else return new Error("Cannot find a collection with that ID.");
+        } else throw new Error("Cannot find a collection with that ID.");
     }
 }
