@@ -439,6 +439,9 @@ type Mutation {
   removeCoachFromTeam(coachID: String!, teamID: String!): Boolean!
   createTournament(name: String!, description: String, start_date: String!, end_date: String!, age_groups: String!, flyer: String, max_teams: Float, pay_at_the_plate: Boolean!, hotels: String, allowed_assistants: Float): Boolean!
   updateTournament(id: String!, name: String, description: String, start_date: String, end_date: String, age_groups: String, flyer: String, max_teams: Float, pay_at_the_plate: Boolean, hotels: String, allowed_assistants: Float): Boolean!
+  addTeamToTournament(ageGroup: String!, tournamentID: String!, teamID: String!): Boolean!
+  removeTeamFromTournament(ageGroup: String!, tournamentID: String!, teamID: String!): Boolean!
+  removeTeamsFromAgeGroupInTournament(ageGroup: String!, tournamentID: String!): Boolean!
   createVideo(name: String!, description: String, url: String!, type: String!, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String!, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: CreateUploadedByInput!): Boolean!
   updateVideo(id: String!, name: String, description: String, url: String, type: String, jersey_color: String, jersey_number: String, specific_type: String, facility: String, date: String, teams: [String!], likes: [String!], accepted: Boolean, uploaded_by: UploadedByInput): Boolean!
 }
