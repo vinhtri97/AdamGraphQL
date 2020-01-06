@@ -23,6 +23,7 @@ const SpectacleObj = {
 const SpectatorSchema = new mongoose.Schema({
     ...UserSchema,
     // TODO Will chats always be connected through a team?
+    user_type: { type: String, default: "Spectator" },
     chats: [{ ...ChatObj }],
     spectacles: [{ ...SpectacleObj }]
 });

@@ -53,7 +53,7 @@ export const getNestedObjects = async (
         }
     ]);
 
-    if (array.length > 0) return array;
+    if (array.length > 0 && "models" in array[0]) return array[0].models;
     else return [];
 };
 
@@ -109,8 +109,13 @@ export const getNestedTrueFalseObjects = async (
         }
     ]);
 
-    if (array.length > 0 && "pending" in array[0]) return array[0];
-    else return { pending: [], accepted: [] };
+    if (array.length > 0 && "pending" in array[0]) {
+        array[0].pending = array[0].pending.filter((item: any) => item != null);
+        array[0].accepted = array[0].accepted.filter(
+            (item: any) => item != null
+        );
+        return array[0];
+    } else return { pending: [], accepted: [] };
 };
 
 class SpectatorReturn {
@@ -228,6 +233,15 @@ export const getNestedSpectatorObjects = async (
     ]);
     console.log(array);
     if (array.length > 0 && "Mom" in array[0]) {
+        array[0].pending = array[0].pending.filter((item: any) => item != null);
+        array[0].Mom = array[0].Mom.filter((item: any) => item != null);
+        array[0].Dad = array[0].Dad.filter((item: any) => item != null);
+        array[0].Guardian = array[0].Guardian.filter(
+            (item: any) => item != null
+        );
+        array[0].Spectator = array[0].Spectator.filter(
+            (item: any) => item != null
+        );
         return array[0];
     } else
         return {

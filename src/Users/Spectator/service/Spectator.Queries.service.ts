@@ -23,32 +23,23 @@ export class SpectatorQueryService {
             "players",
             "spectacles"
         );
-        obj.pending = obj.pending.filter(item => item != null);
-        obj.Mom = obj.Mom.filter(item => item != null);
-        obj.Dad = obj.Dad.filter(item => item != null);
-        obj.Guardian = obj.Guardian.filter(item => item != null);
-        obj.Spectator = obj.Spectator.filter(item => item != null);
+        const { pending, ...rest } = obj;
         const returnObj = {
-            pending: obj.pending,
-            accepted: {
-                Mom: obj.Mom,
-                Dad: obj.Dad,
-                Guardian: obj.Guardian,
-                Spectator: obj.Spectator
-            }
+            pending,
+            accepted: { ...rest }
         };
         return returnObj;
     }
 
     async getChats(id: string): Promise<ChatDto[]> {
-        const obj = await getNestedObjects(
+        const res = await getNestedObjects(
             Spectator,
             id,
             "chats",
             "chats",
             "chat_id"
         );
-
-        return obj;
+        console.log(res);
+        return res;
     }
 }

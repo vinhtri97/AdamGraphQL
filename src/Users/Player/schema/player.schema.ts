@@ -4,7 +4,7 @@ import UserSchema from "../../Generic/schema/User.schema";
 
 const playerSchema = new Schema({
     ...UserSchema,
-    user_type: { type: String, default: "Coach" },
+    user_type: { type: String, default: "Player" },
     school_info: {
         grad_year: { type: String },
         school_district: { type: String },

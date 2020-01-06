@@ -28,8 +28,6 @@ export class PlayerMutationService {
                 "teams",
                 "teams"
             );
-            teams.pending = teams.pending.filter(item => item != null);
-            teams.accepted = teams.accepted.filter(item => item != null);
 
             const foundTeams: any = await Team.find({
                 _id: {

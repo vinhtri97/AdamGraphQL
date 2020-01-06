@@ -31,7 +31,9 @@ export class SpectatorQueryResolver {
     }
 
     @Query(() => [ChatDto])
-    async getChatsForSpectator(@Arg("id") id: string): Promise<ChatDto[]> {
-        return await this.SpectatorQueryService.getChats(id);
+    async getChatsForSpectator(
+        @Arg("spectatorID") spectatorID: string
+    ): Promise<ChatDto[]> {
+        return await this.SpectatorQueryService.getChats(spectatorID);
     }
 }
