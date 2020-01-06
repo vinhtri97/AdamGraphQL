@@ -14,21 +14,42 @@ const {
 } = mongoose;
 export class ChatMutationService {
     async createChat(input: CreateChatInput): Promise<boolean | Error> {
-        // const { players, coaches, spectators, directors } = input;
+        const { users } = input;
+        let createdChat = null;
+        let team_id = null;
         if ("team_id" in input) {
-            if (!mongoose.Types.ObjectId.isValid(input.team_id))
-                throw new Error(`Invalid Team ID: ${input.team_id}`);
-            const team: any = await Team.findById(input.team_id);
-            if (!team) throw new Error(`Invalid Team ID: ${input.team_id}`);
-            const chat = await Chat.create(input);
-            if (!team.chats.includes(chat._id)) {
-                team.chats.push(ObjectId(chat._id));
+            team_id = input.team_id;
+            if (!mongoose.Types.ObjectId.isValid(team_id))
+                throw new Error(`Invalid Team ID: ${team_id}`);
+            const team: any = await Team.findById(team_id);
+            if (!team) throw new Error(`Invalid Team ID: ${team_id}`);
+            createdChat = await Chat.create(input);
+            if (!team.chats.includes(createdChat._id)) {
+                team.chats.push(ObjectId(createdChat._id));
                 team.save();
             }
-            return true;
+        } else {
+            const myChat: any = await Chat.create(input);
+            if ("users" in input) {
+                const spectators = users.filter(
+                    (item: { type: string }) => item.type == "Spectator"
+                );
+                const spectatorChatObj: { [k: string]: any } = {
+                    chat_id: ObjectId(myChat._id),
+                    has_muted: false
+                };
+                if ("team_id" in input) {
+                    spectatorChatObj.team_id = team_id;
+                }
+                await Promise.all(
+                    spectators.map(async (spectator: { id: any }) => {
+                        return await Spectator.findByIdAndUpdate(spectator.id, {
+                            $addToSet: { chats: spectatorChatObj }
+                        });
+                    })
+                );
+            }
         }
-        await Chat.create(input);
-        // await Promise.all(spectators.map(({id:spectID}: ChatUser) => await ))
         return true;
     }
 

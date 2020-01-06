@@ -1,21 +1,28 @@
 import Coach from "../schema/Coach.schema";
 import Player from "../../Player/schema/Player.schema";
 import { CreateCoachInput, UpdateCoachInput } from "../dto/classes/index";
-import { addToStringArray, updateDocument } from "../../../MongooseFunctions";
+import {
+    addToStringArray,
+    updateDocument,
+    removeFromStringArray
+} from "../../../MongooseFunctions";
 export class CoachMutationService {
-    async createCoach(input: CreateCoachInput): Promise<string> {
+    async createCoach(input: CreateCoachInput): Promise<boolean | Error> {
         const coach = await Coach.create(input);
-        return coach._id;
+        if (coach) return true;
+        else return new Error("Could not create coach");
     }
     // async createCoach()
 
-    async updateCoach(input: UpdateCoachInput): Promise<string> {
-        await updateDocument(Coach, input);
-        return "Test";
+    async updateCoach(input: UpdateCoachInput): Promise<boolean | Error> {
+        return await updateDocument(Coach, input);
     }
 
-    async addFavorite(coachID: string, playerID: string): Promise<string> {
-        await addToStringArray(
+    async addFavorite(
+        coachID: string,
+        playerID: string
+    ): Promise<boolean | Error> {
+        return await addToStringArray(
             Player,
             "favorites",
             playerID,
@@ -23,6 +30,19 @@ export class CoachMutationService {
             "favorites",
             coachID
         );
-        return "ok";
+    }
+
+    async removeFavorite(
+        coachID: string,
+        playerID: string
+    ): Promise<boolean | Error> {
+        return await removeFromStringArray(
+            Player,
+            "favorites",
+            playerID,
+            Coach,
+            "favorites",
+            coachID
+        );
     }
 }

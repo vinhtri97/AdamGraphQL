@@ -82,5 +82,4 @@ export class SpectatorMutationResolver {
             type
         );
     }
-
 }
