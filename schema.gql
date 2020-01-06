@@ -340,6 +340,18 @@ type GetSpectaclesDto {
   accepted: GetSpectacles!
 }
 
+type GetSpectators {
+  Mom: [SpectatorDto!]!
+  Dad: [SpectatorDto!]!
+  Guardian: [SpectatorDto!]!
+  Spectator: [SpectatorDto!]!
+}
+
+type GetSpectatorsDto {
+  pending: [SpectatorDto!]!
+  accepted: GetSpectators!
+}
+
 type GetTeamsDto {
   accepted: [TeamDto!]!
   pending: [TeamDto!]!
@@ -571,6 +583,7 @@ type Query {
   getPlayerByID(id: String!): PlayerDto!
   getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getTeamsForPlayer(playerID: String!): GetTeamsDto!
+  getSpectatorsForPlayer(playerID: String!): GetSpectatorsDto!
   getAllSpectators: [SpectatorDto!]!
   getSpectatorByID(spectatorID: String!): SpectatorDto!
   getKidsForSpectator(spectatorID: String!): GetSpectaclesDto!

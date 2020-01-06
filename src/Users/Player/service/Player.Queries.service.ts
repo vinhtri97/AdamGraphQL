@@ -1,8 +1,13 @@
 import Player from "../schema/Player.schema";
 import PlayerDto from "../dto/Player.dto";
-import { getObjects, getNestedTrueFalseObjects } from "../../../Functions";
-import { GetTeamsDto } from "../dto/classes/index";
+import {
+    getObjects,
+    getNestedTrueFalseObjects,
+    getNestedSpectatorObjects
+} from "../../../Functions";
+import { GetTeamsDto, GetSpectatorsDto } from "../dto/classes/index";
 import CoachDto from "../../Coach/dto/Coach.dto";
+
 export class PlayerQueryService {
     async getPlayers(): Promise<Array<PlayerDto>> {
         return await Player.find({}).lean();
@@ -19,5 +24,20 @@ export class PlayerQueryService {
             "teams",
             "teams"
         );
+    }
+
+    async getSpectatorsForPlayer(playerID: string): Promise<GetSpectatorsDto> {
+        const obj = await getNestedSpectatorObjects(
+            Player,
+            playerID,
+            "spectators",
+            "spectators"
+        );
+        const { pending, ...rest } = obj;
+        const returnObj = {
+            pending,
+            accepted: { ...rest }
+        };
+        return returnObj;
     }
 }

@@ -5,7 +5,7 @@ import CoachDto from "../../Coach/dto/Coach.dto";
 import PlayerDto from "../dto/Player.dto";
 import Player from "../schema/Player.schema";
 import { PlayerQueryService } from "../service/index";
-import { GetTeamsDto } from "../dto/classes/index";
+import { GetTeamsDto, GetSpectatorsDto } from "../dto/classes/index";
 // import { getObjects } from "./../../../Functions";
 
 // const ObjectId = mongoose.Types.ObjectId;
@@ -38,5 +38,12 @@ export class PlayerQueryResolver {
         @Arg("playerID") playerID: string
     ): Promise<GetTeamsDto> {
         return await this.playerQueryService.getTeamsForPlayer(playerID);
+    }
+
+    @Query(() => GetSpectatorsDto)
+    async getSpectatorsForPlayer(
+        @Arg("playerID") playerID: string
+    ): Promise<GetSpectatorsDto> {
+        return await this.playerQueryService.getSpectatorsForPlayer(playerID);
     }
 }
