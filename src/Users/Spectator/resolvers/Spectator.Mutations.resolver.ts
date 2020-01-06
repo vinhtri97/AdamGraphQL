@@ -82,4 +82,15 @@ export class SpectatorMutationResolver {
             type
         );
     }
+
+    @Mutation(() => Boolean)
+    async le(
+        @Arg("spectatorID") spectatorID: string,
+        @Arg("playerID") playerID: string
+    ): Promise<boolean | Error> {
+        return await this.SpectatorMutationService.removeSpectacle(
+            spectatorID,
+            playerID
+        );
+    }
 }

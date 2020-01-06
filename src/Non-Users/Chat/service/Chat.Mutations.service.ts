@@ -124,12 +124,15 @@ export class ChatMutationService {
             foundChat.users = foundChat.users.filter(
                 ({ id }: { [key: string]: any }) => id.toString() != userID
             );
-            foundChat.users = foundUser.chats.filter(
-                ({ chat_id }: { [key: string]: any }) =>
-                    chat_id.toString() != chatID
-            );
+            if ("chats" in foundUser) {
+                foundUser.chats = foundUser.chats.filter(
+                    ({ chat_id }: { [key: string]: any }) =>
+                        chat_id.toString() != chatID
+                );
+                foundUser.save();
+            }
             foundChat.save();
-            foundUser.save();
+
             return true;
         } else throw new Error("Cannot find a collection with that ID.");
     }

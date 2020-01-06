@@ -432,6 +432,7 @@ type Mutation {
   This is to change the spectator's type in both the Player and Spectator Object
   """
   changeSpectatorType(type: String!, playerID: String!, spectatorID: String!): Boolean!
+  le(playerID: String!, spectatorID: String!): Boolean!
   createBug(name: String!, description: String, message: String!, date: String!, category: String!, email: String!, first_name: String!, last_name: String!): Boolean!
   updateBug(id: String!, name: String, description: String, message: String, date: String, category: String, email: String, first_name: String, last_name: String): Boolean!
   createChat(name: String, description: String, users: [ChatUserInput!], team_id: String): Boolean!
