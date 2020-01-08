@@ -1,8 +1,9 @@
-import { Mutation, Resolver, Args } from "type-graphql";
-// import VideoDto from "../dto/Video.dto";
-// import Video from "../schema/Video.schema";
-import { VideoMutationService } from "../service/index";
-import { CreateVideoInput, UpdateVideoInput } from "../dto/classes/index";
+import { Arg, Args, Mutation, Resolver } from 'type-graphql';
+
+import { UserTypes } from '../../../Users/Generic/enums/UserTypes';
+import { CreateVideoInput, UpdateVideoInput } from '../dto/classes';
+import { VideoMutationService } from '../service';
+
 @Resolver()
 export class VideoMutationResolver {
     VideoMutationService: VideoMutationService;
@@ -12,16 +13,24 @@ export class VideoMutationResolver {
 
     // TODO validate uploadedBy id?
     @Mutation(() => Boolean)
-    async createVideo(
-        @Args() input: CreateVideoInput
-    ): Promise<boolean | Error> {
+    async createVideo(@Args() input: CreateVideoInput): Promise<boolean | Error> {
         return await this.VideoMutationService.createVideo(input);
     }
 
     @Mutation(() => Boolean)
-    async updateVideo(
-        @Args() input: UpdateVideoInput
-    ): Promise<boolean | Error> {
+    async updateVideo(@Args() input: UpdateVideoInput): Promise<boolean | Error> {
         return await this.VideoMutationService.updateVideo(input);
+    }
+
+    @Mutation(() => Boolean)
+    async changeVideoLike(
+        @Arg('vidID') vidID: string,
+        @Arg('userID') userID: string,
+        @Arg('userType') userType: string,
+        @Arg('liked') liked: boolean
+    ): Promise<boolean | Error> {
+        if (!Object.keys(UserTypes).includes(userType))
+            throw new Error('User type must be in:' + Object.keys(UserTypes));
+        return await this.VideoMutationService.changeLike(vidID, userID, userType, liked);
     }
 }

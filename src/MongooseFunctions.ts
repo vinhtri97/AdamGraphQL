@@ -15,7 +15,6 @@ export const updateDocument = async (
     const inputWithoutID = { ...args };
     delete inputWithoutID.id;
     try {
-        // await Player.findByIdAndUpdate(input.id, { $set: inputWithoutID });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const foundDoc: any = await collection.findById(args.id).limit(1);
         // For each entry...

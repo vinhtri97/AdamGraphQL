@@ -20,6 +20,7 @@ export class ChatQueryService {
         };
         const foundChat: any = await Chat.findById(id).limit(1);
         if (!foundChat) throw new Error("Invalid Chat ID");
+        // TODO change to find({_id: { $in: }})
         await Promise.all(
             foundChat.users.map(
                 async ({ id: userID, type }: { [key: string]: any }) => {

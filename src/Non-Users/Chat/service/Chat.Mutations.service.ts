@@ -41,6 +41,7 @@ export class ChatMutationService {
                 if ("team_id" in input) {
                     spectatorChatObj.team_id = team_id;
                 }
+                // TODO change to updatemany
                 await Promise.all(
                     spectators.map(async (spectator: { id: any }) => {
                         return await Spectator.findByIdAndUpdate(spectator.id, {
