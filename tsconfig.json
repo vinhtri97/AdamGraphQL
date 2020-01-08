@@ -14,7 +14,7 @@
         "listFiles": true,
         "composite": false,
         "removeComments": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "strictNullChecks": false,
         "strictFunctionTypes": true,
         "noImplicitThis": true,

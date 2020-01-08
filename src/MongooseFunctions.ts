@@ -1,30 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose';
+
 const {
-    Types: { ObjectId }
+    Types: { ObjectId },
 } = mongoose;
 
 export const isIDInvalid = (objectID: string): boolean => {
     return !mongoose.Types.ObjectId.isValid(objectID);
 };
 
-export const updateDocument = async (
-    collection: mongoose.Model<any>,
-    args: any
-): Promise<boolean> => {
-    const inputWithoutID = { ...args };
-    delete inputWithoutID.id;
+export const updateDocument = async (collection: mongoose.Model<any>, args: any): Promise<boolean> => {
+    const { id, ...rest } = args;
     try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const foundDoc: any = await collection.findById(args.id).limit(1);
+        const foundDoc: any = await collection.findById(id).limit(1);
         // For each entry...
         // thumbnail, email, personal...
         if (foundDoc) {
-            Object.entries(inputWithoutID).forEach(entry => {
+            Object.entries(rest).forEach(entry => {
                 const value = entry[1];
                 const key = entry[0];
                 // This means that there is nesting! Example: (personal { first_name })
-                if (typeof value === "object" && value !== null) {
+                if (typeof value === 'object' && value !== null) {
                     Object.entries(value).forEach(subEntry => {
                         const subValue = subEntry[1];
                         const subKey = subEntry[0];
@@ -36,9 +33,9 @@ export const updateDocument = async (
             });
             foundDoc.save();
             return true;
-        } else throw new Error("Cannot find collection with that ID.");
+        } else throw new Error('Cannot find collection with that ID.');
     } catch (err) {
-        if (err.kind === "ObjectId") throw new Error("Invalid ObjectID.");
+        if (err.kind === 'ObjectId') throw new Error('Invalid ObjectID.');
         else return err;
     }
 };
@@ -55,27 +52,15 @@ export const addToStringArray = async (
     if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
-        const foundOne = await collectionOne.findById(
-            idOne,
-            err => new Error(err)
-        );
+        const foundOne = await collectionOne.findById(idOne, err => new Error(err));
         // Find the second collection
-        const foundTwo = await collectionTwo.findById(
-            idTwo,
-            err => new Error(err)
-        );
+        const foundTwo = await collectionTwo.findById(idTwo, err => new Error(err));
         // If both collections exist
         if (foundOne && foundTwo) {
             // If both arrays exist in the both documents
-            if (
-                `${arrayOneName}` in foundOne &&
-                `${arrayTwoName}` in foundTwo
-            ) {
+            if (`${arrayOneName}` in foundOne && `${arrayTwoName}` in foundTwo) {
                 // If neither array already contains the value
-                if (
-                    !foundOne[`${arrayOneName}`].includes(idTwo) &&
-                    !foundTwo[`${arrayTwoName}`].includes(idOne)
-                ) {
+                if (!foundOne[`${arrayOneName}`].includes(idTwo) && !foundTwo[`${arrayTwoName}`].includes(idOne)) {
                     foundOne[`${arrayOneName}`].push(ObjectId(idTwo));
                     foundTwo[`${arrayTwoName}`].push(ObjectId(idOne));
                     foundOne.save();
@@ -111,28 +96,15 @@ export const removeFromStringArray = async (
     if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
-        const foundOne = await collectionOne.findById(
-            idOne,
-            err => new Error(err)
-        );
+        const foundOne = await collectionOne.findById(idOne, err => new Error(err));
         // Find the second collection
-        const foundTwo = await collectionTwo.findById(
-            idTwo,
-            err => new Error(err)
-        );
+        const foundTwo = await collectionTwo.findById(idTwo, err => new Error(err));
         // If both collections exist
         if (foundOne && foundTwo) {
             // If both arrays exist in the both documents
-            if (
-                `${arrayOneName}` in foundOne &&
-                `${arrayTwoName}` in foundTwo
-            ) {
-                foundOne[`${arrayOneName}`] = foundOne[
-                    `${arrayOneName}`
-                ].filter((id: any) => idTwo.toString() != id);
-                foundTwo[`${arrayTwoName}`] = foundTwo[
-                    `${arrayTwoName}`
-                ].filter((id: any) => idOne.toString() != id);
+            if (`${arrayOneName}` in foundOne && `${arrayTwoName}` in foundTwo) {
+                foundOne[`${arrayOneName}`] = foundOne[`${arrayOneName}`].filter((id: any) => idTwo.toString() != id);
+                foundTwo[`${arrayTwoName}`] = foundTwo[`${arrayTwoName}`].filter((id: any) => idOne.toString() != id);
                 foundOne.save();
                 foundTwo.save();
                 return true;
@@ -167,29 +139,16 @@ export const addToObjArray = async (
     if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
-        const foundOne = await collectionOne.findById(
-            idOne,
-            err => new Error(err)
-        );
+        const foundOne = await collectionOne.findById(idOne, err => new Error(err));
         // Find the second collection
-        const foundTwo = await collectionTwo.findById(
-            idTwo,
-            err => new Error(err)
-        );
+        const foundTwo = await collectionTwo.findById(idTwo, err => new Error(err));
         // If both collections exist
         if (foundOne && foundTwo) {
             // If both arrays exist in the both documents
-            if (
-                `${arrayOneName}` in foundOne &&
-                `${arrayTwoName}` in foundTwo
-            ) {
+            if (`${arrayOneName}` in foundOne && `${arrayTwoName}` in foundTwo) {
                 // If neither array already contains the value
-                const isFoundOne = foundOne[`${arrayOneName}`].some(
-                    ({ id }: { [key: string]: string }) => id == idTwo
-                );
-                const isFoundTwo = foundTwo[`${arrayTwoName}`].some(
-                    ({ id }: { [key: string]: string }) => id == idOne
-                );
+                const isFoundOne = foundOne[`${arrayOneName}`].some(({ id }: { [key: string]: string }) => id == idTwo);
+                const isFoundTwo = foundTwo[`${arrayTwoName}`].some(({ id }: { [key: string]: string }) => id == idOne);
                 if (!isFoundOne && !isFoundTwo) {
                     const pushOne = { id: ObjectId(idTwo), ...objOneInfo };
                     const pushTwo = { id: ObjectId(idOne), ...objTwoInfo };
@@ -226,15 +185,9 @@ export const removeFromObjArray = async (
     if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
-        const foundOne = await collectionOne.findById(
-            idOne,
-            err => new Error(err)
-        );
+        const foundOne = await collectionOne.findById(idOne, err => new Error(err));
         // Find the second collection
-        const foundTwo = await collectionTwo.findById(
-            idTwo,
-            err => new Error(err)
-        );
+        const foundTwo = await collectionTwo.findById(idTwo, err => new Error(err));
         // If both collections exist
         if (foundOne && foundTwo) {
             // If both arrays exist in the both documents
@@ -272,15 +225,9 @@ export const changeInObjArray = async (
     if (isIDInvalid(idTwo)) throw new Error(`Invalid ID: '${idTwo}'`);
     try {
         // Find the first collection
-        const foundOne = await collectionOne.findById(
-            idOne,
-            err => new Error(err)
-        );
+        const foundOne = await collectionOne.findById(idOne, err => new Error(err));
         // Find the second collection
-        const foundTwo = await collectionTwo.findById(
-            idTwo,
-            err => new Error(err)
-        );
+        const foundTwo = await collectionTwo.findById(idTwo, err => new Error(err));
         // If both collections exist
         if (foundOne && foundTwo) {
             // If neither array already contains the value
@@ -308,7 +255,7 @@ export const changeInObjArray = async (
                 return true;
             } else
                 throw new Error(
-                    "There is an error changing at least one of the documents (check to make sure the documents are already linked)."
+                    'There is an error changing at least one of the documents (check to make sure the documents are already linked).'
                 );
             // If both collections don't exist, tell them the invalid ID
         } else {
@@ -319,13 +266,9 @@ export const changeInObjArray = async (
     }
 };
 
-export const getCollection = async (
-    collectionName: mongoose.Model<any>,
-    id: string
-): Promise<mongoose.Model<any>> => {
+export const getCollection = async (collectionName: mongoose.Model<any>, id: string): Promise<mongoose.Model<any>> => {
     if (isIDInvalid(id)) throw new Error(`Invalid ID: '${id}'`);
     const foundCollection = await collectionName.findById(id);
-    if (!foundCollection)
-        throw new Error(`No ${foundCollection} found with '${id}'.`);
+    if (!foundCollection) throw new Error(`No ${foundCollection} found with '${id}'.`);
     return foundCollection;
 };
