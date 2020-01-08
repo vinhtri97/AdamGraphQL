@@ -16,4 +16,10 @@ export class BugMutationService {
     async updateBug(input: UpdateBugInput): Promise<boolean | Error> {
         return await updateDocument(Bug, input);
     }
+
+    async deleteBug(bugID: string): Promise<boolean | Error> {
+        const res = await Bug.findByIdAndDelete(bugID);
+        if (res) return true;
+        else throw new Error("Cannot find a bug with that ID");
+    }
 }

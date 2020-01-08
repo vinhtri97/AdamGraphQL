@@ -10,6 +10,7 @@ export class UpdateTournamentInput extends UpdateEntityInput {
     @Field(() => String, { nullable: true })
     end_date?: string;
 
+    // TODO Age groups
     @Field(() => String, { nullable: true })
     age_groups?: string;
 

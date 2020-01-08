@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 // const Schema = mongoose.Schema;
 // import { extendSchema } from "../../../Functions";
 import UserSchema from "../../Generic/schema/User.schema";
+import { SpectatorTypes } from "../enums/index";
 
 const ChatObj = {
     _id: false,
@@ -14,7 +15,7 @@ const SpectacleObj = {
     accepted: { type: Boolean, default: false },
     type: {
         type: String,
-        enum: ["Mom", "Dad", "Guardian", "Spectator"],
+        enum: Object.values(SpectatorTypes),
         default: "Spectator"
     },
     id: { type: mongoose.Types.ObjectId }

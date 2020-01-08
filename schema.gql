@@ -319,7 +319,7 @@ type GetCoachesDto {
 }
 
 type GetPlayersAndParentsDto {
-  players: [PlayerDto!]!
+  players: PendingOrAccepted!
   parents: [SpectatorDto!]!
 }
 
@@ -389,12 +389,8 @@ type Mutation {
   updateCoach(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, teams: [String!], sport_info: CoachSportInfoInput, favorites: [String!], school_info: CoachSchoolInfoInput): Boolean!
   addFavorite(coachID: String!, playerID: String!): Boolean!
   removeFavorite(coachID: String!, playerID: String!): Boolean!
-
-  """This is something"""
-  createDirector(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, tournaments: [String!], association: String): String!
-
-  """This is something"""
-  updateDirector(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, tournaments: [String!], association: String): String!
+  createDirector(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, tournaments: [String!], association: String): Boolean!
+  updateDirector(id: String!, firebase_id: String, email: String, thumbnail: String, personal: PersonalInput, address: AddressInput, tournaments: [String!], association: String): Boolean!
 
   """This is something"""
   createPlayer(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput, sport_info: CreateSportInfo!, school_info: CreatePlayerSchoolInfo): Boolean!
@@ -435,6 +431,7 @@ type Mutation {
   le(playerID: String!, spectatorID: String!): Boolean!
   createBug(name: String!, description: String, message: String!, date: String!, category: String!, email: String!, first_name: String!, last_name: String!): Boolean!
   updateBug(id: String!, name: String, description: String, message: String, date: String, category: String, email: String, first_name: String, last_name: String): Boolean!
+  deleteBug(bugID: String!): Boolean!
   createChat(name: String, description: String, users: [ChatUserInput!], team_id: String): Boolean!
   updateChat(id: String!, name: String, description: String, users: [ChatUserInput!], team_id: String): Boolean!
   addUserToChat(userID: String!, user_type: String!, chatID: String!): Boolean!
@@ -475,6 +472,11 @@ type ParkDto {
   ice_chest: Boolean!
   smoking: Boolean!
   address: Address!
+}
+
+type PendingOrAccepted {
+  pending: [PlayerDto!]!
+  accepted: [PlayerDto!]!
 }
 
 type Personal {

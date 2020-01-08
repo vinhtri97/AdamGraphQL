@@ -8,8 +8,10 @@ const coachSchema = new mongoose.Schema({
     teams: [{ type: mongoose.Types.ObjectId }],
     user_type: { type: String, default: "Coach" },
     favorites: [{ type: mongoose.Types.ObjectId }],
-    sport: { type: String },
-    coach_type: { type: String },
+    sport_info: {
+        sport: { type: String },
+        coach_type: { type: String }
+    },
     school_district: { type: String },
     school: { type: String },
     school_type: { type: String }

@@ -11,7 +11,7 @@ export const isIDInvalid = (objectID: string): boolean => {
 export const updateDocument = async (
     collection: mongoose.Model<any>,
     args: any
-): Promise<boolean | Error> => {
+): Promise<boolean> => {
     const inputWithoutID = { ...args };
     delete inputWithoutID.id;
     try {
@@ -81,14 +81,10 @@ export const addToStringArray = async (
                     foundTwo[`${arrayTwoName}`].push(ObjectId(idOne));
                     foundOne.save();
                     foundTwo.save();
-                    return true;
                     // If either collection's array already has the item, tell them.
                     // TODO maybe return true
-                } else
-                    throw new Error(
-                        // eslint-disable-next-line prettier/prettier
-                        `'${foundOne[`${arrayOneName}`].toString()}' includes '${idTwo}' or '${foundTwo[`${arrayTwoName}`].toString()}' includes '${idOne}'.`
-                    );
+                }
+                return true;
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
                 throw new Error(
@@ -202,14 +198,8 @@ export const addToObjArray = async (
                     foundTwo[`${arrayTwoName}`].push(pushTwo);
                     foundOne.save();
                     foundTwo.save();
-                    return true;
-                    // If either collection's array already has the item, tell them.
-                    // TODO maybe return true
-                } else return true;
-                // throw new Error(
-                //     // eslint-disable-next-line prettier/prettier
-                //     `'${foundOne[`${arrayOneName}`].toString()}' includes '${idTwo}' or '${foundTwo[`${arrayTwoName}`].toString()}' includes '${idOne}'.`
-                // );
+                }
+                return true;
                 // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
                 throw new Error(
@@ -317,13 +307,9 @@ export const changeInObjArray = async (
                 foundOne.save();
                 foundTwo.save();
                 return true;
-                // If either collection's array already has the item, tell them.
-                // TODO maybe return true
-                // If either collection has an invalid array name, tell them it's wrong in the backend.
             } else
                 throw new Error(
-                    // eslint-disable-next-line prettier/prettier
-                    `'${arrayOneName in foundOne ? arrayTwoName : arrayOneName}' is an invalid array name. This means Adam made a mistake spelling something in the backend.`
+                    "There is an error changing at least one of the documents (check to make sure the documents are already linked)."
                 );
             // If both collections don't exist, tell them the invalid ID
         } else {

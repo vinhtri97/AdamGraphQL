@@ -10,6 +10,7 @@ export class CreateTournamentInput extends CreateEntityInput {
     @Field(() => String)
     end_date: string;
 
+    // TODO age groups
     @Field(() => String)
     age_groups: string;
 

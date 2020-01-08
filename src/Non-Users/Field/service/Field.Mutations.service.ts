@@ -7,9 +7,7 @@ import { updateDocument } from "../../../MongooseFunctions";
 
 export class FieldMutationService {
     async createField(input: CreateFieldInput): Promise<boolean | Error> {
-        // const { players, coaches, spectators, directors } = input;
         await Field.create(input);
-        // await Promise.all(spectators.map(({id:spectID}: FieldUser) => await ))
         return true;
     }
 

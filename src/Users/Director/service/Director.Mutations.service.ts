@@ -3,14 +3,13 @@ import { CreateDirectorInput, UpdateDirectorInput } from "../dto/classes/index";
 import { updateDocument } from "../../../MongooseFunctions";
 
 export class DirectorMutationService {
-    async createDirector(input: CreateDirectorInput): Promise<string> {
-        const director = await Director.create(input);
-        return director._id;
+    async createDirector(input: CreateDirectorInput): Promise<boolean> {
+        await Director.create(input);
+        return true;
     }
     // async createDirector()
 
-    async updateDirector(input: UpdateDirectorInput): Promise<string> {
-        await updateDocument(Director, input);
-        return "Test";
+    async updateDirector(input: UpdateDirectorInput): Promise<boolean> {
+        return await updateDocument(Director, input);
     }
 }

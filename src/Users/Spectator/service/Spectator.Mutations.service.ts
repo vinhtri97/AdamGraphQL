@@ -8,7 +8,7 @@ import {
 import { addToObjArray, changeInObjArray } from "../../../MongooseFunctions";
 import { handleSpectatorRemoved } from "../../../Functions";
 import { updateDocument } from "../../../MongooseFunctions";
-// import * as mongoose from "mongoose";
+import { SpectatorTypes } from "../enums/index";
 
 export class SpectatorMutationService {
     async createSpectator(
@@ -54,6 +54,11 @@ export class SpectatorMutationService {
         type: string
     ): Promise<boolean | Error> {
         // TODO remove spectator from full chat
+        if (!Object.keys(SpectatorTypes).includes(type))
+            throw new Error(
+                "Spectator type must be one of: " +
+                    Object.keys(SpectatorTypes).toString()
+            );
         return await changeInObjArray(
             Player,
             "spectators",

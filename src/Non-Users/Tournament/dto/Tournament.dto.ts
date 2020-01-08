@@ -1,12 +1,18 @@
 import { ObjectType, Field } from "type-graphql";
 import EntityDto from "../../Generic/dto/Entity.dto";
+// import { GraphQLScalarType } from "graphql";
+
+// const AgeGroupScalar = new GraphQLScalarType({
+//     name: "TournamentAgeGroups",
+//     description: "Dynamic Object for Tournament Age Groups",
+//     serialize: return
+// });
 
 @ObjectType()
 export default class TournamentDto extends EntityDto {
     /*
         start_date: { type: String },
         end_date: { type: String },
-        age_groups: {},
         flyer: { type: String },
         max_teams: { type: Number },
         pay_at_the_plate: { type: Boolean },
@@ -20,6 +26,7 @@ export default class TournamentDto extends EntityDto {
     @Field(() => String)
     end_date: string;
 
+    // TODO scalar/array
     @Field(() => String)
     age_groups: string;
 

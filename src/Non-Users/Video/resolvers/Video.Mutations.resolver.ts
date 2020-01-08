@@ -10,6 +10,7 @@ export class VideoMutationResolver {
         this.VideoMutationService = new VideoMutationService();
     }
 
+    // TODO validate uploadedBy id?
     @Mutation(() => Boolean)
     async createVideo(
         @Args() input: CreateVideoInput

@@ -3,6 +3,7 @@ import { Mutation, Resolver, Args, Arg } from "type-graphql";
 // import Chat from "../schema/Chat.schema";
 import { ChatMutationService } from "../service/index";
 import { CreateChatInput, UpdateChatInput } from "../dto/classes/index";
+import { UserTypes } from "../../../Users/Generic/enums/index";
 @Resolver()
 export class ChatMutationResolver {
     ChatMutationService: ChatMutationService;
@@ -27,6 +28,11 @@ export class ChatMutationResolver {
         @Arg("user_type") user_type: string,
         @Arg("userID") userID: string
     ): Promise<boolean | Error> {
+        if (!Object.keys(UserTypes).includes(user_type))
+            throw new Error(
+                "Invalid User Type. Must be in:" +
+                Object.keys(UserTypes).toString()
+            );
         return await this.ChatMutationService.addUser(
             chatID,
             user_type,
@@ -41,6 +47,11 @@ export class ChatMutationResolver {
         @Arg("user_type") user_type: string,
         @Arg("userID") userID: string
     ): Promise<boolean | Error> {
+        if (!Object.keys(UserTypes).includes(user_type))
+            throw new Error(
+                "Invalid User Type. Must be in:" +
+                Object.keys(UserTypes).toString()
+            );
         return await this.ChatMutationService.removeUser(
             chatID,
             user_type,

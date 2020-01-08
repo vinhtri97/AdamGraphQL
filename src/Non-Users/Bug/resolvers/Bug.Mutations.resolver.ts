@@ -1,4 +1,4 @@
-import { Mutation, Resolver, Args } from "type-graphql";
+import { Mutation, Resolver, Args, Arg } from "type-graphql";
 // import BugDto from "../dto/Bug.dto";
 // import Bug from "../schema/Bug.schema";
 import { BugMutationService } from "../service/index";
@@ -18,5 +18,10 @@ export class BugMutationResolver {
     @Mutation(() => Boolean)
     async updateBug(@Args() input: UpdateBugInput): Promise<boolean | Error> {
         return await this.BugMutationService.updateBug(input);
+    }
+
+    @Mutation(() => Boolean)
+    async deleteBug(@Arg("bugID") bugID: string): Promise<boolean | Error> {
+        return await this.BugMutationService.deleteBug(bugID);
     }
 }

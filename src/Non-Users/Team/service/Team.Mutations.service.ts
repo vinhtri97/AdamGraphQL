@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Team from "../schema/Team.schema";
 import Coach from "../../../Users/Coach/schema/Coach.schema";
@@ -20,15 +21,29 @@ const {
 export class TeamMutationService {
     async createTeam(input: CreateTeamInput): Promise<boolean | Error> {
         const { coaches } = input;
-        const foundCoach: any = await Coach.findById(coaches[0]).limit(1);
+        if (coaches.length < 1)
+            throw new Error(
+                "Invalid coaches array: There must be at least 1 coach."
+            );
+        const foundCoaches: any[] = await Coach.find({ _id: { $in: coaches } });
 
-        if (foundCoach) {
+        if (foundCoaches.length > 0 && foundCoaches.length == coaches.length) {
+            // Create the team
             const createdTeam: any = await Team.create(input);
-            const coachID = foundCoach._id;
-            const coaches = [
-                { id: ObjectId(coachID), muted: false, type: "Coach" }
-            ];
-
+            // Reformat the coach obj and save the team to each coach
+            const coaches = await Promise.all(
+                foundCoaches.map(async foundCoach => {
+                    const coachID = foundCoach._id;
+                    const coachObj = {
+                        id: ObjectId(coachID),
+                        muted: false,
+                        type: "Coach"
+                    };
+                    foundCoach.teams.push(ObjectId(createdTeam._id));
+                    await foundCoach.save();
+                    return coachObj;
+                })
+            );
             const playerChat = await Chat.create({
                 name: "All Players",
                 team_id: ObjectId(createdTeam._id),
@@ -42,88 +57,13 @@ export class TeamMutationService {
                 isPremade: true
             });
             createdTeam.fullPlayerChat = ObjectId(playerChat._id);
-            // eslint-disable-next-line prettier/prettier
-            createdTeam.fullPlayerAndParentChat = ObjectId(playerAndParentChat._id);
-            createdTeam.save();
-            foundCoach.teams.push(ObjectId(createdTeam._id));
-            foundCoach.save();
-            return true;
-
-            // const createdTeam: any = await Team.create(input);
-            // console.log("createdTeam", createdTeam);
-            // const coachID = foundCoach._id;
-            // // await addToStringArray(Coach, coachID, createdTeam._id, 'teams');
-            // const coaches = [
-            //     { id: ObjectId(coachID), muted: false, type: "Coach" }
-            // ];
-            // console.log("coaches", coaches);
-            // const acceptedPlayers = createdTeam.players
-            //     .filter((player: any) => player.accepted)
-            //     .map(({ id }: { [key: string]: string }) => ({
-            //         id: ObjectId(id),
-            //         hasMuted: false,
-            //         type: "Player"
-            //     }));
-            // console.log("acceptedPlayers", acceptedPlayers);
-            // const playerChat = await Chat.create({
-            //     name: "All Players",
-            //     team_id: ObjectId(createdTeam._id),
-            //     users: coaches.concat(acceptedPlayers),
-            //     isPremade: true
-            // });
-            // console.log("playerChat", playerChat);
-            // const parentsArrays = await Promise.all(
-            //     createdTeam.players.map(async (player: { _id: any }) => {
-            //         try {
-            //             const result = await getNestedSpectatorObjects(
-            //                 Player,
-            //                 player._id.toString(),
-            //                 "spectators",
-            //                 "spectators"
-            //             );
-            //             const parents = result.Mom.concat(
-            //                 result.Dad,
-            //                 result.Guardian
-            //             );
-            //             return parents;
-            //         } catch (e) {
-            //             console.log("error:", e);
-            //             return [];
-            //         }
-            //     })
-            // );
-
-            // console.log("parentsArrays", parentsArrays);
-
-            // // Turns parents into 1 array of objects
-            // // eslint-disable-next-line prefer-spread
-            // const parentsOnTeam = [].concat.apply([], parentsArrays);
-            // console.log("parentsOnTeam", parentsOnTeam);
-            // //
-            // let parentsOnTeamIDs = parentsOnTeam.map(
-            //     ({ id }: { [key: string]: string }) => id
-            // );
-            // const mySet = new Set(parentsOnTeamIDs);
-            // parentsOnTeamIDs = [...mySet];
-            // console.log("parentsOnTeamIDs", parentsOnTeamIDs);
-            // const formattedParents = parentsOnTeamIDs.map((id: any) => ({
-            //     id: ObjectId(id),
-            //     hasMuted: false,
-            //     type: "Spectator"
-            // }));
-            // console.log("formattedParents", formattedParents);
-
-            // const playerAndParentChat = await Chat.create({
-            //     name: "All Players & Parents",
-            //     team_id: ObjectId(createdTeam._id),
-            //     users: coaches.concat(acceptedPlayers, formattedParents),
-            //     isPremade: true
-            // });
-            // console.log("formattedParents", formattedParents);
-        } else
-            throw new Error(
-                "Cannot create team because the coachID was invalid"
+            createdTeam.fullPlayerAndParentChat = ObjectId(
+                playerAndParentChat._id
             );
+            createdTeam.save();
+            return true;
+        } else
+            throw new Error("Cannot create team because a coachID was invalid");
     }
 
     async updateTeam(input: UpdateTeamInput): Promise<boolean | Error> {

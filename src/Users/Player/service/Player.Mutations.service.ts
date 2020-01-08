@@ -10,7 +10,7 @@ import {
 } from "../../../Functions";
 import { handleSpectatorRemoved } from "../../../Functions";
 import { UpdatePlayerInput } from "../dto/classes/Player.UpdateInput";
-
+import { SpectatorTypes } from "../../Spectator/enums/index";
 export class PlayerMutationService {
     async updatePlayer(input: UpdatePlayerInput): Promise<boolean | Error> {
         return await updateDocument(Player, input);
@@ -21,6 +21,11 @@ export class PlayerMutationService {
         spectatorID: string,
         type: string
     ): Promise<boolean | Error> {
+        if (!Object.keys(SpectatorTypes).includes(type))
+            throw new Error(
+                "Spectator type must be one of: " +
+                    Object.keys(SpectatorTypes).toString()
+            );
         if (type != "Spectator") {
             const teams = await getNestedTrueFalseObjects(
                 Player,
@@ -70,23 +75,6 @@ export class PlayerMutationService {
         spectatorID: string
     ): Promise<boolean | Error> {
         return await handleSpectatorRemoved(playerID, spectatorID);
-    }
-
-    async changeType(
-        spectatorID: string,
-        playerID: string,
-        type: string
-    ): Promise<boolean | Error> {
-        return await changeInObjArray(
-            Player,
-            "spectators",
-            playerID,
-            { type },
-            Spectator,
-            "spectacles",
-            spectatorID,
-            { type }
-        );
     }
 
     async acceptTeam(

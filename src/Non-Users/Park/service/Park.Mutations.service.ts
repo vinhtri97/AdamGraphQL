@@ -7,9 +7,7 @@ import { updateDocument } from "../../../MongooseFunctions";
 
 export class ParkMutationService {
     async createPark(input: CreateParkInput): Promise<boolean | Error> {
-        // const { players, coaches, spectators, directors } = input;
         await Park.create(input);
-        // await Promise.all(spectators.map(({id:spectID}: ParkUser) => await ))
         return true;
     }
 

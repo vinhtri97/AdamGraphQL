@@ -8,7 +8,6 @@ import { GetPlayersDto, GetPlayersAndParentsDto } from "../dto/classes/index";
 import { TeamQueryService } from "../service/index";
 import TournamentDto from "../../Tournament/dto/Tournament.dto";
 import { getObjects, getNestedTrueFalseObjects } from "./../../../Functions";
-import Spectator from "../../../Users/Spectator/schema/Spectator.schema";
 // const ObjectId = mongoose.Types.ObjectId;
 @Resolver()
 export class TeamQueryResolver {
@@ -57,32 +56,6 @@ export class TeamQueryResolver {
     async getPlayersAndParentsForTeam(
         @Arg("teamID") teamID: string
     ): Promise<GetPlayersAndParentsDto | Error> {
-        const players = await getNestedTrueFalseObjects(
-            Team,
-            teamID,
-            "players",
-            "players"
-        );
-        const filteredPlayers = players.accepted.filter(
-            ({ spectators }) =>
-                spectators.length > 0 &&
-                spectators.some(
-                    (obj: { type: string }) => obj.type != "Spectator"
-                )
-        );
-        const parentIDs: any[] = [];
-        filteredPlayers.forEach(player => {
-            player.spectators.forEach(
-                (spectator: { type: string; id: { toString: () => any } }) => {
-                    if (spectator.type != "Spectator")
-                        parentIDs.push(spectator.id.toString());
-                }
-            );
-        });
-        const spectators = await Spectator.find({
-            _id: { $in: parentIDs }
-        }).lean();
-        console.log(spectators);
-        return { players: players.accepted, parents: spectators };
+        return await this.teamQueryService.getPlayersAndParents(teamID);
     }
 }
