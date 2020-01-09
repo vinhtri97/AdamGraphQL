@@ -1,12 +1,13 @@
+import { ArgsType, Field } from 'type-graphql';
+
+import { TokenDataDto } from './Token.data';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Field, InputType, ObjectType } from 'type-graphql';
+@ArgsType()
+export class TokenDto {
+    @Field(() => [String])
+    userTypes: string[];
 
-import TokenDataDto from './Token.data';
-
-@ObjectType()
-@InputType('TokenDtoInput')
-//const { ids, title, message, data: { screen } } = input;
-export default class TokenDto {
     @Field(() => [String])
     ids: string[];
 

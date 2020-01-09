@@ -113,6 +113,7 @@ type CoachDto {
   tokens: [String!]!
   personal: Personal!
   address: Address
+  customerID: String!
   teams: [String!]!
   sport_info: CoachSportInfo!
   favorites: [String!]!
@@ -277,6 +278,7 @@ type DirectorDto {
   tokens: [String!]!
   personal: Personal!
   address: Address
+  customerID: String!
   tournaments: [String!]!
   association: String!
 }
@@ -521,6 +523,7 @@ type PlayerDto {
   tokens: [String!]!
   personal: Personal!
   address: Address
+  customerID: String!
   power_score: [PowerScore!]!
   spectators: [PlayerSpectatorDto!]!
   teams: PlayerTeams!
@@ -633,6 +636,7 @@ type Query {
   getSpectatorByID(spectatorID: String!): SpectatorDto!
   getKidsForSpectator(spectatorID: String!): GetSpectaclesDto!
   getChatsForSpectator(spectatorID: String!): [ChatDto!]!
+  sendPushNotification(userTypes: [String!]!, ids: [String!]!, title: String!, message: String!, data: TokenDataInput!): Boolean!
 }
 
 type Soccer {
@@ -664,6 +668,7 @@ type SpectatorDto {
   tokens: [String!]!
   personal: Personal!
   address: Address
+  customerID: String!
   chats: [ChatObj!]!
   spectacles: [SpectacleObj!]!
 }
@@ -751,6 +756,11 @@ type Throw {
   overhead_throw: StatsFields!
   backwards_overhead_throw: StatsFields!
   behind_the_head_throw: StatsFields!
+}
+
+input TokenDataInput {
+  screen: String!
+  index: Float = 0
 }
 
 type TournamentDto {
@@ -850,6 +860,7 @@ type UserDto {
   tokens: [String!]!
   personal: Personal!
   address: Address
+  customerID: String!
 }
 
 type VideoDto {

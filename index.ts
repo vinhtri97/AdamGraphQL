@@ -33,6 +33,7 @@ import {
     SpectatorMutationResolver,
     SpectatorQueryResolver,
 } from './src/Entities/Users/Users.resolvers.index';
+import { NotificationQueryResolver } from './src/Non-Entities/Notification/resolvers/Notification.Queries.resolver';
 
 require('dotenv').config();
 
@@ -45,6 +46,7 @@ const main = async () => {
     });
     const schema = await buildSchema({
         resolvers: [
+            NotificationQueryResolver,
             PlayerQueryResolver,
             PlayerMutationResolver,
             CoachMutationResolver,
