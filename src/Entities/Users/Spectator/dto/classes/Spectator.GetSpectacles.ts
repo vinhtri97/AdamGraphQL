@@ -1,5 +1,7 @@
-import { ObjectType, Field } from "type-graphql";
-import PlayerDto from "../../../Player/dto/Player.dto";
+import { Field, ObjectType } from 'type-graphql';
+
+import PlayerDto from '../../../Player/dto/Player.dto';
+
 // import { CreateUserInput } from "../../../Generic/dto/classes/index";
 // import { ChatObj, SpectacleObj } from "./types/index";
 

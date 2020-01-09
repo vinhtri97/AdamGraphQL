@@ -26,5 +26,5 @@ export default {
     },
     email: { type: String },
     tokens: [{ type: String }],
-    stripeTokenCustomerId: String,
+    customerID: String,
 };

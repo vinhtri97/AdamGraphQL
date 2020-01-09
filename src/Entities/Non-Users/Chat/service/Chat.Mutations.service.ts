@@ -12,7 +12,7 @@ import { CreateChatInput, UpdateChatInput } from '../dto/classes';
 import Chat from '../schema/Chat.schema';
 
 const {
-    Types: { ObjectId }
+    Types: { ObjectId },
 } = mongoose;
 export class ChatMutationService {
     async createChat(input: CreateChatInput): Promise<boolean | Error> {
@@ -35,7 +35,7 @@ export class ChatMutationService {
                 const spectators = users.filter((item: { type: string }) => item.type == 'Spectator');
                 const spectatorChatObj: { [k: string]: any } = {
                     chat_id: ObjectId(myChat._id),
-                    has_muted: false
+                    has_muted: false,
                 };
                 if ('team_id' in input) {
                     spectatorChatObj.team_id = team_id;
@@ -44,7 +44,7 @@ export class ChatMutationService {
                 await Promise.all(
                     spectators.map(async (spectator: { id: any }) => {
                         return await Spectator.findByIdAndUpdate(spectator.id, {
-                            $addToSet: { chats: spectatorChatObj }
+                            $addToSet: { chats: spectatorChatObj },
                         });
                     })
                 );
@@ -78,11 +78,11 @@ export class ChatMutationService {
                 foundChat.users.push({
                     id: ObjectId(userID),
                     type: userType,
-                    has_muted: false
+                    has_muted: false,
                 });
                 foundUser.chats.push({
                     chat_id: ObjectId(chatID),
-                    has_muted: false
+                    has_muted: false,
                 });
                 foundChat.save();
                 foundUser.save();

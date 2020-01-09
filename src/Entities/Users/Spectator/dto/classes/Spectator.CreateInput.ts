@@ -1,5 +1,7 @@
-import { ArgsType } from "type-graphql";
-import { CreateUserInput } from "../../../Generic/dto/classes/index";
+import { ArgsType } from 'type-graphql';
+
+import { CreateUserInput } from '../../../Generic/dto/classes';
+
 // import { ChatObj, SpectacleObj } from "./types/index";
 
 @ArgsType()

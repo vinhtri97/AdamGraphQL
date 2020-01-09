@@ -1,5 +1,6 @@
-import { ObjectType, Field } from "type-graphql";
-import { Address, Personal } from "./classes/types/index";
+import { Field, ObjectType } from 'type-graphql';
+
+import { Address, Personal } from './classes/types';
 
 @ObjectType()
 export default class UserDto {
@@ -29,4 +30,8 @@ export default class UserDto {
 
     @Field(() => Address, { nullable: true })
     address: Address;
+
+    // TODO authentication?
+    @Field()
+    customerID: string;
 }
