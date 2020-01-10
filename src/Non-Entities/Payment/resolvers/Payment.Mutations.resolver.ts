@@ -1,9 +1,9 @@
-import { UserTypes } from 'src/Entities/Users/Generic/enums';
 import Stripe = require('stripe');
 import { Arg, Mutation, Resolver } from 'type-graphql';
 
 import Coach from '../../../Entities/Users/Coach/schema/Coach.schema';
 import Director from '../../../Entities/Users/Director/schema/Director.schema';
+import { UserTypes } from '../../../Entities/Users/Generic/enums';
 import Player from '../../../Entities/Users/Player/schema/Player.schema';
 import Spectator from '../../../Entities/Users/Spectator/schema/Spectator.schema';
 import StripeTokenDto from '../dto/Token';

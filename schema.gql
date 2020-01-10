@@ -33,6 +33,33 @@ type Agility {
   jump: Jump!
 }
 
+type AllTransactions {
+  amount: Float!
+  amount_refunded: Float!
+  captured: Boolean!
+  created: Float!
+  currency: String!
+  description: String!
+  failure_code: String!
+  failure_message: String!
+  fraud_details: FraudDetails!
+  livemode: Boolean!
+  on_behalf_of: String!
+  paid: Boolean!
+  payment_intent: String!
+  payment_method: String!
+  receipt_email: String!
+  receipt_number: String!
+  receipt_url: String!
+  refunded: Boolean!
+  statement_descriptor: String!
+  statement_descriptor_suffix: String!
+  status: String!
+  transfer_data: TransferData!
+  transfer_group: String!
+  id: String!
+}
+
 type Baseball {
   velocity: StatsFields!
   exit_speed: StatsFields!
@@ -68,6 +95,56 @@ type BugDto {
   email: String!
   first_name: String!
   last_name: String!
+}
+
+type CardDto {
+  id: String!
+  object: String!
+  address_city: String
+  address_country: String
+  address_line1: String
+  address_line1_check: String
+  address_line2: String
+  address_state: String
+  address_zip: String
+  address_zip_check: String
+  brand: String!
+  country: String!
+  cvc_check: String!
+  dynamic_last4: String!
+  exp_month: Float!
+  exp_year: Float!
+  fingerprint: String!
+  funding: String!
+  last4: String!
+  metadata: String
+  name: String
+  tokenization_method: String
+}
+
+input CardDtoInput {
+  id: String!
+  object: String!
+  address_city: String
+  address_country: String
+  address_line1: String
+  address_line1_check: String
+  address_line2: String
+  address_state: String
+  address_zip: String
+  address_zip_check: String
+  brand: String!
+  country: String!
+  cvc_check: String!
+  dynamic_last4: String!
+  exp_month: Float!
+  exp_year: Float!
+  fingerprint: String!
+  funding: String!
+  last4: String!
+  metadata: String
+  name: String
+  tokenization_method: String
 }
 
 type ChatDto {
@@ -316,6 +393,11 @@ type FieldDto {
   highschool_compatible: Boolean!
 }
 
+type FraudDetails {
+  user_report: String!
+  stripe_report: String!
+}
+
 type GetCoachesDto {
   accepted: [CoachDto!]!
   pending: [CoachDto!]!
@@ -466,6 +548,9 @@ type Mutation {
   This is to change the spectator's type in both the Player and Spectator Object
   """
   changeSpectatorType(type: String!, playerID: String!, spectatorID: String!): Boolean!
+  addCard(token: StripeTokenDtoInput!, userType: String!, customerID: String!, userID: String!): Boolean!
+  deleteCard(userType: String!, cardID: String!, customerID: String!, userID: String!): Boolean!
+  chargeUser(description: String!, amount: Float!, cardID: String!, customerID: String!): Boolean!
 }
 
 type ParkDto {
@@ -637,6 +722,8 @@ type Query {
   getKidsForSpectator(spectatorID: String!): GetSpectaclesDto!
   getChatsForSpectator(spectatorID: String!): [ChatDto!]!
   sendPushNotification(userTypes: [String!]!, ids: [String!]!, title: String!, message: String!, data: TokenDataInput!): Boolean!
+  getAllTransactions(customerID: String!): [AllTransactions!]!
+  getCustomerCards(userType: String!, userID: String!): [CardDto!]!
 }
 
 type Soccer {
@@ -730,6 +817,28 @@ type Strength {
   stork_balance: StatsFields!
 }
 
+type StripeTokenDto {
+  id: String!
+  object: String!
+  card: CardDto!
+  client_ip: String!
+  created: Float!
+  livemode: Boolean!
+  type: String!
+  used: Boolean!
+}
+
+input StripeTokenDtoInput {
+  id: String!
+  object: String!
+  card: CardDtoInput!
+  client_ip: String!
+  created: Float!
+  livemode: Boolean!
+  type: String!
+  used: Boolean!
+}
+
 type TeamDto {
   _id: String!
   name: String
@@ -776,6 +885,11 @@ type TournamentDto {
   hotels: String!
   allowed_assistants: Float!
   parks: [String!]!
+}
+
+type TransferData {
+  amount: Float!
+  destination: String!
 }
 
 input UpdateBugInput {

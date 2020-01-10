@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Field, InputType, ObjectType } from 'type-graphql';
 
 import CardDto from './classes/CardDto';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 @ObjectType()
 @InputType('StripeTokenDtoInput')
 export default class StripeTokenDto {

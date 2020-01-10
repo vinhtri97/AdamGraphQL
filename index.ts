@@ -34,6 +34,8 @@ import {
     SpectatorQueryResolver,
 } from './src/Entities/Users/Users.resolvers.index';
 import { NotificationQueryResolver } from './src/Non-Entities/Notification/resolvers/Notification.Queries.resolver';
+import { PaymentMutationResolver } from './src/Non-Entities/Payment/resolvers/Payment.Mutations.resolver';
+import { PaymentQueryResolver } from './src/Non-Entities/Payment/resolvers/Payment.Queries.resolver';
 
 require('dotenv').config();
 
@@ -46,6 +48,8 @@ const main = async () => {
     });
     const schema = await buildSchema({
         resolvers: [
+            PaymentQueryResolver,
+            PaymentMutationResolver,
             NotificationQueryResolver,
             PlayerQueryResolver,
             PlayerMutationResolver,
