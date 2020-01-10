@@ -18,7 +18,6 @@ const stripe = new Stripe(keySecret);
 @Resolver()
 export class PaymentQueryResolver {
     @Query(() => [AllTransactions])
-    // Stripe.charges.ICharge[]
     async getAllTransactions(@Arg('customerID') customerID: string): Promise<AllTransactions[]> {
         const things = (await stripe.charges.list({ customer: customerID })).data;
         const myReturn = things.map(
@@ -76,7 +75,7 @@ export class PaymentQueryResolver {
                 return [];
         }
         if (!foundUser) throw new Error('Cannot find user with that ID');
-        const response = await stripe.customers.listSources('cus_GN7jXR0PxNrfii', {
+        const response = await stripe.customers.listSources(foundUser.customerID, {
             include: [],
             limit: 3,
             object: 'card',
@@ -86,7 +85,6 @@ export class PaymentQueryResolver {
         // const filteredCards = arrayToFilter.filter(
         //     (thing, index, self) => index === self.findIndex(t => t.fingerprint === thing.fingerprint)
         // );
-        console.log(sources);
         return sources;
     }
 }
