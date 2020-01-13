@@ -2,6 +2,7 @@ import { Field, ObjectType } from 'type-graphql';
 
 import CoachDto from '../../Coach/dto/Coach.dto';
 import UserDto from '../../Generic/dto/User.dto';
+import { Statistics } from '../Statistics/Statistics.dto';
 import { GetSpectatorsDto, GetTeamsDto } from './classes';
 import { GetVideosDto } from './classes/Player.GetVideos';
 import { PlayerSchoolInfo, PlayerSportInfo, PowerScore } from './classes/types';
@@ -32,6 +33,6 @@ export default class ExpandablePlayerDto extends UserDto {
     @Field(() => PlayerSchoolInfo)
     school_info: PlayerSchoolInfo;
 
-    // @Field(() => Statistics)
-    // statistics: Statistics;
+    @Field(() => Statistics)
+    statistics: Statistics;
 }

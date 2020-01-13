@@ -418,6 +418,7 @@ type ExpandablePlayerDto {
   sport_info: PlayerSportInfo!
   favorites: [CoachDto!]!
   school_info: PlayerSchoolInfo!
+  statistics: Statistics!
 }
 
 type Extremity {
@@ -875,6 +876,18 @@ input SportInfoInput {
   sport: String
   committed: String
   committed_date: String
+}
+
+type Statistics {
+  basketball: [BasketballDto!]!
+  baseball: [BaseballDto!]!
+  soccer: [SoccerDto!]!
+  tennis: [TennisDto!]!
+  volleyball: [VolleyballDto!]!
+  academics: [AcademicsDto!]!
+  physical: [PhysicalDto!]!
+  agility: [AgilityDto!]!
+  power: [PowerDto!]!
 }
 
 type StatsFields {

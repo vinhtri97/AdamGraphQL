@@ -19,36 +19,93 @@ export class PlayerQueryService {
     }
 
     async getPlayer(playerID: string, info: any): Promise<ExpandablePlayerDto> {
-        const foundPlayer = await Player.findById(playerID).lean();
-        if (!foundPlayer) throw new Error('Invalid playerID');
-        const myReturn = foundPlayer;
         const selections = info.fieldNodes[0].selectionSet.selections.map(({ name: { value } }) => value);
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         const createLookupObj = (fromDB: string, localArrayName: string, isNested = true) => {
+            const localField = isNested ? `${localArrayName}.id` : `${localArrayName}`;
             return {
                 $lookup: {
                     from: `${fromDB}`,
-                    localField: isNested ? `${localArrayName}.id` : `${localArrayName}`,
+                    localField,
                     foreignField: '_id',
                     as: `${localArrayName}2`,
                 },
             };
         };
-
-        const returnTeams = selections.includes('teams');
-        const returnSpectators = selections.includes('spectators');
-        const returnVideos = selections.includes('videos');
-        const returnCoaches = selections.includes('favorites');
-        let aggArray = [
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        const createStatLookup = (fromDB: string, localArrayName: string) => {
+            return {
+                $lookup: {
+                    from: `${fromDB}`,
+                    localField: `statistics.${localArrayName}`,
+                    foreignField: '_id',
+                    as: `${localArrayName}2`,
+                },
+            };
+        };
+        const returnStatistics = selections.includes('statistics');
+        // These are links to other db's that we are checking for in the user's query
+        const booleans = {
+            teams: false,
+            spectators: false,
+            videos: false,
+            favorites: false,
+        };
+        // These are links to other db's that we are checking for in the user's query for stats
+        const statBooleans = {
+            academics: false,
+            agility: false,
+            baseball: false,
+            basketball: false,
+            physical: false,
+            power: false,
+            soccer: false,
+            tennis: false,
+            volleyball: false,
+        };
+        if (returnStatistics) {
+            // Get all of the selections inside statistics
+            const statsSelections: string[] = info.fieldNodes[0].selectionSet.selections
+                .find(({ name: { value } }) => value == 'statistics')
+                .selectionSet.selections.map(({ name: { value } }) => value);
+            // Correctly set whether the user is querying
+            Object.keys(statBooleans).forEach(key => (statBooleans[key] = statsSelections.includes(`${key}`)));
+        }
+        // Correctly set whether the user is querying
+        Object.keys(booleans).forEach(key => (booleans[key] = selections.includes(`${key}`)));
+        // This is the aggregation array but has two arrays
+        const testArray = [
             { $match: { _id: ObjectId(playerID) } },
             { $limit: 1 },
-            returnTeams ? createLookupObj('teams', 'teams') : null,
-            returnSpectators ? createLookupObj('spectators', 'spectators') : null,
-            returnVideos ? createLookupObj('videos', 'videos') : null,
-            returnCoaches ? createLookupObj('coaches', 'favorites', false) : null,
+            Object.entries(booleans).map(pair => {
+                const key = pair[0];
+                const boolean = pair[1];
+                if (boolean) {
+                    if (key == 'favorites') return createLookupObj(`coaches`, `${key}`, false);
+                    else return createLookupObj(`${key}`, `${key}`);
+                }
+                return null;
+            }),
+            selections.includes('statistics')
+                ? Object.entries(statBooleans).map(pair => {
+                      const key = pair[0];
+                      const boolean = pair[1];
+                      let db = key;
+                      if (boolean) {
+                          // TODO all stats db names
+                          if (key.charAt(key.length - 1) != 's') db = key + 's';
+                          return createStatLookup(`${db}`, `${key}`);
+                      }
+                      return null;
+                  })
+                : null,
         ];
-        aggArray = aggArray.filter(item => item != null);
+        // Correctly formatted aggregation array
+        const aggArray = [].concat(...testArray).filter(item => item != null);
+        // If the user is querying anything that requires aggregation ,perform lookup
+        let myReturn;
         if (aggArray.length > 2) {
+            // Gets the items that are pending or accepted in a very efficient way (removing from the array every time one is found)
             const getAccepted = (filterArray: any[], playerArray: any[], isPending = true): Array<any> => {
                 return filterArray.filter((arrayItem, index) =>
                     playerArray.some(playerItem => {
@@ -60,14 +117,15 @@ export class PlayerQueryService {
                     })
                 );
             };
+            // Sets the pending and accepted return
             const getPendingOrAccepted = (filterArray: any[], playerArray: any[]): any => {
                 return {
                     pending: getAccepted(filterArray, playerArray, false),
                     accepted: getAccepted(filterArray, playerArray),
                 };
             };
+            // Gets the types of the spectator
             const getSpectatorType = (foundArray: any[], playerArray: any[]): GetSpectatorsDto => {
-                // const pendingArray = getPendingOrAccepted(foundArray, playerArray);
                 const pendingArray = getAccepted(foundArray, playerArray, false);
                 const returnSpectType = (type: 'Dad' | 'Mom' | 'Guardian' | 'Spectator'): Array<any> => {
                     if (foundArray.length == 0) return [];
@@ -92,13 +150,29 @@ export class PlayerQueryService {
                     pending: pendingArray,
                 };
             };
-            const expandedUser = (await Player.aggregate(aggArray))[0];
-            if (returnTeams) myReturn.teams = getPendingOrAccepted(expandedUser.teams2, foundPlayer.teams);
-            if (returnSpectators)
-                myReturn.spectators = getSpectatorType(expandedUser.spectators2, foundPlayer.spectators);
-            if (returnVideos) myReturn.videos = getPendingOrAccepted(expandedUser.videos2, foundPlayer.videos);
-            if (returnCoaches) myReturn.favorites = expandedUser.favorites2;
-        }
+            // This is the user with all of the extra found fields
+            const expandedUser = (myReturn = (await Player.aggregate(aggArray))[0]);
+            // For every true query, set the return to the correct thing
+            Object.entries(booleans).forEach(pair => {
+                const key = pair[0];
+                const boolean = pair[1];
+                if (boolean) {
+                    if (key == 'favorites') myReturn[key] = expandedUser[`${key}2`];
+                    else if (key == 'spectators')
+                        myReturn[key] = getSpectatorType(expandedUser[`${key}2`], expandedUser[key]);
+                    else myReturn[key] = getPendingOrAccepted(expandedUser[`${key}2`], expandedUser[key]);
+                }
+            });
+            if (returnStatistics)
+                // For every true stat, set the retur nto the correct thing
+                Object.entries(statBooleans).forEach(pair => {
+                    const key = pair[0];
+                    const boolean = pair[1];
+                    if (boolean) {
+                        myReturn.statistics[key] = expandedUser[`${key}2`];
+                    }
+                });
+        } else myReturn = await Player.findById(playerID).lean();
 
         return myReturn;
     }
