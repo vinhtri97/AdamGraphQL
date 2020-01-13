@@ -1,24 +1,24 @@
 import { Field, ObjectType } from 'type-graphql';
 
+import CoachDto from '../../Coach/dto/Coach.dto';
 import UserDto from '../../Generic/dto/User.dto';
-import { PlayerSpectatorDto } from './classes';
+import { GetSpectatorsDto, GetTeamsDto } from './classes';
+import { GetVideosDto } from './classes/Player.GetVideos';
 import { PlayerSchoolInfo, PlayerSportInfo, PowerScore } from './classes/types';
-import { PlayerTeams } from './classes/types/Teams.dto';
-import { PlayerVideos } from './classes/types/Videos.dto';
 
 @ObjectType()
-export default class PlayerDto extends UserDto {
+export default class ExpandablePlayerDto extends UserDto {
     @Field(() => [PowerScore])
     power_score: PowerScore[];
 
-    @Field(() => [PlayerSpectatorDto])
-    spectators: PlayerSpectatorDto[];
+    @Field(() => GetSpectatorsDto)
+    spectators: GetSpectatorsDto;
 
-    @Field(() => [PlayerTeams])
-    teams: [PlayerTeams];
+    @Field(() => GetTeamsDto)
+    teams: GetTeamsDto;
 
-    @Field(() => [PlayerVideos])
-    videos: [PlayerVideos];
+    @Field(() => GetVideosDto)
+    videos: GetVideosDto;
 
     @Field(() => [String])
     video_likes: string[];
@@ -26,8 +26,8 @@ export default class PlayerDto extends UserDto {
     @Field(() => PlayerSportInfo)
     sport_info: PlayerSportInfo;
 
-    @Field(() => [String])
-    favorites: string[];
+    @Field(() => [CoachDto])
+    favorites: [CoachDto];
 
     @Field(() => PlayerSchoolInfo)
     school_info: PlayerSchoolInfo;

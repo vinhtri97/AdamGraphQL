@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import * as mongoose from 'mongoose';
 
 import { getNestedTrueFalseObjects, handleSpectatorRemoved, handleTeamChatsForParents } from '../../../../Functions';
 import { changeInObjArray, updateDocument } from '../../../../MongooseFunctions';
@@ -7,8 +8,17 @@ import Team from '../../../Non-Users/Team/schema/Team.schema';
 import Video from '../../../Non-Users/Video/schema/Video.schema';
 import { SpectatorTypes } from '../../Spectator/enums';
 import Spectator from '../../Spectator/schema/Spectator.schema';
+import PatchStatistics from '../dto/classes/Player.PatchStatistics';
 import { UpdatePlayerInput } from '../dto/classes/Player.UpdateInput';
 import Player from '../schema/Player.schema';
+import AcademicsSchema from '../Statistics/Academics/schema/Academics.schema';
+import AgilitySchema from '../Statistics/Agility/schema/Agility.schema';
+import PhysicalSchema from '../Statistics/Physical/schema/Physical.schema';
+import PowerSchema from '../Statistics/Power/schema/Power.schema';
+
+const {
+    Types: { ObjectId },
+} = mongoose;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class PlayerMutationService {
@@ -88,5 +98,29 @@ export class PlayerMutationService {
         };
         const deleteRes = await s3.deleteObject(params, data => data).promise();
         return deleteRes.DeleteMarker;
+    }
+
+    async patchStatistics(playerID: string, input: PatchStatistics): Promise<boolean> {
+        const foundPlayer: any = await Player.findById(playerID).select('statistics');
+        if (!foundPlayer) throw new Error('Invalid playerID');
+        let createdStatID = null;
+        if ('academics' in input) {
+            createdStatID = (await AcademicsSchema.create(input.academics))._id;
+            foundPlayer.statistics.academics.push(ObjectId(createdStatID));
+        }
+        if ('agility' in input) {
+            createdStatID = (await AgilitySchema.create(input.agility))._id;
+            foundPlayer.statistics.agility.push(ObjectId(createdStatID));
+        }
+        if ('physical' in input) {
+            createdStatID = (await PhysicalSchema.create(input.physical))._id;
+            foundPlayer.statistics.physical.push(ObjectId(createdStatID));
+        }
+        if ('power' in input) {
+            createdStatID = (await PowerSchema.create(input.power))._id;
+            foundPlayer.statistics.power.push(ObjectId(createdStatID));
+        }
+        foundPlayer.save();
+        return true;
     }
 }

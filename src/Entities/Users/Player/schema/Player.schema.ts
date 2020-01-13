@@ -57,15 +57,15 @@ const playerSchema = new Schema({
     ],
     favorites: [{ type: mongoose.Types.ObjectId }],
     statistics: {
+        academics: [{ type: mongoose.Types.ObjectId }],
+        agility: [{ type: mongoose.Types.ObjectId }],
         basketball: [{ type: mongoose.Types.ObjectId }],
         baseball: [{ type: mongoose.Types.ObjectId }],
+        physical: [{ type: mongoose.Types.ObjectId }],
+        power: [{ type: mongoose.Types.ObjectId }],
         soccer: [{ type: mongoose.Types.ObjectId }],
         tennis: [{ type: mongoose.Types.ObjectId }],
         volleyball: [{ type: mongoose.Types.ObjectId }],
-        academics: [{ type: mongoose.Types.ObjectId }],
-        physical: [{ type: mongoose.Types.ObjectId }],
-        agility: [{ type: mongoose.Types.ObjectId }],
-        power: [{ type: mongoose.Types.ObjectId }],
     },
 });
 

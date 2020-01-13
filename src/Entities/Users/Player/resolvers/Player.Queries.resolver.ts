@@ -1,10 +1,10 @@
-import { Arg, Query, Resolver } from 'type-graphql';
+import { Arg, Info, Query, Resolver } from 'type-graphql';
 
 import CoachDto from '../../Coach/dto/Coach.dto';
 import { GetSpectatorsDto, GetTeamsDto } from '../dto/classes';
 import { GetVideosDto } from '../dto/classes/Player.GetVideos';
+import ExpandablePlayerDto from '../dto/ExpandablePlayer.dto';
 import PlayerDto from '../dto/Player.dto';
-import Player from '../schema/Player.schema';
 import { PlayerQueryService } from '../service';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -20,9 +20,9 @@ export class PlayerQueryResolver {
         return await this.playerQueryService.getPlayers();
     }
 
-    @Query(() => PlayerDto)
-    async getPlayerByID(@Arg('id') id: string): Promise<PlayerDto> {
-        return await Player.findById(id).lean();
+    @Query(() => ExpandablePlayerDto)
+    async getPlayerByID(@Arg('playerID') id: string, @Info() info): Promise<ExpandablePlayerDto> {
+        return await this.playerQueryService.getPlayer(id, info);
     }
 
     @Query(() => [CoachDto])

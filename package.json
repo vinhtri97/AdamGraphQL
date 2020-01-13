@@ -6,7 +6,7 @@
     "scripts": {
         "test": "npm run db:setup && jest",
         "db:setup": "ts-node ./src/test-utils/Setup.ts",
-        "start:dev": "nodemon index.ts",
+        "start:dev": "tsc && nodemon index.ts",
         "start": "ts-node index.ts"
     },
     "author": "",

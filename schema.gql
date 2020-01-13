@@ -3,7 +3,13 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Academics {
+type AcademicsDto {
+  ACT_Score: Float!
+  SAT_Score: Float!
+  GPA: Float!
+}
+
+input AcademicsInput {
   ACT_Score: Float!
   SAT_Score: Float!
   GPA: Float!
@@ -23,7 +29,7 @@ input AddressInput {
   zip: Float
 }
 
-type Agility {
+type AgilityDto {
   jump_score: Float!
   agility_score: Float!
   speed_score: Float!
@@ -31,6 +37,16 @@ type Agility {
   movement: Movement!
   speed: Speed!
   jump: Jump!
+}
+
+input AgilityInput {
+  jump_score: Float!
+  agility_score: Float!
+  speed_score: Float!
+  core_score: Float!
+  movement: MovementInput!
+  speed: SpeedInput!
+  jump: JumpInput!
 }
 
 type AllTransactions {
@@ -60,7 +76,7 @@ type AllTransactions {
   id: String!
 }
 
-type Baseball {
+type BaseballDto {
   velocity: StatsFields!
   exit_speed: StatsFields!
   ball_fielding_100: StatsFields!
@@ -69,7 +85,7 @@ type Baseball {
   home_to_second: StatsFields!
 }
 
-type Basketball {
+type BasketballDto {
   quarter_court_sprint: StatsFields!
   laying_agility_drill: StatsFields!
   reactive_shuttle_run: StatsFields!
@@ -81,6 +97,11 @@ type Basketball {
 }
 
 type BMI {
+  height: String!
+  weight: String!
+}
+
+input BMIInput {
   height: String!
   weight: String!
 }
@@ -366,13 +387,46 @@ type Dominance {
   leg_dominance: String!
 }
 
+input DominanceInput {
+  hand_dominance: String!
+  eye_dominance: String!
+  leg_dominance: String!
+}
+
 type EntityDto {
   _id: String!
   name: String
   description: String
 }
 
+type ExpandablePlayerDto {
+  _id: String!
+  firebase_id: String!
+  email: String!
+  thumbnail: String!
+  user_type: String!
+  banner: String
+  tokens: [String!]!
+  personal: Personal!
+  address: Address
+  customerID: String!
+  power_score: [PowerScore!]!
+  spectators: GetSpectatorsDto!
+  teams: GetTeamsDto!
+  videos: GetVideosDto!
+  video_likes: [String!]!
+  sport_info: PlayerSportInfo!
+  favorites: [CoachDto!]!
+  school_info: PlayerSchoolInfo!
+}
+
 type Extremity {
+  wing_span: Float!
+  hand_size: Float!
+  shoe_size: Float!
+}
+
+input ExtremityInput {
   wing_span: Float!
   hand_size: Float!
   shoe_size: Float!
@@ -456,11 +510,23 @@ type GetVideoLikes {
   coaches: [CoachDto!]!
 }
 
+type GetVideosDto {
+  accepted: [VideoDto!]!
+  pending: [VideoDto!]!
+}
+
 type Jump {
   broad_jump: StatsFields!
   triple_jump: StatsFields!
   vertical_jump: StatsFields!
   one_step_vertical_jump: StatsFields!
+}
+
+input JumpInput {
+  broad_jump: StatsFieldsInput!
+  triple_jump: StatsFieldsInput!
+  vertical_jump: StatsFieldsInput!
+  one_step_vertical_jump: StatsFieldsInput!
 }
 
 type Movement {
@@ -471,6 +537,16 @@ type Movement {
   compass_agility: StatsFields!
   box_drill: StatsFields!
   quadrant_jump: StatsFields!
+}
+
+input MovementInput {
+  ten_yard_shuttle: StatsFieldsInput!
+  twenty_yard_shuttle: StatsFieldsInput!
+  three_cone_drill: StatsFieldsInput!
+  t_test: StatsFieldsInput!
+  compass_agility: StatsFieldsInput!
+  box_drill: StatsFieldsInput!
+  quadrant_jump: StatsFieldsInput!
 }
 
 type Mutation {
@@ -529,6 +605,7 @@ type Mutation {
   """This is for a player to leave a team"""
   leaveTeam(playerID: String!, teamID: String!): Boolean!
   removeVideoForPlayer(playerID: String!, videoID: String!): Boolean!
+  patchStatistics(academics: AcademicsInput, agility: AgilityInput, physical: PhysicalInput, power: PowerInput, playerID: String!): Boolean!
 
   """Create a new Spectator"""
   createSpectator(firebase_id: String!, email: String!, thumbnail: String, personal: CreatePersonalInput!, address: CreateAddressInput): Boolean!
@@ -592,10 +669,16 @@ input PersonalInput {
   gender: String
 }
 
-type Physical {
+type PhysicalDto {
   bmi: BMI!
   extremity: Extremity!
   dominance: Dominance!
+}
+
+input PhysicalInput {
+  bmi: BMIInput!
+  extremity: ExtremityInput!
+  dominance: DominanceInput!
 }
 
 type PlayerDto {
@@ -611,13 +694,12 @@ type PlayerDto {
   customerID: String!
   power_score: [PowerScore!]!
   spectators: [PlayerSpectatorDto!]!
-  teams: PlayerTeams!
-  videos: PlayerVideos!
+  teams: [PlayerTeams!]!
+  videos: [PlayerVideos!]!
   video_likes: [String!]!
   sport_info: PlayerSportInfo!
   favorites: [String!]!
   school_info: PlayerSchoolInfo!
-  statistics: Statistics!
 }
 
 type PlayerSchoolInfo {
@@ -666,10 +748,15 @@ type PlayerVideos {
   accepted: Boolean!
 }
 
-type Power {
+type PowerDto {
   power_score: Float!
   strength: Strength!
   throw: Throw!
+}
+
+input PowerInput {
+  strength: StrengthInput!
+  throw: ThrowInput!
 }
 
 type PowerScore {
@@ -705,14 +792,14 @@ type Query {
   getVideoByID(vidID: String!): VideoDto!
   getVideoLikes(vidID: String!): GetVideoLikes!
   getCoaches: [CoachDto!]!
-  getCoachByID(id: String!): CoachDto!
+  getCoachByID(coachID: String!): CoachDto!
   getFavoritesForCoach(coachID: String!): [PlayerDto!]!
   getTeamsForCoach(coachID: String!): [TeamDto!]!
   getDirectors: [DirectorDto!]!
   getDirectorByID(directorID: String!): DirectorDto!
   getTournamentsForDirector(directorID: String!): [TournamentDto!]!
   getPlayers: [PlayerDto!]!
-  getPlayerByID(id: String!): PlayerDto!
+  getPlayerByID(playerID: String!): ExpandablePlayerDto!
   getFavoritesForPlayer(playerID: String!): [CoachDto!]!
   getTeamsForPlayer(playerID: String!): GetTeamsDto!
   getSpectatorsForPlayer(playerID: String!): GetSpectatorsDto!
@@ -726,7 +813,7 @@ type Query {
   getCustomerCards(userType: String!, userID: String!): [CardDto!]!
 }
 
-type Soccer {
+type SoccerDto {
   arrowhead_agility: StatsFields!
   yo_yo_recovery: StatsFields!
   endurance_test_30_sec: StatsFields!
@@ -770,6 +857,16 @@ type Speed {
   ladder_drill: StatsFields!
 }
 
+input SpeedInput {
+  ten_yard_dash: StatsFieldsInput!
+  twenty_yard_dash: StatsFieldsInput!
+  thirty_yard_dash: StatsFieldsInput!
+  forty_yard_dash: StatsFieldsInput!
+  fifty_yard_dash: StatsFieldsInput!
+  sixty_yard_dash: StatsFieldsInput!
+  ladder_drill: StatsFieldsInput!
+}
+
 input SportInfoInput {
   position: String
   secondary_position: String
@@ -780,22 +877,16 @@ input SportInfoInput {
   committed_date: String
 }
 
-type Statistics {
-  basketball_stats: [Basketball!]!
-  baseball_stats: [Baseball!]!
-  soccer_stats: [Soccer!]!
-  tennis_stats: [Tennis!]!
-  volleyball_stats: [Volleyball!]!
-  academics: [Academics!]!
-  physical: [Physical!]!
-  agility: [Agility!]!
-  power: [Power!]!
-}
-
 type StatsFields {
   value: Float!
-  certified: Boolean!
-  certifying_entity: String!
+  certified: Boolean
+  certifying_entity: String
+}
+
+input StatsFieldsInput {
+  value: Float!
+  certified: Boolean
+  certifying_entity: String
 }
 
 type Strength {
@@ -815,6 +906,25 @@ type Strength {
   grip: StatsFields!
   sit_and_reach: StatsFields!
   stork_balance: StatsFields!
+}
+
+input StrengthInput {
+  bench_press_80: StatsFieldsInput!
+  bench_press_weight: StatsFieldsInput!
+  bench_press_PR: StatsFieldsInput!
+  squat_80: StatsFieldsInput!
+  squat_weight: StatsFieldsInput!
+  squat_PR: StatsFieldsInput!
+  deadlift_80: StatsFieldsInput!
+  deadlift_weight: StatsFieldsInput!
+  deadlift_press_PR: StatsFieldsInput!
+  push_up: StatsFieldsInput!
+  chin_up: StatsFieldsInput!
+  sit_up: StatsFieldsInput!
+  plank: StatsFieldsInput!
+  grip: StatsFieldsInput!
+  sit_and_reach: StatsFieldsInput!
+  stork_balance: StatsFieldsInput!
 }
 
 type StripeTokenDto {
@@ -852,7 +962,7 @@ type TeamDto {
   pending_players: [String!]!
 }
 
-type Tennis {
+type TennisDto {
   court_sprint_3quarters: StatsFields!
   laying_agility_drill: StatsFields!
   reactive_shuttle_run: StatsFields!
@@ -865,6 +975,12 @@ type Throw {
   overhead_throw: StatsFields!
   backwards_overhead_throw: StatsFields!
   behind_the_head_throw: StatsFields!
+}
+
+input ThrowInput {
+  overhead_throw: StatsFieldsInput!
+  backwards_overhead_throw: StatsFieldsInput!
+  behind_the_head_throw: StatsFieldsInput!
 }
 
 input TokenDataInput {
@@ -994,7 +1110,7 @@ type VideoDto {
   uploaded_by: CreateUploadedBy!
 }
 
-type Volleyball {
+type VolleyballDto {
   court_sprint_3quarters: StatsFields!
   laying_agility_drill: StatsFields!
   reactive_shuttle_run: StatsFields!

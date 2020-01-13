@@ -1,7 +1,7 @@
-import { ObjectType, Field, InputType } from "type-graphql";
+import { Field, InputType, ObjectType } from 'type-graphql';
 
 @ObjectType()
-@InputType("CreatePlayerSchoolInfo")
+@InputType('CreatePlayerSchoolInfo')
 export class PlayerSchoolInfo {
     @Field({ nullable: true })
     grad_year: string;
@@ -16,7 +16,7 @@ export class PlayerSchoolInfo {
     school_type: string;
 }
 
-@InputType("PlayerSchoolInfoInput")
+@InputType('PlayerSchoolInfoInput')
 export class PlayerSchoolInfoInput implements PlayerSchoolInfo {
     @Field({ nullable: true })
     grad_year: string;

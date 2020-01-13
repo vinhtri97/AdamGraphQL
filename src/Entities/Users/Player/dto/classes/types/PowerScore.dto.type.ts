@@ -1,7 +1,7 @@
-import { ObjectType, Field, InputType } from "type-graphql";
+import { Field, InputType, ObjectType } from 'type-graphql';
 
 @ObjectType()
-@InputType("PowerScoreInput")
+@InputType('PowerScoreInput')
 export class PowerScore {
     @Field(() => String)
     value: string;

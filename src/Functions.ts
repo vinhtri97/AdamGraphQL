@@ -9,7 +9,7 @@ import { getCollection } from './MongooseFunctions';
 /* eslint-disable require-atomic-updates */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const {
-    Types: { ObjectId }
+    Types: { ObjectId },
 } = mongoose;
 
 export const getObjects = async (
@@ -26,9 +26,9 @@ export const getObjects = async (
                 from: `${referencedDBName}`,
                 localField: `${arrayName}`,
                 foreignField: '_id',
-                as: 'models'
-            }
-        }
+                as: 'models',
+            },
+        },
     ]);
     if (array.length > 0 && 'models' in array[0]) {
         return array[0].models;
@@ -50,9 +50,9 @@ export const getNestedObjects = async (
                 from: `${referencedDBName}`,
                 localField: `${arrayName}.${nestedIDName}`,
                 foreignField: '_id',
-                as: 'models'
-            }
-        }
+                as: 'models',
+            },
+        },
     ]);
 
     if (array.length > 0 && 'models' in array[0]) return array[0].models;
@@ -82,8 +82,8 @@ export const getNestedTrueFalseObjects = async (
                 from: `${referencedDBName}`,
                 localField: `${arrayName}.${nestedIDName}`,
                 foreignField: '_id',
-                as: 'models'
-            }
+                as: 'models',
+            },
         },
         { $unwind: '$models' },
         {
@@ -91,16 +91,16 @@ export const getNestedTrueFalseObjects = async (
                 _id: '$_id',
                 pending: {
                     $push: {
-                        $cond: [{ $eq: [`$${arrayName}.accepted`, false] }, '$models', null]
-                    }
+                        $cond: [{ $eq: [`$${arrayName}.accepted`, false] }, '$models', null],
+                    },
                 },
                 accepted: {
                     $push: {
-                        $cond: [{ $eq: [`$${arrayName}.accepted`, true] }, '$models', null]
-                    }
-                }
-            }
-        }
+                        $cond: [{ $eq: [`$${arrayName}.accepted`, true] }, '$models', null],
+                    },
+                },
+            },
+        },
     ]);
 
     if (array.length > 0 && 'pending' in array[0]) {
@@ -136,8 +136,8 @@ export const getNestedSpectatorObjects = async (
                 from: `${referencedDBName}`,
                 localField: `${arrayName}.${nestedIDName}`,
                 foreignField: '_id',
-                as: 'models'
-            }
+                as: 'models',
+            },
         },
         { $unwind: '$models' },
         {
@@ -145,8 +145,8 @@ export const getNestedSpectatorObjects = async (
                 _id: '$_id',
                 pending: {
                     $push: {
-                        $cond: [{ $eq: [`$${arrayName}.accepted`, false] }, '$models', null]
-                    }
+                        $cond: [{ $eq: [`$${arrayName}.accepted`, false] }, '$models', null],
+                    },
                 },
                 Mom: {
                     $push: {
@@ -155,14 +155,14 @@ export const getNestedSpectatorObjects = async (
                                 $and: [
                                     { $eq: [`$${arrayName}.type`, 'Mom'] },
                                     {
-                                        $eq: [`$${arrayName}.accepted`, true]
-                                    }
-                                ]
+                                        $eq: [`$${arrayName}.accepted`, true],
+                                    },
+                                ],
                             },
                             '$models',
-                            null
-                        ]
-                    }
+                            null,
+                        ],
+                    },
                 },
                 Dad: {
                     $push: {
@@ -171,14 +171,14 @@ export const getNestedSpectatorObjects = async (
                                 $and: [
                                     { $eq: [`$${arrayName}.type`, 'Dad'] },
                                     {
-                                        $eq: [`$${arrayName}.accepted`, true]
-                                    }
-                                ]
+                                        $eq: [`$${arrayName}.accepted`, true],
+                                    },
+                                ],
                             },
                             '$models',
-                            null
-                        ]
-                    }
+                            null,
+                        ],
+                    },
                 },
                 Guardian: {
                     $push: {
@@ -186,17 +186,17 @@ export const getNestedSpectatorObjects = async (
                             {
                                 $and: [
                                     {
-                                        $eq: [`$${arrayName}.type`, 'Guardian']
+                                        $eq: [`$${arrayName}.type`, 'Guardian'],
                                     },
                                     {
-                                        $eq: [`$${arrayName}.accepted`, true]
-                                    }
-                                ]
+                                        $eq: [`$${arrayName}.accepted`, true],
+                                    },
+                                ],
                             },
                             '$models',
-                            null
-                        ]
-                    }
+                            null,
+                        ],
+                    },
                 },
                 Spectator: {
                     $push: {
@@ -204,20 +204,20 @@ export const getNestedSpectatorObjects = async (
                             {
                                 $and: [
                                     {
-                                        $eq: [`$${arrayName}.type`, 'Spectator']
+                                        $eq: [`$${arrayName}.type`, 'Spectator'],
                                     },
                                     {
-                                        $eq: [`$${arrayName}.accepted`, true]
-                                    }
-                                ]
+                                        $eq: [`$${arrayName}.accepted`, true],
+                                    },
+                                ],
                             },
                             '$models',
-                            null
-                        ]
-                    }
-                }
-            }
-        }
+                            null,
+                        ],
+                    },
+                },
+            },
+        },
     ]);
     console.log(array);
     if (array.length > 0 && 'Mom' in array[0]) {
@@ -233,7 +233,7 @@ export const getNestedSpectatorObjects = async (
             Mom: [],
             Dad: [],
             Guardian: [],
-            Spectator: []
+            Spectator: [],
         };
 };
 
@@ -278,21 +278,21 @@ export const handleTeamChatsForParents = async (teamID: string, playerID: string
         // Find the objects to make sure they exist
         const foundSpectators = await Spectator.find({
             _id: {
-                $in: filteredAcceptedParentsIDs.map((smallObj: any) => ObjectId(smallObj.id))
-            }
+                $in: filteredAcceptedParentsIDs.map((smallObj: any) => ObjectId(smallObj.id)),
+            },
         });
         // Format the objects to be put into the full chat
         return foundSpectators.map(({ _id }: { _id: string }) => ({
             id: ObjectId(_id),
             type: 'Spectator',
-            muted: false
+            muted: false,
         }));
     }
     async function parentsToRemove(spectatorArray: any[], fullChatUserArray: any[]): Promise<any[]> {
         const foundSpectators = await Spectator.find({
             _id: {
-                $in: spectatorArray.map((smallObj: any) => ObjectId(smallObj.id))
-            }
+                $in: spectatorArray.map((smallObj: any) => ObjectId(smallObj.id)),
+            },
         });
         return foundSpectators.filter((spectatorObj: any) => {
             return spectatorObj.spectacles.some((spectacle: any) => {
@@ -311,26 +311,26 @@ export const handleTeamChatsForParents = async (teamID: string, playerID: string
     foundPlayerChat.users = handleArray(foundPlayerChat.users, playerID, {
         id: ObjectId(playerID),
         type: 'Player',
-        muted: false
+        muted: false,
     });
     foundPlayerChat.save();
 
     foundPlayer.teams = setAccepted(foundPlayer.teams, foundTeam._id, {
         id: ObjectId(foundTeam._id),
-        accepted: true
+        accepted: true,
     });
     foundPlayer.save();
 
     foundTeam.players = setAccepted(foundTeam.players, playerID, {
         id: ObjectId(playerID),
-        accepted: true
+        accepted: true,
     });
     foundTeam.save();
 
     foundFullChat.users = handleArray(foundFullChat.users, playerID, {
         id: ObjectId(playerID),
         type: 'Player',
-        muted: false
+        muted: false,
     });
 
     if (add) {
@@ -383,7 +383,7 @@ export const handleSpectatorRemoved = async (playerID: string, spectatorID: stri
             //console.log("acceptedTeamIDs", acceptedTeamIDs);
             if (acceptedTeamIDs.length > 0) {
                 const playerTeams: any = await Team.find({
-                    _id: { $in: acceptedTeamIDs }
+                    _id: { $in: acceptedTeamIDs },
                 });
                 //console.log("playerTeams", playerTeams);
                 const spectaclesIDs = foundSpectator.spectacles

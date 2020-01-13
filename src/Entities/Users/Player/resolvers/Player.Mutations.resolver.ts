@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/camelcase */
 import { Arg, Args, Mutation, Resolver } from 'type-graphql';
 
 import { CreatePlayerInput, UpdatePlayerInput } from '../dto/classes';
+import PatchStatistics from '../dto/classes/Player.PatchStatistics';
 import Player from '../schema/Player.schema';
 import { PlayerMutationService } from '../service';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/camelcase */
 @Resolver()
 export class PlayerMutationResolver {
     playerMutationService: PlayerMutationService;
@@ -66,5 +67,10 @@ export class PlayerMutationResolver {
         @Arg('playerID') playerID: string
     ): Promise<boolean | Error> {
         return await this.playerMutationService.removeVideo(playerID, videoID);
+    }
+
+    @Mutation(() => Boolean)
+    async patchStatistics(@Arg('playerID') playerID: string, @Args() input: PatchStatistics): Promise<boolean | Error> {
+        return await this.playerMutationService.patchStatistics(playerID, input);
     }
 }
